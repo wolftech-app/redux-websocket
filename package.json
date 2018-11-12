@@ -19,7 +19,7 @@
   "keywords": [
     "redux"
   ],
-  "author": "David Michael",
+  "author": "Giant Machines <contact@giantmachines.com> (https://giantmachines.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/giantmachines/redux-websocket/issues"
