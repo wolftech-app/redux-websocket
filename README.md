@@ -113,7 +113,7 @@ Dispatched from redux-websocket when the WebSocket `onmessage` callback is execu
 
 ```javascript
 {
-  type: WEBSOCKET_CLOSED,
+  type: WEBSOCKET_MESSAGE,
   payload: {
     timestamp: Date,
     event: Event,
