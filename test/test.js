@@ -1,20 +1,20 @@
 /* eslint-env mocha */
 
-import td from 'testdouble';
 import expect from 'expect';
-import middleware from '../src/';
-import { createWebsocket } from '../src/websocket';
+import td from 'testdouble';
 
-// This does not exist in the Node env, but does in the browser
-import WebSocket from 'ws';
-global.WebSocket = WebSocket;
+import { createWebsocket } from '../src/websocket';
+import middleware from '../src/';
 
 class Socket {
-
+  constructor(url) {
+    this.url = url;
+  }
 }
 
-describe('middleware', () => {
+global.WebSocket = Socket;
 
+describe('middleware', () => {
   it('should be a curried function that calls next(action)', () => {
     const action = {};
     const next = td.func('next');
@@ -25,18 +25,18 @@ describe('middleware', () => {
   });
 
   context('createWebsocket', () => {
-     it('should accept a default payload', () => {
-       const payload = { url: 'ws://localhost' };
+    it('should accept a default payload', () => {
+      const payload = { url: 'ws://localhost' };
+      const ws = createWebsocket(payload);
 
-       const ws = createWebsocket(payload);
-       expect(ws).toBeA(WebSocket);
-     });
+      expect(ws).toBeA(Socket);
+      expect(ws.url).toEqual(payload.url);
+    });
 
-     it('accepts an alternative WebSocket', () => {
-       const ws = createWebsocket({ websocket: Socket });
-       expect(ws).toBeA(Socket);
-     });
+    it('accepts an alternative WebSocket', () => {
+      const ws = createWebsocket({ websocket: Socket });
+
+      expect(ws).toBeA(Socket);
+    });
   });
-
-
 });
