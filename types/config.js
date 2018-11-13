@@ -1,5 +1,7 @@
-type Config = {
+// @flow
+
+export type Config = {
   url?: string,
-  websocket?: WebSocketInterface,
+  websocket?: WebSocket,
   args?: Array<any>
 };

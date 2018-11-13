@@ -39,6 +39,7 @@ const createMiddleware = () => {
     // An optimistic callback assignment for WebSocket objects that support this
     const onConnecting = dispatchAction(connecting);
     // Add the websocket as the 2nd argument (after the event).
+    // $FlowFixMe
     websocket.onconnecting = partialRight(onConnecting, [websocket]);
   };
 
