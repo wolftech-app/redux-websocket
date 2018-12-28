@@ -64,13 +64,11 @@ const createMiddleware = () => {
       case WEBSOCKET_CONNECT:
         close();
         initialize(store, action.payload);
-        next(action);
         break;
 
       // User request to disconnect
       case WEBSOCKET_DISCONNECT:
         close();
-        next(action);
         break;
 
       // User request to send a message
@@ -80,12 +78,12 @@ const createMiddleware = () => {
         } else {
           console.warn('WebSocket is closed, ignoring. Trigger a WEBSOCKET_CONNECT first.');
         }
-        next(action);
         break;
 
       default:
-        next(action);
+        break;
     }
+    return next(action);
   };
 };
 
