@@ -1,10 +1,22 @@
 # redux-websocket
 
+---
+
+### `1.0` release coming soon!
+
+We're currently working on a `1.0` release to address the feedback and feature requests we've gotten over the years.
+
+There's a GitHub project to track progress [here](https://github.com/giantmachines/redux-websocket/projects/1), and we'll be pushing updates to the `1.0-dev` branch for this release, and we'll also be pushing releases to npm with the `next` dist-tag as they become available.
+
+In the meantime, the `latest` dist tag, and version `0.3.0` is still available.
+
+---
+
 ## Summary
 
 A Redux middleware for managing data over a WebSocket connection.
 
-This middleware uses actions, dispatched with Redux to interact with a WebSocket server including connect, disconnect, message sending, and message receiving. All actions follow the [Flux Standard Action](https://github.com/acdlite/flux-standard-action) model. 
+This middleware uses actions, dispatched with Redux to interact with a WebSocket server including connect, disconnect, message sending, and message receiving. All actions follow the [Flux Standard Action](https://github.com/acdlite/flux-standard-action) model.
 
 ## Is it any good?
 
@@ -157,4 +169,3 @@ If you like this library and would like to make modifications or additions, plea
 - [ ] Better test coverage
 - [ ] More refined Flow types
 - [ ] More complete usage examples
-
