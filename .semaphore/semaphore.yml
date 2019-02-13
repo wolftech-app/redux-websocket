@@ -8,6 +8,9 @@ agent:
 blocks:
   - name: Tests
     task:
+      secrets:
+        - name: redux-websocket-codecov
+
       prologue:
         commands:
           - checkout
@@ -25,7 +28,4 @@ blocks:
         - name: unit tests
           commands:
             - npm run test -- --coverage
-            # - bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage-final.json
-
-      # secrets:
-      #   - name: codecov
+            - bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage-final.json
