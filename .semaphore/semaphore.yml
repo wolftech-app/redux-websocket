@@ -22,10 +22,10 @@ blocks:
           commands:
             - npm run check-types
 
-        # - name: jest
-        #   commands:
-        #     - npm run jest -- --coverage
-        #     - bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage-final.json
+        - name: unit tests
+          commands:
+            - npm run jest -- --coverage
+            # - bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage-final.json
 
       # secrets:
       #   - name: codecov
