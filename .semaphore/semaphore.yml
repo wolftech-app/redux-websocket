@@ -24,7 +24,7 @@ blocks:
 
         - name: unit tests
           commands:
-            - npm run jest -- --coverage
+            - npm run test -- --coverage
             # - bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage-final.json
 
       # secrets:
