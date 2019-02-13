@@ -1,0 +1,31 @@
+version: v1.0
+name: redux-websocket
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Tests
+    task:
+      prologue:
+        commands:
+          - checkout
+          - npm install
+
+      jobs:
+        - name: eslint
+          commands:
+            - npm run lint
+
+        # - name: flow
+        #   commands:
+        #     - npm run flow
+
+        # - name: jest
+        #   commands:
+        #     - npm run jest -- --coverage
+        #     - bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage-final.json
+
+      # secrets:
+      #   - name: codecov
