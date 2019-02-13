@@ -1,7 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { compose, Middleware, MiddlewareAPI } from 'redux';
-import partial from 'lodash/fp/partial';
-import partialRight from 'lodash/fp/partialRight';
+import { partial, partialRight } from 'lodash/fp';
 
 // eslint-disable-next-line import/no-cycle
 import {
