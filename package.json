@@ -8,7 +8,9 @@
     "dist/**/*"
   ],
   "scripts": {
-    "build": "rimraf dist/ && tsc",
+    "build": "npm run clean && webpack",
+    "clean": "rimraf dist",
+    "check-types": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
