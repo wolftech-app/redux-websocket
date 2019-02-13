@@ -1,5 +1,4 @@
-import partial from 'lodash/fp/partial';
-import partialRight from 'lodash/fp/partialRight';
+import { partial, partialRight } from 'lodash';
 import { compose, Middleware, MiddlewareAPI } from 'redux';
 import { closed, connecting, message, open } from './actions';
 import { Config, ReduxWebSocket } from './types';
@@ -27,7 +26,7 @@ const createMiddleware = (): Middleware => {
     websocket = createWebsocket(config);
 
     // Function will dispatch actions returned from action creators.
-    const dispatchAction = partial(compose, [dispatch]);
+    const dispatchAction = partial(compose, dispatch);
 
     // Setup handlers to be called like this:
     // dispatch(open(event));
@@ -39,7 +38,7 @@ const createMiddleware = (): Middleware => {
     const onConnecting = dispatchAction(connecting);
     // Add the websocket as the 2nd argument (after the event).
 
-    websocket.onconnecting = partialRight(onConnecting, [websocket]);
+    websocket.onconnecting = partialRight(onConnecting, websocket);
   };
 
   /**
