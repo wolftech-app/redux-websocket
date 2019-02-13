@@ -1,4 +1,7 @@
-import { Config, ReduxWebSocket } from "./types";
+/* eslint-env browser */
+
+// eslint-disable-next-line no-unused-vars
+import { Config, ReduxWebSocket } from './types';
 
 /**
  * Formats args for creating the WebSocket instance
@@ -18,9 +21,10 @@ const extractArgs = (config: Config) => {
 /**
  * Create a websocket object from the incoming config
  */
+// eslint-disable-next-line import/prefer-default-export
 export const createWebsocket = (payload: Config): ReduxWebSocket => {
   const args = extractArgs(payload);
-  const websocket: any = payload.websocket ? payload.websocket : WebSocket;
+  const Websocket: any = payload.websocket ? payload.websocket : WebSocket;
 
-  return new websocket(...args);
+  return new Websocket(...args);
 };
