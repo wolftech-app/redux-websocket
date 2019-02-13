@@ -1,6 +1,15 @@
-import { partial, partialRight } from 'lodash';
+// eslint-disable-next-line no-unused-vars
 import { compose, Middleware, MiddlewareAPI } from 'redux';
-import { closed, connecting, message, open } from './actions';
+import { partial, partialRight } from 'lodash';
+
+// eslint-disable-next-line import/no-cycle
+import {
+  closed,
+  connecting,
+  message,
+  open,
+} from './actions';
+// eslint-disable-next-line no-unused-vars
 import { Config, ReduxWebSocket } from './types';
 import { createWebsocket } from './websocket';
 
@@ -46,8 +55,9 @@ const createMiddleware = (): Middleware => {
    */
   const close = () => {
     if (websocket) {
-      // tslint:disable-next-line no-console
+      // eslint-disable-next-line no-console
       console.warn(`Closing WebSocket connection to ${websocket.url} ...`);
+
       websocket.close();
       websocket = null;
     }
@@ -57,7 +67,7 @@ const createMiddleware = (): Middleware => {
    * The primary Redux middleware function.
    * Each of the actions handled are user-dispatched.
    */
-  return store => next => action => {
+  return store => next => (action) => {
     switch (action.type) {
       // User request to connect
       case WEBSOCKET_CONNECT:
@@ -75,7 +85,7 @@ const createMiddleware = (): Middleware => {
         if (websocket) {
           websocket.send(JSON.stringify(action.payload));
         } else {
-          // tslint:disable-next-line no-console
+          // eslint-disable-next-line no-console
           console.warn('WebSocket is closed, ignoring. Trigger a WEBSOCKET_CONNECT first.');
         }
         break;
@@ -83,6 +93,7 @@ const createMiddleware = (): Middleware => {
       default:
         break;
     }
+
     return next(action);
   };
 };

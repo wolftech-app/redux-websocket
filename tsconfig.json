@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "target": "es5",
+    "target": "esnext",
+    "module": "commonjs",
     "declaration": true,
+    "outDir": "dist",
     "strict": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "./src/**/*"
+  "exclude": [
+    "demo",
+    "dist",
+    "node_modules"
   ]
 }
