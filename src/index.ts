@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { compose, Middleware, MiddlewareAPI } from 'redux';
 import partial from 'lodash/fp/partial';
 import partialRight from 'lodash/fp/partialRight';
@@ -10,7 +9,7 @@ import {
   message,
   open,
 } from './actions';
-// eslint-disable-next-line no-unused-vars
+
 import { Config, ReduxWebSocket } from './types';
 import { createWebsocket } from './websocket';
 
