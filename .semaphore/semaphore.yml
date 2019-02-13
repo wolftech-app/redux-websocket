@@ -18,9 +18,9 @@ blocks:
           commands:
             - npm run lint
 
-        # - name: flow
-        #   commands:
-        #     - npm run flow
+        - name: tsc
+          commands:
+            - npm run check-types
 
         # - name: jest
         #   commands:

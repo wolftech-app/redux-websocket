@@ -3,7 +3,7 @@ import { WEBSOCKET_CLOSED, WEBSOCKET_CONNECTING, WEBSOCKET_MESSAGE, WEBSOCKET_OP
 // These actions are more concerned with connection state
 // and are trigged async by the WebSocketMiddleware
 
-export const connecting = (event: Event, websocket: WebSocket) => ({
+export const connecting = (event, websocket: WebSocket) => ({
   payload: {
     event,
     timestamp: new Date(),
