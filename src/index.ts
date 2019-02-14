@@ -3,14 +3,11 @@ import { Middleware } from 'redux';
 import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_SEND } from './actions';
 import createWebsocket from './createWebsocket';
 
+// Middleware function.
 const createMiddleware = (): Middleware => {
   // Hold a reference to the WebSocket instance in use.
   let websocket: WebSocket;
 
-  /**
-   * The primary Redux middleware function.
-   * Each of the actions handled are user-dispatched.
-   */
   return store => next => (action) => {
     switch (action.type) {
       // User request to connect
