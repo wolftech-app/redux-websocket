@@ -1,6 +1,6 @@
 import { Middleware } from 'redux';
 
-import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_SEND } from './actions';
+import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_SEND } from './actionTypes';
 import createWebsocket from './createWebsocket';
 
 // Middleware function.

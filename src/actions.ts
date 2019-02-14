@@ -1,36 +1,21 @@
-// Library dispatched action types.
-export const WEBSOCKET_OPEN = 'WEBSOCKET:OPEN';
-export const WEBSOCKET_CLOSED = 'WEBSOCKET:CLOSED';
-export const WEBSOCKET_MESSAGE = 'WEBSOCKET:MESSAGE';
+import { ActionType } from './types';
+import { WEBSOCKET_OPEN, WEBSOCKET_CLOSED, WEBSOCKET_MESSAGE } from './actionTypes';
 
-// User dispatched action types.
-export const WEBSOCKET_CONNECT = 'WEBSOCKET:CONNECT';
-export const WEBSOCKET_DISCONNECT = 'WEBSOCKET:DISCONNECT';
-export const WEBSOCKET_SEND = 'WEBSOCKET:SEND';
-
-export const open = (event: Event) => ({
+// Build a Redux action.
+const buildAction = (
+  typeName: ActionType,
+  event: Event | MessageEvent,
+) => ({
+  type: typeName,
   payload: {
     event,
     timestamp: new Date(),
   },
-  type: WEBSOCKET_OPEN,
 });
 
-export const closed = (event: Event) => ({
-  payload: {
-    event,
-    timestamp: new Date(),
-  },
-  type: WEBSOCKET_CLOSED,
-});
-
-export const message = (event: MessageEvent) => ({
-  payload: {
-    data: event.data,
-    event,
-    timestamp: new Date(),
-  },
-  type: WEBSOCKET_MESSAGE,
-});
+// Action creators.
+export const open = (event: Event) => buildAction(WEBSOCKET_OPEN, event);
+export const closed = (event: Event) => buildAction(WEBSOCKET_CLOSED, event);
+export const message = (event: MessageEvent) => buildAction(WEBSOCKET_MESSAGE, event);
 
 export default {};
