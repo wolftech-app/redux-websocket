@@ -1,15 +1,13 @@
 import middleware from '../src';
-import { createWebsocket } from '../src/websocket';
+import createWebsocket from '../src/createWebsocket';
 
-jest.mock('../src/websocket', () => {
+jest.mock('../src/createWebsocket', () => {
   const test = {
     close: jest.fn().mockName('close'),
     send: jest.fn().mockName('send'),
   };
 
-  return {
-    createWebsocket: () => test,
-  };
+  return { default: () => test };
 });
 
 describe('middleware', () => {
@@ -19,10 +17,10 @@ describe('middleware', () => {
     const dispatch = wrapper(i => i);
 
     // Dispatch a mock action.
-    dispatch({ type: 'WEBSOCKET:CONNECT' });
+    dispatch({ type: 'WEBSOCKET:CONNECT', payload: { url: 'fake' } });
 
     // Get the mocked websocket connection.
-    const ws = createWebsocket({});
+    const ws = createWebsocket(i => i, 'fake url');
 
     if (ws.onopen) {
       const result = ws.onopen({ test: 'value' } as any);
@@ -78,13 +76,9 @@ describe('middleware', () => {
     dispatch({ type: 'WEBSOCKET:DISCONNECT' });
 
     // Get the mocked websocket connection.
-    const ws = createWebsocket({});
+    const ws = createWebsocket(i => i, 'fake url');
 
     expect(ws.close).toHaveBeenCalledTimes(1);
     expect(ws.close).toHaveBeenCalledWith();
-
-    dispatch({ type: 'WEBSOCKET:SEND', payload: { test: 'value' } });
-
-    expect(ws.send).not.toHaveBeenCalled();
   });
 });

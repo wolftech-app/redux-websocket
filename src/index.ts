@@ -1,47 +1,11 @@
-import { Middleware, MiddlewareAPI } from 'redux';
+import { Middleware } from 'redux';
 
-import {
-  closed,
-  message,
-  open,
-  WEBSOCKET_CONNECT,
-  WEBSOCKET_DISCONNECT,
-  WEBSOCKET_SEND,
-} from './actions';
-import { Config } from './types';
-import { createWebsocket } from './websocket';
-
+import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_SEND } from './actions';
+import createWebsocket from './createWebsocket';
 
 const createMiddleware = (): Middleware => {
   // Hold a reference to the WebSocket instance in use.
-  let websocket: WebSocket | null;
-
-  /**
-   * A function to create the WebSocket object and attach the standard callbacks
-   */
-  const initialize = ({ dispatch }: MiddlewareAPI, config: Config) => {
-    // Instantiate the websocket.
-    websocket = createWebsocket(config);
-
-    if (websocket) {
-      websocket.onopen = event => dispatch(open(event));
-      websocket.onclose = event => dispatch(closed(event));
-      websocket.onmessage = event => dispatch(message(event));
-    }
-  };
-
-  /**
-   * Close the WebSocket connection and cleanup
-   */
-  const close = () => {
-    if (websocket) {
-      // eslint-disable-next-line no-console
-      console.warn(`Closing WebSocket connection to ${websocket.url} ...`);
-
-      websocket.close();
-      websocket = null;
-    }
-  };
+  let websocket: WebSocket;
 
   /**
    * The primary Redux middleware function.
@@ -51,23 +15,21 @@ const createMiddleware = (): Middleware => {
     switch (action.type) {
       // User request to connect
       case WEBSOCKET_CONNECT:
-        close();
-        initialize(store, action.payload);
+        if (websocket) {
+          websocket.close();
+        }
+
+        websocket = createWebsocket(store.dispatch, action.payload.url);
         break;
 
       // User request to disconnect
       case WEBSOCKET_DISCONNECT:
-        close();
+        websocket.close();
         break;
 
       // User request to send a message
       case WEBSOCKET_SEND:
-        if (websocket) {
-          websocket.send(JSON.stringify(action.payload));
-        } else {
-          // eslint-disable-next-line no-console
-          console.warn('WebSocket is closed, ignoring. Trigger a WEBSOCKET_CONNECT first.');
-        }
+        websocket.send(JSON.stringify(action.payload));
         break;
 
       default:
