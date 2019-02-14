@@ -1,22 +1,12 @@
 // eslint-disable-next-line import/no-cycle
 import {
   WEBSOCKET_CLOSED,
-  WEBSOCKET_CONNECTING,
   WEBSOCKET_MESSAGE,
   WEBSOCKET_OPEN,
 } from './index';
 
 // These actions are more concerned with connection state
 // and are trigged async by the WebSocketMiddleware
-
-export const connecting = (event: Event, websocket: WebSocket) => ({
-  payload: {
-    event,
-    timestamp: new Date(),
-    websocket,
-  },
-  type: WEBSOCKET_CONNECTING,
-});
 
 export const open = (event: Event) => ({
   payload: {
