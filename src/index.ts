@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { Middleware, MiddlewareAPI } from 'redux';
 
 // eslint-disable-next-line import/no-cycle
@@ -7,7 +6,6 @@ import {
   message,
   open,
 } from './actions';
-// eslint-disable-next-line no-unused-vars
 import { Config } from './types';
 import { createWebsocket } from './websocket';
 
