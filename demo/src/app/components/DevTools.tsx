@@ -7,9 +7,7 @@ const DevTools = createDevTools(
 );
 
 const DevToolsComponent = () => (
-  <div className="dev-tools">
-    <DevTools />
-  </div>
+  <DevTools />
 );
 
 export const { instrument } = DevTools;

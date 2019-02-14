@@ -1,13 +1,21 @@
 import {
   WEBSOCKET_CLOSED,
+  WEBSOCKET_CONNECT,
   WEBSOCKET_MESSAGE,
   WEBSOCKET_OPEN,
+  WEBSOCKET_SEND
 } from '@giantmachines/redux-websocket';
 
-import defaultState from './defaultState';
+import defaultState, { State } from './defaultState';
 
-const reducer = (state = defaultState, action) => {
+const reducer = (state = defaultState, action): State => {
   switch (action.type) {
+    case WEBSOCKET_CONNECT:
+      return {
+        ...state,
+        url: action.payload.url,
+      }
+
     case WEBSOCKET_OPEN:
       return {
         ...state,
@@ -25,9 +33,26 @@ const reducer = (state = defaultState, action) => {
         ...state,
         messages: [
           ...state.messages,
-          action.payload,
-        ].slice(0,50),
+          {
+            data: JSON.parse(action.payload.data),
+            timestamp: action.payload.timestamp,
+            type: "INCOMING",
+          },
+        ],
       };
+
+    case WEBSOCKET_SEND:
+      return {
+        ...state,
+        messages: [
+          ...state.messages,
+          {
+            data: action.payload,
+            timestamp: new Date(),
+            type: 'OUTGOING',
+          }
+        ]
+      }
 
     default:
       return state;
