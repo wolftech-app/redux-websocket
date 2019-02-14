@@ -64,21 +64,5 @@ describe('middleware', () => {
         type: 'WEBSOCKET:MESSAGE',
       });
     }
-
-    if (ws.onconnecting) {
-      const result = ws.onconnecting({ test: 'value', data: 'test' } as any);
-
-      expect(result).toEqual({
-        payload: {
-          websocket: ws,
-          event: {
-            data: 'test',
-            test: 'value',
-          },
-          timestamp: expect.any(Date),
-        },
-        type: 'WEBSOCKET:CONNECTING',
-      });
-    }
   });
 });
