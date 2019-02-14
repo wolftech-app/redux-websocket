@@ -24,8 +24,8 @@ const reducer = (state = defaultState, action) => {
       return {
         ...state,
         messages: [
-          action.payload,
           ...state.messages,
+          action.payload,
         ].slice(0,50),
       };
 

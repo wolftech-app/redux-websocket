@@ -1,12 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Index from './components/Index';
 
 import websocket from '@giantmachines/redux-websocket';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
-import DevTools, { instrument } from './components/DevTools';
 import reducer from './store/reducer';
+
+import App from './components/App';
+import { instrument } from './components/DevTools';
 
 import './styles/style.scss';
 
@@ -17,8 +18,7 @@ const store = createStore(reducer, compose(
 
 ReactDOM.render(
   <Provider store={store}>
-    <Index />
-    <DevTools/>
+    <App />
   </Provider>,
   document.getElementById('root')
 );
