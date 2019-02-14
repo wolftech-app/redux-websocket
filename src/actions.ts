@@ -1,12 +1,12 @@
-// eslint-disable-next-line import/no-cycle
-import {
-  WEBSOCKET_CLOSED,
-  WEBSOCKET_MESSAGE,
-  WEBSOCKET_OPEN,
-} from './index';
+// Library dispatched action types.
+export const WEBSOCKET_OPEN = 'WEBSOCKET:OPEN';
+export const WEBSOCKET_CLOSED = 'WEBSOCKET:CLOSED';
+export const WEBSOCKET_MESSAGE = 'WEBSOCKET:MESSAGE';
 
-// These actions are more concerned with connection state
-// and are trigged async by the WebSocketMiddleware
+// User dispatched action types.
+export const WEBSOCKET_CONNECT = 'WEBSOCKET:CONNECT';
+export const WEBSOCKET_DISCONNECT = 'WEBSOCKET:DISCONNECT';
+export const WEBSOCKET_SEND = 'WEBSOCKET:SEND';
 
 export const open = (event: Event) => ({
   payload: {
