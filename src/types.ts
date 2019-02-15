@@ -11,15 +11,6 @@ export interface Config {
   url: string;
 }
 
-export interface ActionTypes {
-  readonly WEBSOCKET_CLOSED: typeof WEBSOCKET_CLOSED;
-  readonly WEBSOCKET_CONNECT: typeof WEBSOCKET_CONNECT;
-  readonly WEBSOCKET_DISCONNECT: typeof WEBSOCKET_DISCONNECT;
-  readonly WEBSOCKET_MESSAGE: typeof WEBSOCKET_MESSAGE;
-  readonly WEBSOCKET_OPEN: typeof WEBSOCKET_OPEN;
-  readonly WEBSOCKET_SEND: typeof WEBSOCKET_SEND;
-}
-
 type ActionType =
   | typeof WEBSOCKET_CLOSED
   | typeof WEBSOCKET_CONNECT

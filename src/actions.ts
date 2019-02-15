@@ -19,5 +19,3 @@ const buildAction = (
 export const open = (event: Event) => buildAction(WEBSOCKET_OPEN, event);
 export const closed = (event: Event) => buildAction(WEBSOCKET_CLOSED, event);
 export const message = (event: MessageEvent) => buildAction(WEBSOCKET_MESSAGE, event);
-
-export default {};
