@@ -1,43 +1,86 @@
 import middleware from '../src';
-import createWebsocket from '../src/createWebsocket';
+import { handleWebsocketConnect, handleWebsocketDisconnect, handleWebsocketSend } from '../src/handlers';
 
-jest.mock('../src/createWebsocket', () => {
-  const test = {
-    close: jest.fn().mockName('close'),
-    send: jest.fn().mockName('send'),
-  };
-
-  return { default: () => test };
-});
+jest.mock('../src/handlers', () => ({
+  handleWebsocketConnect: jest.fn(() => 'socket').mockName('handleWebsocketConnect'),
+  handleWebsocketDisconnect: jest.fn().mockName('handleWebsocketDisconnect'),
+  handleWebsocketSend: jest.fn().mockName('handleWebsocketSend'),
+}));
 
 describe('middleware', () => {
-  it('should throw if connection not yet open', () => {
+  it('should handle a WEBSOCKET:CONNECT action for the first time', () => {
     // Mock everything out all the way down to the dispatch.
-    const wrapper = middleware({ getState: () => {}, dispatch: i => i });
+    const store = { getState: () => {}, dispatch: (i: any) => i };
+    const wrapper = middleware(store);
     const dispatch = wrapper(i => i);
+    const action = { type: 'WEBSOCKET:CONNECT' };
 
-    expect(() => {
-      dispatch({ type: 'WEBSOCKET:DISCONNECT' });
-    }).toThrow();
+    const val = dispatch(action);
+
+    expect(val).toEqual(action);
+    expect(handleWebsocketConnect).toHaveBeenCalledWith(
+      undefined,
+      store,
+      action,
+    );
+
+    dispatch(action);
+
+    expect(handleWebsocketConnect).toHaveBeenCalledWith(
+      'socket',
+      store,
+      action,
+    );
   });
 
-  it('should close an open connection', () => {
+  it('should handle a WEBSOCKET:CONNECT action for the second time', () => {
     // Mock everything out all the way down to the dispatch.
-    const wrapper = middleware({ getState: () => {}, dispatch: i => i });
+    const store = { getState: () => {}, dispatch: (i: any) => i };
+    const wrapper = middleware(store);
     const dispatch = wrapper(i => i);
-    const ws = createWebsocket(dispatch, 'ws://fake.com');
+    const action = { type: 'WEBSOCKET:CONNECT' };
 
-    const { close } = ws;
+    const val = dispatch(action);
 
-    (close as any).mockClear();
+    expect(val).toEqual(action);
+    expect(handleWebsocketConnect).toHaveBeenCalledWith(
+      'socket',
+      store,
+      action,
+    );
+  });
 
-    // First create a socket connection.
-    dispatch({ type: 'WEBSOCKET:CONNECT', payload: { url: 'fake url' } });
+  it('should handle a WEBSOCKET:DISCONNECT action', () => {
+    // Mock everything out all the way down to the dispatch.
+    const store = { getState: () => {}, dispatch: (i: any) => i };
+    const wrapper = middleware(store);
+    const dispatch = wrapper(i => i);
+    const action = { type: 'WEBSOCKET:DISCONNECT' };
 
-    // Then close it.
-    dispatch({ type: 'WEBSOCKET:DISCONNECT' });
+    const val = dispatch(action);
 
-    expect(close).toHaveBeenCalledTimes(1);
-    expect(close).toHaveBeenCalledWith();
+    expect(val).toEqual(action);
+    expect(handleWebsocketDisconnect).toHaveBeenCalledWith(
+      'socket',
+      store,
+      action,
+    );
+  });
+
+  it('should handle a WEBSOCKET:SEND action', () => {
+    // Mock everything out all the way down to the dispatch.
+    const store = { getState: () => {}, dispatch: (i: any) => i };
+    const wrapper = middleware(store);
+    const dispatch = wrapper(i => i);
+    const action = { type: 'WEBSOCKET:SEND' };
+
+    const val = dispatch(action);
+
+    expect(val).toEqual(action);
+    expect(handleWebsocketSend).toHaveBeenCalledWith(
+      'socket',
+      store,
+      action,
+    );
   });
 });
