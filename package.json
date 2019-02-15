@@ -3,12 +3,13 @@
   "version": "1.0.0-alpha",
   "description": "A redux middleware to handle websocket connections",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist/**/*"
   ],
   "scripts": {
-    "build": "npm run clean && webpack",
+    "build": "npm run clean && npm run build:types && webpack",
+    "build:types": "tsc --emitDeclarationOnly --outdir dist/types",
     "clean": "rimraf dist",
     "check-types": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.ts\"",
