@@ -1,20 +1,14 @@
-// Action types to be dispatched by the user
-export const WEBSOCKET_CONNECT = 'WEBSOCKET:CONNECT';
-export const WEBSOCKET_DISCONNECT = 'WEBSOCKET:DISCONNECT';
-export const WEBSOCKET_SEND = 'WEBSOCKET:SEND';
-// Action types dispatched by the WebSocket implementation
-export const WEBSOCKET_CONNECTING = 'WEBSOCKET:CONNECTING';
-export const WEBSOCKET_OPEN = 'WEBSOCKET:OPEN';
-export const WEBSOCKET_DISCONNECTING = 'WEBSOCKET:DISCONNECTING';
-export const WEBSOCKET_CLOSED = 'WEBSOCKET:CLOSED';
-export const WEBSOCKET_MESSAGE = 'WEBSOCKET:MESSAGE';
-
-export interface ReduxWebSocket extends WebSocket {
-  onconnecting: any;
-}
+import { WEBSOCKET_OPEN, WEBSOCKET_CLOSED, WEBSOCKET_MESSAGE } from './actionTypes';
 
 export interface Config {
-  url?: string;
-  websocket?: WebSocket;
-  args?: any[];
+  url: string;
 }
+
+type ActionType =
+  | typeof WEBSOCKET_OPEN
+  | typeof WEBSOCKET_CLOSED
+  | typeof WEBSOCKET_MESSAGE;
+
+// Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877
+// eslint-disable-next-line no-undef
+export { ActionType };

@@ -1,46 +1,21 @@
-// eslint-disable-next-line import/no-cycle
-import {
-  WEBSOCKET_CLOSED,
-  WEBSOCKET_CONNECTING,
-  WEBSOCKET_MESSAGE,
-  WEBSOCKET_OPEN,
-} from './index';
+import { ActionType } from './types';
+import { WEBSOCKET_OPEN, WEBSOCKET_CLOSED, WEBSOCKET_MESSAGE } from './actionTypes';
 
-// These actions are more concerned with connection state
-// and are trigged async by the WebSocketMiddleware
-
-export const connecting = (event: Event, websocket: WebSocket) => ({
-  payload: {
-    event,
-    timestamp: new Date(),
-    websocket,
-  },
-  type: WEBSOCKET_CONNECTING,
-});
-
-export const open = (event: Event) => ({
+// Build a Redux action.
+const buildAction = (
+  typeName: ActionType,
+  event: Event | MessageEvent,
+) => ({
+  type: typeName,
   payload: {
     event,
     timestamp: new Date(),
   },
-  type: WEBSOCKET_OPEN,
 });
 
-export const closed = (event: Event) => ({
-  payload: {
-    event,
-    timestamp: new Date(),
-  },
-  type: WEBSOCKET_CLOSED,
-});
-
-export const message = (event: MessageEvent) => ({
-  payload: {
-    data: event.data,
-    event,
-    timestamp: new Date(),
-  },
-  type: WEBSOCKET_MESSAGE,
-});
+// Action creators.
+export const open = (event: Event) => buildAction(WEBSOCKET_OPEN, event);
+export const closed = (event: Event) => buildAction(WEBSOCKET_CLOSED, event);
+export const message = (event: MessageEvent) => buildAction(WEBSOCKET_MESSAGE, event);
 
 export default {};
