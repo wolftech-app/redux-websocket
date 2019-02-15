@@ -1,3 +1,5 @@
+import { AnyAction } from 'redux';
+
 import { ActionType } from './types';
 import { WEBSOCKET_OPEN, WEBSOCKET_CLOSED, WEBSOCKET_MESSAGE } from './actionTypes';
 
@@ -5,7 +7,7 @@ import { WEBSOCKET_OPEN, WEBSOCKET_CLOSED, WEBSOCKET_MESSAGE } from './actionTyp
 const buildAction = (
   typeName: ActionType,
   event: Event | MessageEvent,
-) => ({
+): AnyAction => ({
   type: typeName,
   payload: {
     event,
