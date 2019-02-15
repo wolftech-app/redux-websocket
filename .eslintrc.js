@@ -3,7 +3,9 @@ module.exports = {
     'eslint-comments',
     'jest',
     'promise',
+    '@typescript-eslint',
   ],
+  parser: '@typescript-eslint/parser',
   extends: [
     'airbnb-typescript',
     'plugin:eslint-comments/recommended',
@@ -14,5 +16,11 @@ module.exports = {
     'indent': ['error', 2, {
       'SwitchCase': 1,
     }],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', {
+      vars: 'all',
+      args: 'after-used',
+      ignoreRestSiblings: false,
+    }]
   },
 }
