@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Button from '../Button';
 
 import {
   Container,
@@ -57,12 +58,12 @@ class Controls extends React.Component<Props, State> {
             onChange={this.handleUrlChange}
             value={webSocketUrl}
           />
-          <button onClick={() => this.props.connect(webSocketUrl)}>
+          <Button onClick={() => this.props.connect(webSocketUrl)}>
             Connect
-          </button>
-          <button onClick={this.props.disconnect}>
+          </Button>
+          <Button onClick={this.props.disconnect}>
             Disconnect
-          </button>
+          </Button>
         </InputGroup>
 
         <InputGroup>
