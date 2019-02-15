@@ -1,5 +1,11 @@
 import * as React from 'react';
-import styled from 'styled-components';
+
+import {
+  Container,
+  InputGroup,
+  Input,
+  TextArea,
+} from './styles';
 
 interface Props {
   connect: (url: string) => void;
@@ -16,28 +22,8 @@ interface Controls {
   webSocketUrl: string;
 }
 
-const ControlsContainer = styled.div``;
-
-const TextArea = styled.textarea`
-  margin-bottom: 10px;
-  padding: 10px;
-  resize: vertical;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  display: block;
-  margin-bottom: 10px;
-  padding: 5px 10px;
-  width: 100%;
-`;
-
-const InputGroup = styled.div`
-  margin-bottom: 20px;
-`;
-
 class Controls extends React.Component<Props, State> {
-  public constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       message: '',
@@ -45,26 +31,26 @@ class Controls extends React.Component<Props, State> {
     }
   }
 
-  public componentDidMount() {
+  componentDidMount() {
     const { webSocketUrl } = this.state;
     this.props.connect(webSocketUrl);
   }
 
-  public handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
     this.setState({ message: value });
   }
 
-  public handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     this.setState({ webSocketUrl: value });
   }
 
-  public render() {
+  render() {
     const { message, webSocketUrl } = this.state;
 
     return (
-      <ControlsContainer>
+      <Container>
         <InputGroup>
           <Input
             type="text"
@@ -90,7 +76,7 @@ class Controls extends React.Component<Props, State> {
             Send message
           </button>
         </InputGroup>
-      </ControlsContainer>
+      </Container>
     );
   }
 }
