@@ -1,5 +1,9 @@
 import * as React from 'react';
 import Button from '../Button';
+import DropDown from '../DropDown';
+import Label from '../Label';
+
+import exampleMessages from './exampleMessages';
 
 import {
   Container,
@@ -37,9 +41,25 @@ class Controls extends React.Component<Props, State> {
     this.props.connect(webSocketUrl);
   }
 
+  handleExampleMessageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target;
+    this.setState({ message: value});
+  }
+
   handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
     this.setState({ message: value });
+  }
+
+  handleSendMessage = () => {
+    const { onSendMessage } = this.props;
+    const { message } = this.state;
+
+    try {
+      onSendMessage(JSON.parse(message));
+    } catch {
+      alert('Please enter valid JSON!');
+    }
   }
 
   handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +68,7 @@ class Controls extends React.Component<Props, State> {
   }
 
   render() {
+    const { disconnect } = this.props;
     const { message, webSocketUrl } = this.state;
 
     return (
@@ -61,9 +82,18 @@ class Controls extends React.Component<Props, State> {
           <Button onClick={() => this.props.connect(webSocketUrl)}>
             Connect
           </Button>
-          <Button onClick={this.props.disconnect}>
+          <Button onClick={disconnect}>
             Disconnect
           </Button>
+        </InputGroup>
+
+        <InputGroup>
+          <Label text="Example Messages" />
+          <DropDown
+            options={exampleMessages}
+            onChange={this.handleExampleMessageChange}
+            placeholder="Testing"
+          />
         </InputGroup>
 
         <InputGroup>
@@ -73,9 +103,9 @@ class Controls extends React.Component<Props, State> {
             value={message}
             rows={10}
           />
-          <button onClick={() => this.props.onSendMessage(message)}>
+          <Button onClick={this.handleSendMessage}>
             Send message
-          </button>
+          </Button>
         </InputGroup>
       </Container>
     );
