@@ -6,9 +6,11 @@ import MessagesContainer from '../../containers/MessagesContainer';
 
 import {
   AppWrapper,
+  DevToolsPanel,
   Title,
   Panel,
   PanelContainer,
+  PanelGroup,
 } from './styles';
 
 const App = () => (
@@ -17,15 +19,17 @@ const App = () => (
       redux-websocket
     </Title>
     <PanelContainer>
-      <Panel>
-        <ControlsContainer />
-      </Panel>
-      <Panel>
-        <MessagesContainer />
-      </Panel>
-      <Panel>
+      <PanelGroup>
+        <Panel>
+          <ControlsContainer />
+        </Panel>
+        <Panel>
+          <MessagesContainer />
+        </Panel>
+      </PanelGroup>
+      <DevToolsPanel>
         <DevTools/>
-      </Panel>
+      </DevToolsPanel>
     </PanelContainer>
   </AppWrapper>
 );
