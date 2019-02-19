@@ -1,15 +1,22 @@
-import { AnyAction, Middleware, MiddlewareAPI } from 'redux';
+import { Middleware, MiddlewareAPI } from 'redux';
 
-import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT, WEBSOCKET_SEND } from './actionTypes';
+import { Action, ActionType, ActionHandler } from './types';
+import {
+  WEBSOCKET_CLOSED,
+  WEBSOCKET_CONNECT,
+  WEBSOCKET_DISCONNECT,
+  WEBSOCKET_MESSAGE,
+  WEBSOCKET_OPEN,
+  WEBSOCKET_SEND,
+} from './actionTypes';
 import { handleWebsocketConnect, handleWebsocketDisconnect, handleWebsocketSend } from './handlers';
 
-type Handler = (websocket: WebSocket, _store: MiddlewareAPI, action: AnyAction) => void;
-
-// TODO: is there a way to specify that a key in this object must be a
-// known action type?
-const handlers: { [key: string]: Handler } = {
+const handlers: { [K in ActionType]: ActionHandler } = {
+  [WEBSOCKET_CLOSED]: () => {},
   [WEBSOCKET_CONNECT]: handleWebsocketConnect,
   [WEBSOCKET_DISCONNECT]: handleWebsocketDisconnect,
+  [WEBSOCKET_MESSAGE]: () => {},
+  [WEBSOCKET_OPEN]: () => {},
   [WEBSOCKET_SEND]: handleWebsocketSend,
 };
 
@@ -18,9 +25,9 @@ const createMiddleware = (): Middleware => {
   // Hold a reference to the WebSocket instance in use.
   let websocket: WebSocket;
 
-  return (store: MiddlewareAPI) => next => (action) => {
+  return (store: MiddlewareAPI) => next => (action: Action) => {
     // Find the appropriate handler and call it.
-    const handler = handlers[action.type];
+    const handler = handlers[action.type as ActionType];
     const returnValue = handler(websocket, store, action);
 
     // Handle the case where an action returns a WebSocket instance.
