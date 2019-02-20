@@ -4,10 +4,11 @@ module.exports = {
   entry: './src/index',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    libraryTarget: 'commonjs2',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   module: {
     rules: [
@@ -15,7 +16,7 @@ module.exports = {
         test: /\.(ts|js)x?$/,
         include: path.resolve(__dirname, 'src'),
         loader: 'babel-loader',
-      }
+      },
     ],
   },
 };

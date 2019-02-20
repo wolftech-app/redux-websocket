@@ -41,4 +41,5 @@ const createMiddleware = (): Middleware => {
   };
 };
 
+export * from './actionTypes';
 export default createMiddleware();
