@@ -27,7 +27,7 @@ const createMiddleware = (): Middleware => {
 
   return (store: MiddlewareAPI) => next => (action: Action) => {
     // Find the appropriate handler and call it.
-    const handler = handlers[action.type as ActionType];
+    const handler = handlers[action.type];
     const returnValue = handler(websocket, store, action);
 
     // Handle the case where an action returns a WebSocket instance.

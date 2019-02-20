@@ -11,6 +11,8 @@ import { /* Action, */ ActionType } from './types';
 const buildAction = (
   actionType: ActionType,
   event: Event | MessageEvent,
+// TODO (brianmcallister) - Figure out a way to type this correctly.
+// See: https://medium.com/@martin_hotell/improved-redux-type-safety-with-typescript-2-8-2c11a8062575
 ): any => ({
   type: actionType,
   payload: {
