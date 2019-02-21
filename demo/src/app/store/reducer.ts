@@ -42,6 +42,7 @@ const reducer = (state = defaultState, action): State => {
       };
 
     case WEBSOCKET_SEND:
+    console.log('in reducer', action.payload)
       return {
         ...state,
         messages: [

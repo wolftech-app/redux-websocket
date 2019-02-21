@@ -38,6 +38,8 @@ export const handleWebsocketSend = (
   { send }: WebSocket,
   _store: MiddlewareAPI,
   { payload }: AnyAction,
-) => (
+// @ts-ignore
+) => console.log('LIB: handle websocket send', send, payload) ||
+(
   send(JSON.stringify(payload))
 );

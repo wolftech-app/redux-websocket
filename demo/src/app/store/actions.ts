@@ -3,8 +3,8 @@ import {
   WEBSOCKET_SEND,
   WEBSOCKET_DISCONNECT,
 } from '@giantmachines/redux-websocket';
-
-export const websocketSend = (payload) => ({
+// @ts-ignore
+export const websocketSend = (payload) => console.log('in action', payload) || ({
   type: WEBSOCKET_SEND,
   payload,
 });

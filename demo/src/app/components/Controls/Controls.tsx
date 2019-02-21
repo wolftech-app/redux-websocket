@@ -55,11 +55,13 @@ class Controls extends React.Component<Props, State> {
     const { onSendMessage } = this.props;
     const { message } = this.state;
 
-    try {
+    // try {
       onSendMessage(JSON.parse(message));
-    } catch {
-      alert('Please enter valid JSON!');
-    }
+    // } catch (e) {
+    //   console.log('error', e);
+
+    //   alert('Please enter valid JSON!');
+    // }
   }
 
   handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
