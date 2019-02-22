@@ -26,7 +26,7 @@ const getHandler = (reduxWebsocket: ReduxWebsocket , actionType: ActionType) => 
 // Middleware function.
 const createMiddleware = (): Middleware => {
   // Create a new redux webseocket instance
-  const reduxWebsocket = new ReduxWebsocket;
+  const reduxWebsocket = new ReduxWebsocket();
 
   return (store: MiddlewareAPI) => next => (action: Action) => {
     const handler = getHandler(reduxWebsocket, action.type)
