@@ -27,7 +27,9 @@ export const handleWebsocketDisconnect = ({ close }: WebSocket) => {
   try {
     close();
   } catch (err) {
-    throw new Error('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
+    throw new Error(
+      'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
+    );
   }
 };
 
@@ -38,8 +40,5 @@ export const handleWebsocketSend = (
   { send }: WebSocket,
   _store: MiddlewareAPI,
   { payload }: AnyAction,
-// @ts-ignore
-) => console.log('LIB: handle websocket send', send, payload) ||
-(
-  send(JSON.stringify(payload))
-);
+) =>
+  send(JSON.stringify(payload));

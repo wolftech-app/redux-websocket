@@ -15,11 +15,9 @@ import {
 export default (dispatch: Dispatch, url: string) => {
   // Instantiate the websocket.
   const ws = new WebSocket(url);
-// @ts-ignore
-  ws.onopen = (event: Event) => console.log('LIB: we.onOpen event', event) || dispatch(open(event));
+  ws.onopen = (event: Event) => dispatch(open(event));
   ws.onclose = (event: Event) => dispatch(closed(event));
-// @ts-ignore
-  ws.onmessage = (event: MessageEvent) => console.log('LIB: we.onMessage event', message(event)) || dispatch(message(event));
+  ws.onmessage = (event: MessageEvent) => dispatch(message(event));
 
   return ws;
 };
