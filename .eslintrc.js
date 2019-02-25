@@ -21,7 +21,7 @@ module.exports = {
       vars: 'all',
       args: 'after-used',
       ignoreRestSiblings: false,
-    }]
+    }],
     'implicit-arrow-linebreak': 0,
   },
 }
