@@ -11,16 +11,19 @@ import { instrument } from './components/DevTools';
 
 import './styles/style.scss';
 
-const store = createStore(reducer, compose(
-  applyMiddleware(websocket),
-  instrument()
-));
+const store = createStore(
+  reducer,
+  compose(
+    applyMiddleware(websocket),
+    instrument(),
+  ),
+);
 
 ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 declare let module: any;

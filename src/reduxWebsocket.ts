@@ -1,5 +1,6 @@
-import createWebsocket from './createWebsocket';
 import { AnyAction, MiddlewareAPI } from 'redux';
+
+import createWebsocket from './createWebsocket';
 
 export default class ReduxWebsocket {
   // TODO correctly type this thing
@@ -39,6 +40,5 @@ export default class ReduxWebsocket {
   /**
    * WebSocket send event handler.
    */
-  send = (_store: MiddlewareAPI, { payload }: AnyAction) =>
-    this.websocket && this.websocket.send(JSON.stringify(payload));
+  send = (_store: MiddlewareAPI, { payload }: AnyAction) => this.websocket && this.websocket.send(JSON.stringify(payload));
 }
