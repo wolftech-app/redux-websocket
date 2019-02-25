@@ -40,5 +40,6 @@ export default class ReduxWebsocket {
   /**
    * WebSocket send event handler.
    */
-  send = (_store: MiddlewareAPI, { payload }: AnyAction) => this.websocket && this.websocket.send(JSON.stringify(payload));
+  send = (_store: MiddlewareAPI, { payload }: AnyAction) =>
+    this.websocket && this.websocket.send(JSON.stringify(payload));
 }
