@@ -8,6 +8,8 @@ import {
 
 import defaultState, { State } from './defaultState';
 
+export const getConnected = state => state.connected;
+
 const reducer = (state = defaultState, action): State => {
   switch (action.type) {
     case WEBSOCKET_CONNECT:
