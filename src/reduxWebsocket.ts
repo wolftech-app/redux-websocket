@@ -13,7 +13,7 @@ export default class ReduxWebsocket {
   /**
    * WebSocket connect event handler.
    */
-  connect = ({ dispatch }: MiddlewareAPI, { payload }: AnyAction) => {
+  connect({ dispatch }: MiddlewareAPI, { payload }: AnyAction) {
     if (this.websocket) {
       this.websocket.close();
     }
@@ -24,7 +24,7 @@ export default class ReduxWebsocket {
   /**
    * WebSocket disconnect event handler.
    */
-  disconnect = () => {
+  disconnect() {
     // TODO: write a test that checks what happens when a user tries to close
     // a closed connection. maybe we dispatch an 'error' action with a message?
     // maybe we throw an error?
@@ -40,6 +40,7 @@ export default class ReduxWebsocket {
   /**
    * WebSocket send event handler.
    */
-  send = (_store: MiddlewareAPI, { payload }: AnyAction) =>
+  send(_store: MiddlewareAPI, { payload }: AnyAction){
     this.websocket && this.websocket.send(JSON.stringify(payload));
+  }
 }
