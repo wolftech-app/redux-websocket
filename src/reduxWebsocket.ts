@@ -19,7 +19,7 @@ export default class ReduxWebsocket {
     }
 
     this.websocket = createWebsocket(dispatch, payload.url);
-  };
+  }
 
   /**
    * WebSocket disconnect event handler.
@@ -35,12 +35,14 @@ export default class ReduxWebsocket {
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
     }
-  };
+  }
 
   /**
    * WebSocket send event handler.
    */
-  send(_store: MiddlewareAPI, { payload }: AnyAction){
-    this.websocket && this.websocket.send(JSON.stringify(payload));
+  send(_store: MiddlewareAPI, { payload }: AnyAction) {
+    if (this.websocket) {
+      this.websocket.send(JSON.stringify(payload));
+    }
   }
 }

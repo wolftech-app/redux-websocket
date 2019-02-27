@@ -1,7 +1,7 @@
 import middleware from '../src';
-import ReduxWebsocket from '../src/reduxWebsocket'
 
-// TODO: scaling back these test suntil we can figure out a good way to test the reduxWebsocket class.
+// TODO: scaling back these test suntil we can figure out a
+// good way to test the reduxWebsocket class.
 
 jest.mock('../src/reduxWebsocket');
 
@@ -11,7 +11,10 @@ describe('middleware', () => {
     const store = { getState: () => {}, dispatch: (i: any) => i };
     const wrapper = middleware(store);
     const dispatch = wrapper(i => i);
-    const action = { type: 'WEBSOCKET:CONNECT', payload: { url: 'ws://example.com'}};
+    const action = {
+      type: 'WEBSOCKET:CONNECT',
+      payload: { url: 'ws://example.com' },
+    };
 
     const val = dispatch(action);
 
@@ -23,7 +26,10 @@ describe('middleware', () => {
     const store = { getState: () => {}, dispatch: (i: any) => i };
     const wrapper = middleware(store);
     const dispatch = wrapper(i => i);
-    const action = { type: 'WEBSOCKET:CONNECT', payload: { url: 'ws://example.com'}};
+    const action = {
+      type: 'WEBSOCKET:CONNECT',
+      payload: { url: 'ws://example.com' },
+    };
 
     const val = dispatch(action);
 
