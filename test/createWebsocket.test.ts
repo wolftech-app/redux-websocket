@@ -15,7 +15,7 @@ describe('createWebsocket', () => {
         event: payload,
         timestamp: expect.any(Date),
       },
-      type: 'WEBSOCKET:OPEN',
+      type: 'REDUX_WEBSOCKET::OPEN',
     };
 
     it('should return the dispatched action', () => {
@@ -42,7 +42,7 @@ describe('createWebsocket', () => {
         event: payload,
         timestamp: expect.any(Date),
       },
-      type: 'WEBSOCKET:CLOSED',
+      type: 'REDUX_WEBSOCKET::CLOSED',
     };
 
     it('should return the dispatched action', () => {
@@ -69,7 +69,7 @@ describe('createWebsocket', () => {
         event: payload,
         timestamp: expect.any(Date),
       },
-      type: 'WEBSOCKET:MESSAGE',
+      type: 'REDUX_WEBSOCKET::MESSAGE',
     };
 
     it('should return the dispatched action', () => {
