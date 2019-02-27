@@ -10,7 +10,7 @@ import {
   WEBSOCKET_SEND,
 } from './actionTypes';
 
-const getHandler = (reduxWebsocket: ReduxWebsocket , actionType: ActionType) => {
+const getHandler = (reduxWebsocket: ReduxWebsocket, actionType: ActionType) => {
   const handlers: { [K in ActionType]: ActionHandler } = {
     [WEBSOCKET_CLOSED]: () => {},
     [WEBSOCKET_CONNECT]: reduxWebsocket.connect,
@@ -21,7 +21,7 @@ const getHandler = (reduxWebsocket: ReduxWebsocket , actionType: ActionType) => 
   };
 
   return handlers[actionType];
-}
+};
 
 // Middleware function.
 const createMiddleware = (): Middleware => {
@@ -29,7 +29,7 @@ const createMiddleware = (): Middleware => {
   const reduxWebsocket = new ReduxWebsocket();
 
   return (store: MiddlewareAPI) => next => (action: Action) => {
-    const handler = getHandler(reduxWebsocket, action.type)
+    const handler = getHandler(reduxWebsocket, action.type);
     handler(store, action);
 
     return next(action);
