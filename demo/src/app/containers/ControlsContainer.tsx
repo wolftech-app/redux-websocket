@@ -6,7 +6,9 @@ import Controls from '../components/Controls';
 const mapDispatchToProps = dispatch => ({
   connect: (url: string) => dispatch(websocketConnect({ url })),
   disconnect: () => dispatch(websocketDisconnect),
-  onSendMessage: (message: string) => dispatch(websocketSend(message)),
+  onSendMessage: (message: string) => {
+    dispatch(websocketSend(message))
+  }
 })
 
 export default connect(null, mapDispatchToProps)(Controls);

@@ -15,7 +15,6 @@ import {
 export default (dispatch: Dispatch, url: string) => {
   // Instantiate the websocket.
   const ws = new WebSocket(url);
-
   ws.onopen = (event: Event) => dispatch(open(event));
   ws.onclose = (event: Event) => dispatch(closed(event));
   ws.onmessage = (event: MessageEvent) => dispatch(message(event));

@@ -29,7 +29,7 @@ type Action =
   | { type: typeof WEBSOCKET_OPEN, payload: any }
   | { type: typeof WEBSOCKET_SEND, payload: any };
 
-type ActionHandler = (websocket: WebSocket, _store: MiddlewareAPI, action: Action) => void;
+type ActionHandler = (_store: MiddlewareAPI, action: Action) => void;
 
 // Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877
 /* eslint-disable no-undef */
