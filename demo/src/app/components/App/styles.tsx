@@ -9,10 +9,25 @@ export const AppWrapper = styled.div`
   max-width: 1920px;
 `;
 
-export const Title = styled.h1`
+export const Header = styled.header`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   border-bottom: 2px solid black;
-  margin: 0;
   padding: 10px;
+`;
+
+export const Link = styled.a`
+  text-decoration: none;
+  color: blue;
+
+  &:vistited {
+    color: blue;
+  }
+`;
+
+export const Title = styled.h1`
+  margin: 0 0 5px 0;
 `;
 
 export const PanelContainer = styled.div`

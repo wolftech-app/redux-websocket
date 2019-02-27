@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '../Button';
 import DropDown from '../DropDown';
 import Label from '../Label';
+import StatusIndicatorContainer from '../../containers/StatusIndicatorContainer';
 
 import exampleMessages from './exampleMessages';
 
@@ -79,16 +80,21 @@ class Controls extends React.Component<Props, State> {
             onChange={this.handleUrlChange}
             value={webSocketUrl}
           />
+
           <Button onClick={() => this.props.connect(webSocketUrl)}>
             Connect
           </Button>
+
           <Button onClick={disconnect}>
             Disconnect
           </Button>
+
+          <StatusIndicatorContainer />
         </InputGroup>
 
         <InputGroup>
           <Label text="Example Messages" />
+
           <DropDown
             options={exampleMessages}
             onChange={this.handleExampleMessageChange}
@@ -103,6 +109,7 @@ class Controls extends React.Component<Props, State> {
             value={message}
             rows={10}
           />
+
           <Button onClick={this.handleSendMessage}>
             Send message
           </Button>

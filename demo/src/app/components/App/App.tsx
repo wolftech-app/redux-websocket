@@ -11,24 +11,31 @@ import {
   Panel,
   PanelContainer,
   PanelGroup,
+  Header,
+  Link,
 } from './styles';
 
 const App = () => (
   <AppWrapper>
-    <Title>
-      redux-websocket
-    </Title>
+    <Header>
+      <Title>redux-websocket</Title>
+
+      <Link href={'https://github.com/giantmachines/redux-websocket'} target="_blank">Github</Link>
+    </Header>
+
     <PanelContainer>
       <PanelGroup>
         <Panel>
           <ControlsContainer />
         </Panel>
+
         <Panel>
           <MessagesContainer />
         </Panel>
       </PanelGroup>
+
       <DevToolsPanel>
-        <DevTools/>
+        <DevTools />
       </DevToolsPanel>
     </PanelContainer>
   </AppWrapper>
