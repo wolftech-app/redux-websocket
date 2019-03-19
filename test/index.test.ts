@@ -1,9 +1,9 @@
 import middleware from '../src';
 
-// TODO: scaling back these test suntil we can figure out a
+// TODO: scaling back these tests until we can figure out a
 // good way to test the reduxWebsocket class.
 
-jest.mock('../src/reduxWebsocket');
+// jest.mock('../src/reduxWebsocket');
 
 describe('middleware', () => {
   it('should handle a REDUX_WEBSOCKET::CONNECT action for the first time', () => {
