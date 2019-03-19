@@ -1,9 +1,14 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import * as Prism from 'prismjs';
 import { MessageState } from '../../store/defaultState';
 
-import { Container, Message } from './styles';
+import {
+  Container,
+  MessageContainer,
+  Message,
+  MetaData,
+  MetaContainer,
+} from './styles';
 
 import '../../styles/vendor/prism.scss';
 
@@ -12,25 +17,43 @@ interface Props {
 }
 
 const renderMessages = (messages: MessageState[]) => (
-  messages.map(message => (
-    <Container type={message.type} key={message.timestamp.getTime()}>
-      <Message>
-        <code className="language-js">
-          {JSON.stringify(message.data, null, 2)}
-        </code>
-      </Message>
-    </Container>
-  ))
+  messages.map((message) => {
+    const {
+      data,
+      origin,
+      timestamp,
+      type,
+    } = message;
+
+    return (
+      <Container key={timestamp.getTime()}>
+        <MetaContainer>
+          <MetaData>{origin}</MetaData>
+          <MetaData>{timestamp.toISOString()}</MetaData>
+        </MetaContainer>
+
+        <MessageContainer type={type}>
+          <Message>
+            <code className="language-js">
+              {JSON.stringify(data, null, 2)}
+            </code>
+          </Message>
+        </MessageContainer>
+      </Container>
+    );
+  })
 );
 
 const MessageLogComponent = (props: Props) => {
-  useEffect(() => {
+  const { messages } = props;
+
+  React.useEffect(() => {
     Prism.highlightAll();
-  }, [props.messages]);
+  }, [messages]);
 
   return (
     <div>
-      {renderMessages(props.messages)}
+      {renderMessages(messages)}
     </div>
   );
 };
