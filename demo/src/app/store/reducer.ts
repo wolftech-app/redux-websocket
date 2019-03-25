@@ -1,10 +1,10 @@
 import {
-  WEBSOCKET_CLOSED,
-  WEBSOCKET_CONNECT,
-  WEBSOCKET_MESSAGE,
-  WEBSOCKET_OPEN,
-  WEBSOCKET_SEND,
-} from '@giantmachines/redux-websocket';
+  REDUX_WEBSOCKET_CLOSED,
+  REDUX_WEBSOCKET_CONNECT,
+  REDUX_WEBSOCKET_MESSAGE,
+  REDUX_WEBSOCKET_OPEN,
+  REDUX_WEBSOCKET_SEND,
+} from './actionTypes';
 
 import defaultState, { State } from './defaultState';
 
@@ -12,25 +12,25 @@ export const getConnected = state => state.connected;
 
 const reducer = (state = defaultState, action): State => {
   switch (action.type) {
-    case WEBSOCKET_CONNECT:
+    case REDUX_WEBSOCKET_CONNECT:
       return {
         ...state,
         url: action.payload.url,
       };
 
-    case WEBSOCKET_OPEN:
+    case REDUX_WEBSOCKET_OPEN:
       return {
         ...state,
         connected: true,
       };
 
-    case WEBSOCKET_CLOSED:
+    case REDUX_WEBSOCKET_CLOSED:
       return {
         ...state,
         connected: false,
       };
 
-    case WEBSOCKET_MESSAGE:
+    case REDUX_WEBSOCKET_MESSAGE:
       return {
         ...state,
         messages: [
@@ -44,7 +44,7 @@ const reducer = (state = defaultState, action): State => {
         ],
       };
 
-    case WEBSOCKET_SEND:
+    case REDUX_WEBSOCKET_SEND:
       return {
         ...state,
         messages: [

@@ -9,10 +9,6 @@ import {
   WEBSOCKET_SEND,
 } from './actionTypes';
 
-export interface Config {
-  url: string;
-}
-
 type ActionType =
   | typeof WEBSOCKET_CLOSED
   | typeof WEBSOCKET_CONNECT
@@ -31,11 +27,16 @@ type Action =
 
 type ActionHandler = (_store: MiddlewareAPI, action: Action) => void;
 
+type Options = {
+  prefix: string;
+}
+
 // Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877
 /* eslint-disable no-undef */
 export {
   Action,
   ActionType,
   ActionHandler,
+  Options,
 };
 /* eslint-enable no-undef */
