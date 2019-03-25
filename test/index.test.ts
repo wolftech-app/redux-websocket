@@ -3,7 +3,7 @@ import middleware from '../src';
 // TODO: scaling back these tests until we can figure out a
 // good way to test the reduxWebsocket class.
 
-jest.mock('../src/reduxWebsocket');
+// jest.mock('../src/reduxWebsocket');
 
 describe('middleware', () => {
   it('should handle a REDUX_WEBSOCKET::CONNECT action for the first time', () => {
@@ -42,6 +42,12 @@ describe('middleware', () => {
     const wrapper = middleware()(store);
     const dispatch = wrapper(i => i);
     const action = { type: 'REDUX_WEBSOCKET::DISCONNECT' };
+
+    // First connect before disconnecting
+    dispatch({
+      type: 'REDUX_WEBSOCKET::CONNECT',
+      payload: { url: 'ws://example.com' },
+    });
 
     const val = dispatch(action);
 
