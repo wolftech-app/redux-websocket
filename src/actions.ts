@@ -6,7 +6,6 @@ import {
   WEBSOCKET_OPEN,
   WEBSOCKET_SEND,
 } from './actionTypes';
-import { /* Action, */ ActionType } from './types';
 
 const buildAction = (
   actionType: string,
