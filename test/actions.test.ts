@@ -4,10 +4,11 @@ import * as actionTypes from '../src/actionTypes';
 describe('actions', () => {
   describe('closed', () => {
     it('should return the correct action', () => {
-      const act = actions.closed({ test: 'value' } as any);
+      const PREFIX = 'ACTION_PREFIX';
+      const act = actions.closed({ test: 'value' } as any, PREFIX);
 
       expect(act).toEqual({
-        type: actionTypes.WEBSOCKET_CLOSED,
+        type: `${PREFIX}::${actionTypes.WEBSOCKET_CLOSED}`,
         payload: {
           event: { test: 'value' },
           timestamp: expect.any(Date),
@@ -18,10 +19,11 @@ describe('actions', () => {
 
   describe('connect', () => {
     it('should return the correct action', () => {
-      const act = actions.connect({ test: 'value' } as any);
+      const PREFIX = 'ACTION_PREFIX';
+      const act = actions.connect({ test: 'value' } as any, PREFIX);
 
       expect(act).toEqual({
-        type: actionTypes.WEBSOCKET_CONNECT,
+        type: `${PREFIX}::${actionTypes.WEBSOCKET_CONNECT}`,
         payload: {
           event: { test: 'value' },
           timestamp: expect.any(Date),
@@ -32,10 +34,11 @@ describe('actions', () => {
 
   describe('disconnect', () => {
     it('should return the correct action', () => {
-      const act = actions.disconnect({ test: 'value' } as any);
+      const PREFIX = 'ACTION_PREFIX';
+      const act = actions.disconnect({ test: 'value' } as any, PREFIX);
 
       expect(act).toEqual({
-        type: actionTypes.WEBSOCKET_DISCONNECT,
+        type: `${PREFIX}::${actionTypes.WEBSOCKET_DISCONNECT}`,
         payload: {
           event: { test: 'value' },
           timestamp: expect.any(Date),
@@ -46,10 +49,11 @@ describe('actions', () => {
 
   describe('message', () => {
     it('should return the correct action', () => {
-      const act = actions.message({ test: 'value' } as any);
+      const PREFIX = 'ACTION_PREFIX';
+      const act = actions.message({ test: 'value' } as any, PREFIX);
 
       expect(act).toEqual({
-        type: actionTypes.WEBSOCKET_MESSAGE,
+        type: `${PREFIX}::${actionTypes.WEBSOCKET_MESSAGE}`,
         payload: {
           event: { test: 'value' },
           timestamp: expect.any(Date),
@@ -60,10 +64,11 @@ describe('actions', () => {
 
   describe('open', () => {
     it('should return the correct action', () => {
-      const act = actions.open({ test: 'value' } as any);
+      const PREFIX = 'ACTION_PREFIX';
+      const act = actions.open({ test: 'value' } as any, PREFIX);
 
       expect(act).toEqual({
-        type: actionTypes.WEBSOCKET_OPEN,
+        type: `${PREFIX}::${actionTypes.WEBSOCKET_OPEN}`,
         payload: {
           event: { test: 'value' },
           timestamp: expect.any(Date),
@@ -74,10 +79,11 @@ describe('actions', () => {
 
   describe('send', () => {
     it('should return the correct action', () => {
-      const act = actions.send({ test: 'value' } as any);
+      const PREFIX = 'ACTION_PREFIX';
+      const act = actions.send({ test: 'value' } as any, PREFIX);
 
       expect(act).toEqual({
-        type: actionTypes.WEBSOCKET_SEND,
+        type: `${PREFIX}::${actionTypes.WEBSOCKET_SEND}`,
         payload: {
           event: { test: 'value' },
           timestamp: expect.any(Date),

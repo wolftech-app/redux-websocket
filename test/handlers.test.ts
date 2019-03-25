@@ -41,7 +41,7 @@ describe('handlers', () => {
         { type: 'test', payload: { url: 'ws://example.com' } },
       );
 
-      expect(createWebsocket).toHaveBeenCalledWith(dispatch, 'ws://example.com');
+      expect(createWebsocket).toHaveBeenCalledWith(dispatch, 'ws://example.com', { prefix: 'REDUX_WEBSOCKET' });
     });
   });
 

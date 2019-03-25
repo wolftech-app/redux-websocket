@@ -2,7 +2,7 @@ import createWebsocket from '../src/createWebsocket';
 
 describe('createWebsocket', () => {
   const dispatch = jest.fn(i => i).mockName('dispatch');
-  const ws = createWebsocket(dispatch, 'ws://fake.com');
+  const ws = createWebsocket(dispatch, 'ws://fake.com', { prefix: 'REDUX_WEBSOCKET' });
   const payload = { test: 'value' };
 
   beforeEach(() => {
