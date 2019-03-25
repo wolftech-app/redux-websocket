@@ -1,6 +1,7 @@
 
 export interface MessageState {
   data: string | object;
+  origin: string;
   timestamp: Date;
   type: string;
 }
@@ -15,6 +16,6 @@ const defaultState: State = {
   connected: false,
   messages: [],
   url: null,
-}
+};
 
 export default defaultState;

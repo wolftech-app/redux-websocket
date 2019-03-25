@@ -3,7 +3,7 @@ import {
   WEBSOCKET_CONNECT,
   WEBSOCKET_MESSAGE,
   WEBSOCKET_OPEN,
-  WEBSOCKET_SEND
+  WEBSOCKET_SEND,
 } from '@giantmachines/redux-websocket';
 
 import defaultState, { State } from './defaultState';
@@ -16,7 +16,7 @@ const reducer = (state = defaultState, action): State => {
       return {
         ...state,
         url: action.payload.url,
-      }
+      };
 
     case WEBSOCKET_OPEN:
       return {
@@ -28,7 +28,7 @@ const reducer = (state = defaultState, action): State => {
       return {
         ...state,
         connected: false,
-      }
+      };
 
     case WEBSOCKET_MESSAGE:
       return {
@@ -37,8 +37,9 @@ const reducer = (state = defaultState, action): State => {
           ...state.messages,
           {
             data: JSON.parse(action.payload.event.data),
+            origin: action.payload.event.origin,
             timestamp: action.payload.timestamp,
-            type: "INCOMING",
+            type: 'INCOMING',
           },
         ],
       };
@@ -50,15 +51,16 @@ const reducer = (state = defaultState, action): State => {
           ...state.messages,
           {
             data: action.payload,
+            origin: window.location.origin,
             timestamp: new Date(),
             type: 'OUTGOING',
-          }
-        ]
-      }
+          },
+        ],
+      };
 
     default:
       return state;
   }
-}
+};
 
 export default reducer;
