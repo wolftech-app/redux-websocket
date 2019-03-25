@@ -65,4 +65,14 @@ describe('middleware', () => {
 
     expect(val).toEqual(action);
   });
+
+  it('should not break on random actions', () => {
+    // Mock everything out all the way down to the dispatch.
+    const store = { getState: () => {}, dispatch: (i: any) => i };
+    const wrapper = middleware()(store);
+    const dispatch = wrapper(i => i);
+
+    dispatch({ type: 'REDUX_WEBSOCKET::RANDOM' });
+    dispatch({ type: 'RANDOM::ACTION' });
+  });
 });
