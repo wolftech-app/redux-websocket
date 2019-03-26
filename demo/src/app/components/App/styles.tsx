@@ -54,7 +54,6 @@ export const PanelGroup = styled.div`
 export const Panel = styled.div`
   flex: 1;
   overflow: auto;
-  padding: 10px;
 
   &:not(:last-child) {
     border-right: 2px solid black;

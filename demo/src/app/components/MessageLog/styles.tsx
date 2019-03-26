@@ -28,3 +28,9 @@ export const MetaContainer = styled.div`
   text-align: center;
   font-size: 12px;
 `;
+
+export const MessageLogContainer = styled.div`
+  height: 100%;
+  overflow: auto;
+  padding: 10px;
+`;
