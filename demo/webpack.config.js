@@ -20,6 +20,11 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         loader: 'awesome-typescript-loader',
+        options: {
+          useCache: true,
+          useBabel: true,
+          babelCore: '@babel/core',
+        },
       },
       {
         enforce: 'pre',
