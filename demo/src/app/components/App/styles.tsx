@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import media from '../../styles/js/media';
+import { sansSerif } from '../../styles/js/typography';
 
 export const AppWrapper = styled.div`
   display: flex;
@@ -61,6 +62,12 @@ export const Panel = styled.div`
   &:not(:last-child) {
     border-right: 2px solid black;
   }
+`;
+
+export const PanelHeader = styled.p`
+  font-family: ${sansSerif};
+  color: #fff;
+  font-size: 20px;
 `;
 
 export const ControlPanel = styled(Panel)`

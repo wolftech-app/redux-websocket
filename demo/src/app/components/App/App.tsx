@@ -13,6 +13,7 @@ import {
   MessageLogPanel,
   PanelContainer,
   PanelGroup,
+  PanelHeader,
   Title,
 } from './styles';
 
@@ -27,15 +28,27 @@ const App = () => (
             <Link href="https://github.com/giantmachines/redux-websocket" target="_blank">Github</Link>
           </Header>
 
+          <PanelHeader>
+            Control Panel
+          </PanelHeader>
+
           <ControlsContainer />
         </ControlPanel>
 
         <MessageLogPanel>
+          <PanelHeader>
+            Message Log
+          </PanelHeader>
+
           <MessagesContainer />
         </MessageLogPanel>
       </PanelGroup>
 
       <DevToolsPanel>
+        <PanelHeader>
+          Redux Log
+        </PanelHeader>
+
         <DevTools />
       </DevToolsPanel>
     </PanelContainer>
