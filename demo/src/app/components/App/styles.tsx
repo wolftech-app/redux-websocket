@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import media from '../../styles/js/media';
 
 export const AppWrapper = styled.div`
@@ -7,6 +8,7 @@ export const AppWrapper = styled.div`
   height: 100%;
   margin: 0 auto;
   max-width: 1920px;
+  background-color: #212f3f;
 `;
 
 export const Header = styled.header`
@@ -61,8 +63,19 @@ export const Panel = styled.div`
   }
 `;
 
+export const ControlPanel = styled(Panel)`
+  background-color: #354353;
+`;
+
+export const MessageLogPanel = styled(Panel)`
+  background-color: #1d252f;
+`;
+
 export const DevToolsPanel = styled(Panel)`
+  background-color: #171e26;
   max-width: 500px;
+  display: flex;
+  flex-direction: column;
 
   ${media.desktop`
     max-width: 100%;
