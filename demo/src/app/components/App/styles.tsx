@@ -43,35 +43,28 @@ export const PanelContainer = styled.div`
 `;
 
 export const PanelGroup = styled.div`
-  border-right: 2px solid black;
   display: flex;
   flex: 1;
   flex-basis: 33.333%;
-
-  ${media.desktop`
-    border-bottom: 2px solid black;
-    border-right: none;
-  `}
 `;
 
 export const Panel = styled.div`
   flex: 1;
   overflow: auto;
-  padding: 10px;
-
-  &:not(:last-child) {
-    border-right: 2px solid black;
-  }
+  padding: 114px 0 0 0;
 `;
 
 export const PanelHeader = styled.p`
   font-family: ${sansSerif};
   color: #fff;
   font-size: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
 `;
 
 export const ControlPanel = styled(Panel)`
   background-color: #354353;
+  padding-top: 0;
 `;
 
 export const MessageLogPanel = styled(Panel)`
@@ -80,9 +73,12 @@ export const MessageLogPanel = styled(Panel)`
 
 export const DevToolsPanel = styled(Panel)`
   background-color: #171e26;
-  max-width: 500px;
+  border-left: 2px solid #212f3f;
   display: flex;
   flex-direction: column;
+  max-width: 500px;
+  // padding: 0;
+  // padding-top: 114px;
 
   ${media.desktop`
     max-width: 100%;

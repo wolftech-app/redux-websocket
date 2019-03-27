@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { createDevTools } from 'redux-devtools';
+import * as React from 'react';
 import Inspector from 'redux-devtools-inspector';
 
 import DevToolsWrapper from './styles';
