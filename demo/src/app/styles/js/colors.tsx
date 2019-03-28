@@ -19,7 +19,7 @@ enum Colors {
   PLUTO = '#171e26',
   NEBULA = '#212f3f',
   // NEBULA_HOVER = '#A8A7FF',
-  // COMET = '#E7E7E7',
+  COMET = '#c94848',
   // DUST = '#444444',
   // VACUUM = '#000000',
 }

@@ -155,4 +155,14 @@ export default styled.div`
   [class|="treeItemPin"] {
     color: ${Colors.JUPITER};
   }
+
+  [class*="diffUpdateFrom"] {
+    color: ${Colors.SUN};
+    background-color: ${Colors.COMET};
+  }
+
+  [class*="diffUpdateTo"] {
+    color: ${Colors.SUN};
+    background-color: ${Colors.OORT_CLOUD};
+  }
 `;
