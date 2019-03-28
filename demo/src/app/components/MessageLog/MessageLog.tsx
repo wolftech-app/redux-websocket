@@ -5,13 +5,14 @@ import { MessageState } from '../../store/defaultState';
 import {
   AutoScrollCheckBox,
   AutoScrollLabel,
-  Container,
   Message,
   MessageContainer,
+  MessageContents,
   MessageLogContainer,
   MessageLogWrapper,
-  MetaData,
   MetaContainer,
+  MetaData,
+  MetaType,
 } from './styles';
 
 import '../../styles/vendor/prism.scss';
@@ -33,7 +34,7 @@ export default class MessageLog extends React.Component<Props, State> {
   /**
    * Constructor
    */
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -108,20 +109,21 @@ export default class MessageLog extends React.Component<Props, State> {
       } = message;
 
       return (
-        <Container key={timestamp.getTime()}>
-          <MetaContainer>
+        <Message key={timestamp.getTime()}>
+          <MetaContainer type={type}>
+            <MetaType>{type}</MetaType>
             <MetaData>{origin}</MetaData>
             <MetaData>{timestamp.toISOString()}</MetaData>
           </MetaContainer>
 
           <MessageContainer type={type}>
-            <Message>
+            <MessageContents>
               <code className="language-js">
                 {JSON.stringify(data, null, 2)}
               </code>
-            </Message>
+            </MessageContents>
           </MessageContainer>
-        </Container>
+        </Message>
       );
     })
   )

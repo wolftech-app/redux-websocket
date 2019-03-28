@@ -30,3 +30,9 @@ export const TypeStyleDeneb = `
   ${TypeFamilyMono};
   font-size: 10px;
 `;
+
+export const TypeStyleEridanus = `
+  ${TypeFamilyMono};
+  font-size: 9px;
+  font-weight: 700;
+`;

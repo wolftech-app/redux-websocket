@@ -20,8 +20,8 @@ enum Colors {
   NEBULA = '#212f3f',
   // NEBULA_HOVER = '#A8A7FF',
   COMET = '#c94848',
-  // DUST = '#444444',
-  // VACUUM = '#000000',
+  DUST = '#a9bbd2',
+  VACUUM = '#5d7a9d',
 }
 
 export default Colors;
