@@ -22,6 +22,7 @@ enum Colors {
   COMET = '#c94848',
   // DUST = '#444444',
   // VACUUM = '#000000',
+  QUARK = '#2e3946',
 }
 
 export default Colors;

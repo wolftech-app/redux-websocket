@@ -14,6 +14,7 @@ import {
 } from './styles';
 
 interface Props {
+  connected: boolean;
   connect: (url: string) => void;
   disconnect: () => void;
   onSendMessage: (message) => void;
@@ -24,27 +25,24 @@ interface State {
   webSocketUrl: string;
 }
 
-interface Controls {
-  webSocketUrl: string;
-}
-
 class Controls extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       message: '',
       webSocketUrl: 'wss://websocket-echo-server.herokuapp.com',
-    }
+    };
   }
 
   componentDidMount() {
+    const { connect } = this.props;
     const { webSocketUrl } = this.state;
-    this.props.connect(webSocketUrl);
+    connect(webSocketUrl);
   }
 
   handleExampleMessageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
-    this.setState({ message: value});
+    this.setState({ message: value });
   }
 
   handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -69,7 +67,7 @@ class Controls extends React.Component<Props, State> {
   }
 
   render() {
-    const { disconnect } = this.props;
+    const { connect, connected, disconnect } = this.props;
     const { message, webSocketUrl } = this.state;
 
     return (
@@ -81,11 +79,17 @@ class Controls extends React.Component<Props, State> {
             value={webSocketUrl}
           />
 
-          <Button onClick={() => this.props.connect(webSocketUrl)}>
+          <Button
+            disabled={connected}
+            onClick={() => connect(webSocketUrl)}
+          >
             Connect
           </Button>
 
-          <Button onClick={disconnect}>
+          <Button
+            disabled={!connected}
+            onClick={disconnect}
+          >
             Disconnect
           </Button>
 
