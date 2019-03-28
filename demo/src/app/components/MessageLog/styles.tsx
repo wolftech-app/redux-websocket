@@ -20,6 +20,7 @@ export const MessageLogContainer = styled.div`
   height: 100%;
   overflow: auto;
   padding: 0;
+  scroll-behavior: smooth;
 `;
 
 export const AutoScrollCheckBox = styled.input``;

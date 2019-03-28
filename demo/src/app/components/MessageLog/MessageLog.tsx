@@ -21,6 +21,7 @@ interface Props {
 
 interface State {
   autoScroll: boolean;
+  isHovered: boolean
 }
 
 /**
@@ -37,6 +38,7 @@ export default class MessageLog extends React.Component<Props, State> {
 
     this.state = {
       autoScroll: true,
+      isHovered: false,
     };
   }
 
@@ -58,7 +60,11 @@ export default class MessageLog extends React.Component<Props, State> {
     }
 
     if (snapshot && snapshot.autoScroll) {
-      container.scrollTop = container.scrollHeight;
+      // Help prevent a little bit of flickering.
+      // TODO (brianmcallister) - Debounce this?
+      setTimeout(() => {
+        container.scrollTop = container.scrollHeight;
+      }, 100);
     }
   }
 
@@ -85,6 +91,16 @@ export default class MessageLog extends React.Component<Props, State> {
    * @param event
    */
   handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    // Only handle scroll events when the user is causing the scroll event
+    // with the mouse. This prevents the smooth scroll behavior, which is
+    // triggered by a button click in another element, from causing autoScroll
+    // to get set to false.
+    const { isHovered } = this.state;
+
+    if (!isHovered) {
+      return;
+    }
+
     const container = event.currentTarget;
     const { scrollTop, scrollHeight, offsetHeight } = container;
     const isScrolledToBottom = scrollTop === scrollHeight - offsetHeight;
@@ -138,6 +154,10 @@ export default class MessageLog extends React.Component<Props, State> {
         <MessageLogContainer
           ref={this.containerRef}
           onScroll={this.handleScroll}
+          onMouseOver={() => this.setState({ isHovered: true })}
+          onMouseOut={() => this.setState({ isHovered: false })}
+          onFocus={() => {}}
+          onBlur={() => {}}
         >
           {this.renderMessages(messages)}
         </MessageLogContainer>
