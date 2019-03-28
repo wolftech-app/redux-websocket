@@ -26,6 +26,7 @@ enum Colors {
   PROSPERO = '#212c3a',
   PUCK = '#85ff00',
   JULIET = '#4c5661',
+  CUPID = '#656F7A',
 }
 
 export default Colors;

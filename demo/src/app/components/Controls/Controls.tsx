@@ -75,6 +75,7 @@ class Controls extends React.Component<Props, State> {
         <InputGroup>
           <Input
             type="text"
+            placeholder="Input server URL here…"
             onChange={this.handleUrlChange}
             value={webSocketUrl}
           />
@@ -115,7 +116,7 @@ class Controls extends React.Component<Props, State> {
         <InputGroup>
           <TextArea
             onChange={this.handleMessageChange}
-            placeholder="Input JSON formated message here..."
+            placeholder="Input JSON formated message here…"
             value={message}
             rows={10}
           />
