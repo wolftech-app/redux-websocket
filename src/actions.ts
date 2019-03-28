@@ -6,10 +6,9 @@ import {
   WEBSOCKET_OPEN,
   WEBSOCKET_SEND,
 } from './actionTypes';
-import { /* Action, */ ActionType } from './types';
 
 const buildAction = (
-  actionType: ActionType,
+  actionType: string,
   event: Event | MessageEvent,
 // TODO (brianmcallister) - Figure out a way to type this correctly.
 // See: https://medium.com/@martin_hotell/improved-redux-type-safety-with-typescript-2-8-2c11a8062575
@@ -21,9 +20,9 @@ const buildAction = (
   },
 });
 
-export const closed = (event: Event) => buildAction(WEBSOCKET_CLOSED, event);
-export const connect = (event: Event) => buildAction(WEBSOCKET_CONNECT, event);
-export const disconnect = (event: Event) => buildAction(WEBSOCKET_DISCONNECT, event);
-export const message = (event: MessageEvent) => buildAction(WEBSOCKET_MESSAGE, event);
-export const open = (event: Event) => buildAction(WEBSOCKET_OPEN, event);
-export const send = (event: Event) => buildAction(WEBSOCKET_SEND, event);
+export const closed = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_CLOSED}`, event);
+export const connect = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_CONNECT}`, event);
+export const disconnect = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_DISCONNECT}`, event);
+export const message = (event: MessageEvent, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_MESSAGE}`, event);
+export const open = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_OPEN}`, event);
+export const send = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_SEND}`, event);

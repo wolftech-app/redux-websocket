@@ -1,19 +1,19 @@
 import {
-  WEBSOCKET_CONNECT,
-  WEBSOCKET_SEND,
-  WEBSOCKET_DISCONNECT,
-} from '@giantmachines/redux-websocket';
+  REDUX_WEBSOCKET_CONNECT,
+  REDUX_WEBSOCKET_DISCONNECT,
+  REDUX_WEBSOCKET_SEND,
+} from './actionTypes';
 
 export const websocketSend = payload => ({
-  type: WEBSOCKET_SEND,
+  type: REDUX_WEBSOCKET_SEND,
   payload,
 });
 
 export const websocketConnect = payload => ({
-  type: WEBSOCKET_CONNECT,
+  type: REDUX_WEBSOCKET_CONNECT,
   payload,
 });
 
 export const websocketDisconnect = {
-  type: WEBSOCKET_DISCONNECT,
+  type: REDUX_WEBSOCKET_DISCONNECT,
 };

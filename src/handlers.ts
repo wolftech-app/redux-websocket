@@ -14,7 +14,8 @@ export const handleWebsocketConnect = (
     websocket.close();
   }
 
-  return createWebsocket(dispatch, payload.url);
+  // TODO (procchio) pass in config object
+  return createWebsocket(dispatch, payload.url, { prefix: 'REDUX_WEBSOCKET' });
 };
 
 /**

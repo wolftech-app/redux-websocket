@@ -1,12 +1,16 @@
 import { AnyAction, MiddlewareAPI } from 'redux';
 
 import createWebsocket from './createWebsocket';
+import { Options } from './types';
 
 export default class ReduxWebsocket {
+  options: Options;
+
   // TODO correctly type this thing
   websocket: WebSocket | null;
 
-  constructor() {
+  constructor(options: Options) {
+    this.options = options;
     this.websocket = null;
   }
 
@@ -18,7 +22,7 @@ export default class ReduxWebsocket {
       this.websocket.close();
     }
 
-    this.websocket = createWebsocket(dispatch, payload.url);
+    this.websocket = createWebsocket(dispatch, payload.url, this.options);
   }
 
   /**
