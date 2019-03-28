@@ -23,6 +23,9 @@ enum Colors {
   // DUST = '#444444',
   // VACUUM = '#000000',
   QUARK = '#2e3946',
+  PROSPERO = '#212c3a',
+  PUCK = '#85ff00',
+  JULIET = '#4c5661',
 }
 
 export default Colors;

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
+import Colors from '../../styles/js/colors';
+import * as Typography from '../../styles/js/typography';
 
 interface StatusBubbleProps {
-  connected: boolean;
+  active: boolean;
 }
 
 export const Container = styled.div`
@@ -11,14 +13,17 @@ export const Container = styled.div`
 `;
 
 export const StatusBubble = styled.div<StatusBubbleProps>`
-  width: 13px;
-  height: 13px;
+  width: 23px;
+  height: 23px;
+  border: 2px solid ${Colors.QUARK};
   border-radius: 50%;
-  background: ${({ connected }) => connected ? '#1bbf1b' : '#ff0303'};
-  box-shadow: inset -1px -1px 1px rgba(0,0,0,.5);
+  background: ${({ active }) => (active ? Colors.PUCK : Colors.PROSPERO)};
+  box-shadow: inset 0px 0px 0 3px ${Colors.JULIET};
 `;
 
-export const StatusText = styled.span`
+export const StatusText = styled.span<StatusBubbleProps>`
+  ${Typography.TypeStyleCanopus}
+  color: ${({ active }) => (active ? Colors.PUCK : Colors.PROSPERO)};
   margin-left: 5px;
-  font-size: 12px;
+  font-size: 16px;
 `;

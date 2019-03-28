@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '../Button';
 import DropDown from '../DropDown';
 import Label from '../Label';
-import StatusIndicatorContainer from '../../containers/StatusIndicatorContainer';
+import StatusIndicator from '../StatusIndicator';
 
 import exampleMessages from './exampleMessages';
 
@@ -92,8 +92,14 @@ class Controls extends React.Component<Props, State> {
           >
             Disconnect
           </Button>
-
-          <StatusIndicatorContainer />
+          <StatusIndicator
+            active={connected}
+            text="Connected"
+          />
+          <StatusIndicator
+            active={!connected}
+            text="Disconnected"
+          />
         </InputGroup>
 
         <InputGroup>

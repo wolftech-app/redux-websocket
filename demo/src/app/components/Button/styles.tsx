@@ -23,5 +23,6 @@ export default styled.button`
 
   &:disabled {
     background-color: ${Colors.QUARK};
+    color: ${Colors.JULIET};
   }
 `;
