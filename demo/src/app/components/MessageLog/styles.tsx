@@ -4,6 +4,15 @@ interface MessageLogContainerProps {
   type: string;
 }
 
+export const AutoScrollCheckBox = styled.input``;
+
+export const AutoScrollLabel = styled.label`
+  background-color: #fff;
+  bottom: 10px;
+  left: 10px;
+  position: absolute;
+`;
+
 export const Container = styled.div`
   margin-bottom: 10px;
 `;
@@ -27,4 +36,15 @@ export const MetaContainer = styled.div`
   color: #dddddd;
   text-align: center;
   font-size: 12px;
+`;
+
+export const MessageLogContainer = styled.div`
+  height: 100%;
+  overflow: auto;
+  padding: 10px;
+`;
+
+export const MessageLogWrapper = styled.div`
+  height: 100%;
+  position: relative;
 `;
