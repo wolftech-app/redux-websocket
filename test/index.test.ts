@@ -5,9 +5,9 @@ import { Options } from '../src/types';
 jest.mock('../src/reduxWebsocket');
 
 const reduxWebsocketMock = <jest.Mock<ReduxWebsocket>>ReduxWebsocket;
-const connectMock = jest.fn();
-const disconnectMock = jest.fn();
-const sendMock = jest.fn();
+const connectMock = jest.fn(() => {});
+const disconnectMock = jest.fn(() => {});
+const sendMock = jest.fn(() => {});
 
 reduxWebsocketMock.mockImplementation(options => ({
   options,
