@@ -3,10 +3,13 @@ import * as Prism from 'prismjs';
 import { MessageState } from '../../store/defaultState';
 
 import {
+  AutoScrollCheckBox,
+  AutoScrollLabel,
   Container,
   Message,
   MessageContainer,
   MessageLogContainer,
+  MessageLogWrapper,
   MetaData,
   MetaContainer,
 } from './styles';
@@ -46,17 +49,16 @@ export default class MessageLog extends React.Component<Props, State> {
    * @param _prevState
    * @param snapshot
    */
-  componentDidUpdate(prevProps: Props, _prevState: State, snapshot: boolean) {
-    const { autoScroll } = this.state;
+  componentDidUpdate(prevProps: Props, _prevState: State, snapshot: State) {
     const { messages: prevMessages } = prevProps;
     const { messages } = this.props;
+    const container = this.containerRef.current;
 
     if (prevMessages.length !== messages.length) {
-      Prism.highlightAllUnder(this.containerRef.current);
+      Prism.highlightAllUnder(container);
     }
 
-    if (autoScroll && snapshot) {
-      const container = this.containerRef.current;
+    if (snapshot && snapshot.autoScroll) {
       container.scrollTop = container.scrollHeight;
     }
   }
@@ -65,19 +67,32 @@ export default class MessageLog extends React.Component<Props, State> {
    * Get snapshot before update.
    *
    * @param prevProps
-   * @returns {boolean}
+   * @returns {State}
    */
-  getSnapshotBeforeUpdate(prevProps: Props): boolean {
+  getSnapshotBeforeUpdate(prevProps: Props): State {
     const { messages: prevMessages } = prevProps;
     const { messages } = this.props;
 
     if (prevMessages.length !== messages.length) {
-      const { current: container } = this.containerRef;
-      const { scrollTop, scrollHeight, offsetHeight } = container;
-      return scrollTop === scrollHeight - offsetHeight;
+      return this.state;
     }
 
     return null;
+  }
+
+  /**
+   * Handle container scroll
+   *
+   * @param event
+   */
+  handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const container = event.currentTarget;
+    const { scrollTop, scrollHeight, offsetHeight } = container;
+    const isScrolledToBottom = scrollTop === scrollHeight - offsetHeight;
+
+    this.setState({
+      autoScroll: isScrolledToBottom,
+    });
   }
 
   /**
@@ -115,12 +130,28 @@ export default class MessageLog extends React.Component<Props, State> {
    * Render
    */
   render() {
+    const { autoScroll } = this.state;
     const { messages } = this.props;
 
     return (
-      <MessageLogContainer ref={this.containerRef}>
-        {this.renderMessages(messages)}
-      </MessageLogContainer>
+      <MessageLogWrapper>
+        <AutoScrollLabel htmlFor="auto-scroll">
+          <AutoScrollCheckBox
+            id="auto-scroll"
+            type="checkbox"
+            checked={autoScroll}
+            onChange={() => this.setState({ autoScroll: !autoScroll })}
+          />
+          Auto scroll
+        </AutoScrollLabel>
+
+        <MessageLogContainer
+          ref={this.containerRef}
+          onScroll={this.handleScroll}
+        >
+          {this.renderMessages(messages)}
+        </MessageLogContainer>
+      </MessageLogWrapper>
     );
   }
 }
