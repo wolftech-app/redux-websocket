@@ -1,6 +1,8 @@
-import styled, { StyledComponent } from 'styled-components';
+import styled from 'styled-components';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  padding: 10px;
+`;
 
 export const TextArea = styled.textarea`
   margin-bottom: 10px;

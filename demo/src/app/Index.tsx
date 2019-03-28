@@ -25,9 +25,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root'),
 );
-
-declare let module: any;
-
-if (module.hot) {
-  module.hot.accept();
-}

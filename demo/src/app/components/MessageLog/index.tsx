@@ -1,3 +1,3 @@
-import MessageLog from "./MessageLog";
+import MessageLog from './MessageLog';
 
 export default MessageLog;
