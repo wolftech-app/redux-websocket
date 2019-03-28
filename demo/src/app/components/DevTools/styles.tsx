@@ -120,8 +120,9 @@ export default styled.div`
     }
   }
 
-  // Lots of the styles for DOM elements inside this selector.
+  // Lots of the styles for DOM elements inside this selector are inline.
   // No idea why somebody would do something like that... lazyness?
+  // Why is it different than the rest of the DOM nodes?
   [class|="actionPreviewContent"] {
     label {
       color: ${Colors.ASTEROID_BELT} !important;
