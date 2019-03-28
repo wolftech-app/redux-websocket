@@ -15,8 +15,6 @@ import {
   MetaType,
 } from './styles';
 
-import '../../styles/vendor/prism.scss';
-
 interface Props {
   messages: MessageState[];
 }
@@ -117,7 +115,7 @@ export default class MessageLog extends React.Component<Props, State> {
           </MetaContainer>
 
           <MessageContainer type={type}>
-            <MessageContents>
+            <MessageContents type={type}>
               <code className="language-js">
                 {JSON.stringify(data, null, 2)}
               </code>

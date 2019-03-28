@@ -58,8 +58,8 @@ export const Panel = styled.div`
 export const PanelHeader = styled.p`
   ${Typography.TypeStyleSirius};
   color: ${Colors.SUN};
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 export const ControlPanel = styled(Panel)`

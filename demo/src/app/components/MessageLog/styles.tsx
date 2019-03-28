@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { rgba } from 'polished';
 
 import Colors from '../../styles/js/colors';
 import * as Typography from '../../styles/js/typography';
@@ -27,19 +28,28 @@ export const AutoScrollLabel = styled.label`
   position: absolute;
 `;
 
-export const Message = styled.div`
-  margin-bottom: 10px;
-`;
+export const Message = styled.div``;
 
 export const MetaContainer = styled.div<MessageLogContainerProps>`
-  color: #dddddd;
-  font-size: 12px;
+  padding-bottom: 8px;
+  padding-top: 8px;
   text-align: ${({ type }) => (type === 'OUTGOING' ? 'left' : 'right')};
-  ${({ type }) => (
-    type === 'OUTGOING'
-      ? 'border-left: 2px solid #ffce94;'
-      : 'border-right: 2px solid #f194ff;'
-  )}
+
+  ${({ type }) => {
+    if (type === 'OUTGOING') {
+      return `
+        padding-left: 18px;
+        text-align: left;
+        border-left: 2px solid #ffce94;
+      `;
+    }
+
+    return `
+      padding-right: 20px;
+      text-align: right;
+      border-right: 2px solid #f194ff;
+    `;
+  }}
 `;
 
 export const MetaData = styled.div`
@@ -52,19 +62,60 @@ export const MetaType = styled(MetaData)`
 `;
 
 export const MessageContainer = styled.div<MessageLogContainerProps>`
-  border-right: ${props => (props.type === 'INCOMING' ? '5px solid red' : null)};
-  border-left: ${props => (props.type === 'OUTGOING' ? '5px solid blue' : null)};
   display: flex;
-  justify-content: ${props => (props.type === 'OUTGOING' ? 'flex-start' : 'flex-end')};
-  ${({ type }) => (
-    type === 'OUTGOING'
-      ? 'border-left: 2px solid #ff8b00;'
-      : 'border-right: 2px solid #de00ff;'
-  )}
+
+  ${({ type }) => {
+    if (type === 'OUTGOING') {
+      return `
+        border-left: 2px solid #ff8b00;
+      `;
+    }
+
+    return `
+      border-right: 2px solid #de00ff;
+    `;
+  }}
 `;
 
-export const MessageContents = styled.pre`
-  font-size: 12px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+export const MessageContents = styled.pre<MessageLogContainerProps>`
+  // Because styled-components injects their tag first in the <head>, we need
+  // this techique to override some of the prism styles.
+  // See: https://www.styled-components.com/docs/faqs#how-can-i-override-styles-with-higher-specificity
+  && {
+    font-size: 12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding: 10px 18px;
+    margin: 0;
+    background-color: ${rgba(Colors.SUN, 0.02)};
+    width: 100%;
+    display: flex;
+
+    .token {
+      text-shadow: none;
+      font-weight: 700;
+
+      &.string {
+        color: ${Colors.KUIPER_BELT};
+      }
+
+      &.punctuation {
+        color: ${Colors.JUPITER};
+      }
+
+      &.number {
+        color: ${Colors.COMET};
+      }
+    }
+  }
+
+  ${({ type }) => {
+    if (type === 'INCOMING') {
+      return `
+        justify-content: flex-end !important;
+      `;
+    }
+
+    return null;
+  }}
 `;
