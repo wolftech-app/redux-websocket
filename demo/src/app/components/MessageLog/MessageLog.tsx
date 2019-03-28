@@ -135,6 +135,13 @@ export default class MessageLog extends React.Component<Props, State> {
 
     return (
       <MessageLogWrapper>
+        <MessageLogContainer
+          ref={this.containerRef}
+          onScroll={this.handleScroll}
+        >
+          {this.renderMessages(messages)}
+        </MessageLogContainer>
+
         <AutoScrollLabel htmlFor="auto-scroll">
           <AutoScrollCheckBox
             id="auto-scroll"
@@ -144,13 +151,6 @@ export default class MessageLog extends React.Component<Props, State> {
           />
           Auto scroll
         </AutoScrollLabel>
-
-        <MessageLogContainer
-          ref={this.containerRef}
-          onScroll={this.handleScroll}
-        >
-          {this.renderMessages(messages)}
-        </MessageLogContainer>
       </MessageLogWrapper>
     );
   }

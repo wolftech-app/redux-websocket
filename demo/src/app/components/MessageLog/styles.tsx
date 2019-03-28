@@ -9,7 +9,10 @@ interface MessageLogContainerProps {
 }
 
 export const MessageLogWrapper = styled.div`
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
   position: relative;
 `;
 
@@ -22,10 +25,17 @@ export const MessageLogContainer = styled.div`
 export const AutoScrollCheckBox = styled.input``;
 
 export const AutoScrollLabel = styled.label`
-  background-color: #fff;
-  bottom: 10px;
-  left: 10px;
-  position: absolute;
+  ${Typography.TypeStyleProcyon};
+  background-color: ${Colors.NEPTUNE};
+  color: ${Colors.VACUUM};
+  flex: 0 0;
+  font-size: 12px;
+  padding: 10px 20px 30px;
+  width: 100%;
+
+  input {
+    margin-right: 5px;
+  }
 `;
 
 export const Message = styled.div``;

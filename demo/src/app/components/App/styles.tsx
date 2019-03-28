@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as Typography from '../../styles/js/typography';
 import Colors from '../../styles/js/colors';
 import media from '../../styles/js/media';
+import { MessageLogWrapper } from '../MessageLog/styles';
 
 export const AppWrapper = styled.div`
   background-color: ${Colors.SATURN};
@@ -69,6 +70,13 @@ export const ControlPanel = styled(Panel)`
 
 export const MessageLogPanel = styled(Panel)`
   background-color: ${Colors.NEPTUNE};
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  ${PanelHeader} {
+    flex: 0 0;
+  }
 `;
 
 export const DevToolsPanel = styled(Panel)`
