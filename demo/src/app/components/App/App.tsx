@@ -6,35 +6,49 @@ import MessagesContainer from '../../containers/MessagesContainer';
 
 import {
   AppWrapper,
+  ControlPanel,
   DevToolsPanel,
-  Title,
-  Panel,
-  PanelContainer,
-  PanelGroup,
   Header,
   Link,
+  MessageLogPanel,
+  PanelContainer,
+  PanelGroup,
+  PanelHeader,
+  Title,
 } from './styles';
 
 const App = () => (
   <AppWrapper>
-    <Header>
-      <Title>redux-websocket</Title>
-
-      <Link href={'https://github.com/giantmachines/redux-websocket'} target="_blank">Github</Link>
-    </Header>
-
     <PanelContainer>
       <PanelGroup>
-        <Panel>
-          <ControlsContainer />
-        </Panel>
+        <ControlPanel>
+          <Header>
+            <Title>redux-websocket</Title>
 
-        <Panel>
+            <Link href="https://github.com/giantmachines/redux-websocket" target="_blank">Github</Link>
+          </Header>
+
+          <PanelHeader>
+            Control Panel
+          </PanelHeader>
+
+          <ControlsContainer />
+        </ControlPanel>
+
+        <MessageLogPanel>
+          <PanelHeader>
+            Message Log
+          </PanelHeader>
+
           <MessagesContainer />
-        </Panel>
+        </MessageLogPanel>
       </PanelGroup>
 
       <DevToolsPanel>
+        <PanelHeader>
+          Redux Log
+        </PanelHeader>
+
         <DevTools />
       </DevToolsPanel>
     </PanelContainer>

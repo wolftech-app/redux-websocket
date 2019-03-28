@@ -1,7 +1,11 @@
 import styled from 'styled-components';
+
+import * as Typography from '../../styles/js/typography';
+import Colors from '../../styles/js/colors';
 import media from '../../styles/js/media';
 
 export const AppWrapper = styled.div`
+  background-color: ${Colors.SATURN};
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -10,16 +14,16 @@ export const AppWrapper = styled.div`
 `;
 
 export const Header = styled.header`
+  border-bottom: 2px solid black;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  border-bottom: 2px solid black;
   padding: 10px;
+  width: 100%;
 `;
 
 export const Link = styled.a`
-  text-decoration: none;
   color: blue;
+  text-decoration: none;
 
   &:vistited {
     color: blue;
@@ -40,27 +44,38 @@ export const PanelContainer = styled.div`
 `;
 
 export const PanelGroup = styled.div`
-  border-right: 2px solid black;
   display: flex;
   flex: 1;
   flex-basis: 33.333%;
-
-  ${media.desktop`
-    border-bottom: 2px solid black;
-    border-right: none;
-  `}
 `;
 
 export const Panel = styled.div`
   flex: 1;
   overflow: auto;
+  padding: 114px 0 0 0;
+`;
 
-  &:not(:last-child) {
-    border-right: 2px solid black;
-  }
+export const PanelHeader = styled.p`
+  ${Typography.TypeStyleSirius};
+  color: ${Colors.SUN};
+  padding-left: 15px;
+  padding-right: 15px;
+`;
+
+export const ControlPanel = styled(Panel)`
+  background-color: ${Colors.URANUS};
+  padding-top: 0;
+`;
+
+export const MessageLogPanel = styled(Panel)`
+  background-color: ${Colors.NEPTUNE};
 `;
 
 export const DevToolsPanel = styled(Panel)`
+  background-color: ${Colors.PLUTO};
+  border-left: 2px solid ${Colors.NEBULA};
+  display: flex;
+  flex-direction: column;
   max-width: 500px;
 
   ${media.desktop`
