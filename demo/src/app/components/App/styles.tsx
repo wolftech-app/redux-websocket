@@ -1,28 +1,29 @@
 import styled from 'styled-components';
 
+import * as Typography from '../../styles/js/typography';
+import Colors from '../../styles/js/colors';
 import media from '../../styles/js/media';
-import { sansSerif } from '../../styles/js/typography';
 
 export const AppWrapper = styled.div`
+  background-color: ${Colors.SATURN};
   display: flex;
   flex-direction: column;
   height: 100%;
   margin: 0 auto;
   max-width: 1920px;
-  background-color: #212f3f;
 `;
 
 export const Header = styled.header`
+  border-bottom: 2px solid black;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  border-bottom: 2px solid black;
   padding: 10px;
+  width: 100%;
 `;
 
 export const Link = styled.a`
-  text-decoration: none;
   color: blue;
+  text-decoration: none;
 
   &:vistited {
     color: blue;
@@ -55,30 +56,27 @@ export const Panel = styled.div`
 `;
 
 export const PanelHeader = styled.p`
-  font-family: ${sansSerif};
-  color: #fff;
-  font-size: 20px;
+  ${Typography.TypeStyleSirius};
+  color: ${Colors.SUN};
   padding-left: 15px;
   padding-right: 15px;
 `;
 
 export const ControlPanel = styled(Panel)`
-  background-color: #354353;
+  background-color: ${Colors.URANUS};
   padding-top: 0;
 `;
 
 export const MessageLogPanel = styled(Panel)`
-  background-color: #1d252f;
+  background-color: ${Colors.NEPTUNE};
 `;
 
 export const DevToolsPanel = styled(Panel)`
-  background-color: #171e26;
-  border-left: 2px solid #212f3f;
+  background-color: ${Colors.PLUTO};
+  border-left: 2px solid ${Colors.NEBULA};
   display: flex;
   flex-direction: column;
   max-width: 500px;
-  // padding: 0;
-  // padding-top: 114px;
 
   ${media.desktop`
     max-width: 100%;

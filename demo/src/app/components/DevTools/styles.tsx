@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { lighten, rgba } from 'polished';
 
-import { mono, sansSerif } from '../../styles/js/typography';
+import * as Typography from '../../styles/js/typography';
+import Colors from '../../styles/js/colors';
 
 export default styled.div`
   flex: 1;
@@ -19,13 +20,13 @@ export default styled.div`
 
   [class|="actionListHeader"] {
     border: 0;
-    background-color: #14191f;
+    background-color: ${Colors.MOON};
     margin-bottom: 10px;
   }
 
   [class|="actionListHeaderSearch"] {
     background-color: transparent;
-    color: #fff;
+    color: ${Colors.SUN};
     padding-left: 20px;
     padding-right: 20px;
   }
@@ -35,10 +36,9 @@ export default styled.div`
   }
 
   [class|="actionListItem"] {
+    ${Typography.TypeStyleProcyon};
     border: 0;
-    color: #b0b0b0;
-    font-family: ${mono};
-    font-size: 14px;
+    color: ${Colors.MERCURY};
     padding-left: 20px;
     padding-right: 20px;
   }
@@ -49,10 +49,9 @@ export default styled.div`
       transform: none !important;
 
       & > div {
+        ${Typography.TypeStyleDeneb};
         background-color: transparent;
-        font-size: 10px;
-        font-family: ${mono};
-        color: #b0b0b0;
+        color: ${Colors.MERCURY};
       }
 
       &:nth-child(2) {
@@ -75,7 +74,7 @@ export default styled.div`
 
   [class|="previewHeader"] {
     align-items: center;
-    background-color: ${rgba('#fff', 0.05)};
+    background-color: ${rgba(Colors.SUN, 0.05)};
     border: 0;
     display: flex;
     flex-basis: auto;
@@ -84,8 +83,7 @@ export default styled.div`
   }
 
   [class|="inspectedPath"] {
-    font-family: ${sansSerif};
-    font-size: 15px;
+    ${Typography.TypeStyleCanopus};
     order: 0;
     padding: 0;
   }
@@ -95,19 +93,17 @@ export default styled.div`
   }
 
   [class|="selectorButton"] {
-    background-color: #384656;
+    ${Typography.TypeStyleArcturus};
+    background-color: ${Colors.VENUS};
     border: 0;
-    color: #212b37;
-    font-family: ${sansSerif};
-    font-size: 12px;
-    font-weight: 500;
+    color: ${Colors.EARTH};
     margin-left: 1px;
     text-transform: uppercase;
     transition-property: background-color, color;
     transition: 0.1s ease-in-out;
 
     &:hover {
-      background-color: ${lighten(0.02, '#384656')};
+      background-color: ${lighten(0.02, Colors.VENUS)};
     }
 
     &:first-child {
@@ -116,11 +112,11 @@ export default styled.div`
   }
 
   [class*="selectorButtonSelected"] {
-    color: #fff;
-    background-color: #455d7a;
+    color: ${Colors.SUN};
+    background-color: ${Colors.MARS};
 
     &:hover {
-      background-color: ${lighten(0.02, '#455d7a')};
+      background-color: ${lighten(0.02, Colors.MARS)};
     }
   }
 
@@ -128,10 +124,10 @@ export default styled.div`
   // No idea why somebody would do something like that... lazyness?
   [class|="actionPreviewContent"] {
     label {
-      color: #4a90e2 !important;
+      color: ${Colors.ASTEROID_BELT} !important;
 
       & + span {
-        color: #7ea356 !important;
+        color: ${Colors.OORT_CLOUD} !important;
       }
     }
 
@@ -146,17 +142,17 @@ export default styled.div`
         transform: translateY(-3px);
 
         div {
-          color: #4a90e2 !important;
+          color: ${Colors.ASTEROID_BELT} !important;
         }
       }
 
       & > ul div div {
-        color: #4a90e2 !important;
+        color: ${Colors.ASTEROID_BELT} !important;
       }
     }
   }
 
   [class|="treeItemPin"] {
-    color: #727272;
+    color: ${Colors.JUPITER};
   }
 `;
