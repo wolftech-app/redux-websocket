@@ -4,11 +4,12 @@ import { Container, StatusBubble, StatusText } from './styles';
 
 interface Props {
   active: boolean;
+  className?: string;
   text: string;
 }
 
-const StatusIndicator = ({ active, text }: Props) => (
-  <Container>
+const StatusIndicator = ({ active, className, text }: Props) => (
+  <Container className={className}>
     <StatusBubble active={active} />
 
     <StatusText active={active}>

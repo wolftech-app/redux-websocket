@@ -27,6 +27,7 @@ enum Colors {
   PUCK = '#85ff00',
   JULIET = '#4c5661',
   CUPID = '#656F7A',
+  NIX = '#b5b5b5',
 }
 
 export default Colors;

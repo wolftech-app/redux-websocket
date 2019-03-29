@@ -7,18 +7,18 @@ interface StatusBubbleProps {
 }
 
 export const Container = styled.div`
-  margin-top: 10px;
   display: flex;
   align-items: center;
 `;
 
 export const StatusBubble = styled.div<StatusBubbleProps>`
-  width: 23px;
-  height: 23px;
   border: 2px solid ${Colors.QUARK};
   border-radius: 50%;
   background: ${({ active }) => (active ? Colors.PUCK : Colors.PROSPERO)};
-  box-shadow: inset 0px 0px 0 3px ${Colors.JULIET};
+  box-shadow: inset 0 0 0 3px ${Colors.JULIET};
+  flex-shrink: 0;
+  height: 23px;
+  width: 23px;
 `;
 
 export const StatusText = styled.span<StatusBubbleProps>`

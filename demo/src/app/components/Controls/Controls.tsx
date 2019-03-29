@@ -1,16 +1,21 @@
 import * as React from 'react';
 import Button from '../Button';
 import DropDown from '../DropDown';
-import Label from '../Label';
-import StatusIndicator from '../StatusIndicator';
 
 import exampleMessages from './exampleMessages';
 
 import {
+  ConnectedStatusIndicator,
+  ConnectButton,
   Container,
-  InputGroup,
+  DisconnectButton,
+  DisconnectedStatusIndicator,
   Input,
+  InputGroup,
+  Label,
   TextArea,
+  SimulateDisconnectButton,
+  StatusContents,
 } from './styles';
 
 interface Props {
@@ -73,39 +78,52 @@ class Controls extends React.Component<Props, State> {
     return (
       <Container>
         <InputGroup>
-          <Input
-            type="text"
-            placeholder="Input server URL here…"
-            onChange={this.handleUrlChange}
-            value={webSocketUrl}
-          />
-
-          <Button
-            disabled={connected}
-            onClick={() => connect(webSocketUrl)}
-          >
-            Connect
-          </Button>
-
-          <Button
-            disabled={!connected}
-            onClick={disconnect}
-          >
-            Disconnect
-          </Button>
-          <StatusIndicator
-            active={connected}
-            text="Connected"
-          />
-          <StatusIndicator
-            active={!connected}
-            text="Disconnected"
-          />
+          <Label>
+            Server
+            <Input
+              type="text"
+              placeholder="Input server URL here…"
+              onChange={this.handleUrlChange}
+              value={webSocketUrl}
+            />
+          </Label>
         </InputGroup>
 
         <InputGroup>
-          <Label text="Example Messages" />
+          <Label>Status</Label>
 
+          <StatusContents>
+            <ConnectedStatusIndicator
+              active={connected}
+              text="Connected"
+            />
+
+            <DisconnectedStatusIndicator
+              active={!connected}
+              text="Disconnected"
+            />
+
+            <ConnectButton
+              disabled={connected}
+              onClick={() => connect(webSocketUrl)}
+            >
+              Connect
+            </ConnectButton>
+
+            <DisconnectButton
+              disabled={!connected}
+              onClick={disconnect}
+            >
+              Disconnect
+            </DisconnectButton>
+
+            <SimulateDisconnectButton onClick={() => alert('Not implemented yet!')}>
+              Simulate Disconnect
+            </SimulateDisconnectButton>
+          </StatusContents>
+        </InputGroup>
+
+        <InputGroup>
           <DropDown
             options={exampleMessages}
             onChange={this.handleExampleMessageChange}
