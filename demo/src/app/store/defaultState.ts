@@ -3,7 +3,7 @@ export interface MessageState {
   data: string | object;
   origin: string;
   timestamp: Date;
-  type: string;
+  type: 'OUTGOING' | 'INCOMING';
 }
 
 export interface State {

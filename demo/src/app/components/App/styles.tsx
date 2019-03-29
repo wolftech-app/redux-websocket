@@ -58,8 +58,8 @@ export const Panel = styled.div`
 export const PanelHeader = styled.p`
   ${Typography.TypeStyleSirius};
   color: ${Colors.SUN};
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 export const ControlPanel = styled(Panel)`
@@ -69,6 +69,13 @@ export const ControlPanel = styled(Panel)`
 
 export const MessageLogPanel = styled(Panel)`
   background-color: ${Colors.NEPTUNE};
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  ${PanelHeader} {
+    flex: 0 0;
+  }
 `;
 
 export const DevToolsPanel = styled(Panel)`
