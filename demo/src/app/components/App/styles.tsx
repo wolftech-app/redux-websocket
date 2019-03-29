@@ -13,6 +13,26 @@ export const AppWrapper = styled.div`
   max-width: 1920px;
 `;
 
+export const Badge = styled.span`
+  ${Typography.TypeFamilySansSerif}
+  background-color: ${Colors.NEPTUNE};
+  border-radius: 10px;
+  color: ${Colors.SUN};
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 20px;
+  padding: 0 15px;
+`;
+
+export const LinkContainer = styled.div`
+  align-items: center;
+  display: flex;
+
+  & > * {
+    margin-right: 15px;
+  }
+`;
+
 export const Header = styled.header`
   align-items: flex-start;
   display: flex;
@@ -20,6 +40,10 @@ export const Header = styled.header`
   flex-shrink: 0;
   padding: 30px 20px;
   width: 100%;
+
+  ${media.desktop`
+    padding: 20px;
+  `}
 `;
 
 export const Link = styled.a`
@@ -52,12 +76,20 @@ export const PanelGroup = styled.div`
   display: flex;
   flex: 1;
   flex-basis: 33.333%;
+
+  ${media.desktop`
+    flex-basis: 60%;
+  `}
 `;
 
 export const Panel = styled.div`
   flex: 1;
   overflow: auto;
   padding: 114px 0 0 0;
+
+  ${media.desktop`
+    padding: 0;
+  `}
 `;
 
 export const PanelHeader = styled.p`
@@ -88,6 +120,7 @@ export const DevToolsPanel = styled(Panel)`
   max-width: 500px;
 
   ${media.desktop`
+    flex-basis: 40%;
     max-width: 100%;
   `}
 `;
