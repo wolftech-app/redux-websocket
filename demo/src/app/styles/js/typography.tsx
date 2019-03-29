@@ -37,3 +37,9 @@ export const TypeStyleTriton = `
   font-weight: 400;
   line-height: 25px;
 `;
+
+export const TypeStyleEridanus = `
+  ${TypeFamilyMono};
+  font-size: 9px;
+  font-weight: 700;
+`;

@@ -5,16 +5,15 @@ import { MessageState } from '../../store/defaultState';
 import {
   AutoScrollCheckBox,
   AutoScrollLabel,
-  Container,
   Message,
   MessageContainer,
+  MessageContents,
   MessageLogContainer,
   MessageLogWrapper,
-  MetaData,
   MetaContainer,
+  MetaData,
+  MetaType,
 } from './styles';
-
-import '../../styles/vendor/prism.scss';
 
 interface Props {
   messages: MessageState[];
@@ -22,6 +21,7 @@ interface Props {
 
 interface State {
   autoScroll: boolean;
+  isHovered: boolean
 }
 
 /**
@@ -33,11 +33,12 @@ export default class MessageLog extends React.Component<Props, State> {
   /**
    * Constructor
    */
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       autoScroll: true,
+      isHovered: false,
     };
   }
 
@@ -59,7 +60,11 @@ export default class MessageLog extends React.Component<Props, State> {
     }
 
     if (snapshot && snapshot.autoScroll) {
-      container.scrollTop = container.scrollHeight;
+      // Help prevent a little bit of flickering.
+      // TODO (brianmcallister) - Debounce this?
+      setTimeout(() => {
+        container.scrollTop = container.scrollHeight;
+      }, 100);
     }
   }
 
@@ -86,6 +91,16 @@ export default class MessageLog extends React.Component<Props, State> {
    * @param event
    */
   handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    // Only handle scroll events when the user is causing the scroll event
+    // with the mouse. This prevents the smooth scroll behavior, which is
+    // triggered by a button click in another element, from causing autoScroll
+    // to get set to false.
+    const { isHovered } = this.state;
+
+    if (!isHovered) {
+      return;
+    }
+
     const container = event.currentTarget;
     const { scrollTop, scrollHeight, offsetHeight } = container;
     const isScrolledToBottom = scrollTop === scrollHeight - offsetHeight;
@@ -108,20 +123,21 @@ export default class MessageLog extends React.Component<Props, State> {
       } = message;
 
       return (
-        <Container key={timestamp.getTime()}>
-          <MetaContainer>
+        <Message key={timestamp.getTime()}>
+          <MetaContainer type={type}>
+            <MetaType>{type}</MetaType>
             <MetaData>{origin}</MetaData>
             <MetaData>{timestamp.toISOString()}</MetaData>
           </MetaContainer>
 
           <MessageContainer type={type}>
-            <Message>
+            <MessageContents type={type}>
               <code className="language-js">
                 {JSON.stringify(data, null, 2)}
               </code>
-            </Message>
+            </MessageContents>
           </MessageContainer>
-        </Container>
+        </Message>
       );
     })
   )
@@ -135,6 +151,17 @@ export default class MessageLog extends React.Component<Props, State> {
 
     return (
       <MessageLogWrapper>
+        <MessageLogContainer
+          ref={this.containerRef}
+          onScroll={this.handleScroll}
+          onMouseOver={() => this.setState({ isHovered: true })}
+          onMouseOut={() => this.setState({ isHovered: false })}
+          onFocus={() => {}}
+          onBlur={() => {}}
+        >
+          {this.renderMessages(messages)}
+        </MessageLogContainer>
+
         <AutoScrollLabel htmlFor="auto-scroll">
           <AutoScrollCheckBox
             id="auto-scroll"
@@ -144,13 +171,6 @@ export default class MessageLog extends React.Component<Props, State> {
           />
           Auto scroll
         </AutoScrollLabel>
-
-        <MessageLogContainer
-          ref={this.containerRef}
-          onScroll={this.handleScroll}
-        >
-          {this.renderMessages(messages)}
-        </MessageLogContainer>
       </MessageLogWrapper>
     );
   }
