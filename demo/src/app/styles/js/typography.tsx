@@ -30,3 +30,10 @@ export const TypeStyleDeneb = `
   ${TypeFamilyMono};
   font-size: 10px;
 `;
+
+export const TypeStyleTriton = `
+  ${TypeFamilySansSerif};
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 25px;
+`;

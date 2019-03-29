@@ -14,24 +14,29 @@ export const AppWrapper = styled.div`
 `;
 
 export const Header = styled.header`
-  border-bottom: 2px solid black;
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  flex-shrink: 0;
+  padding: 30px 20px;
   width: 100%;
 `;
 
 export const Link = styled.a`
-  color: blue;
+  ${Typography.TypeStyleArcturus}
+  color: ${Colors.SUN};
+  line-height: 18px;
   text-decoration: none;
 
   &:vistited {
-    color: blue;
+    color: ${Colors.SUN};
   }
 `;
 
 export const Title = styled.h1`
-  margin: 0 0 5px 0;
+  ${Typography.TypeStyleTriton}
+  color: ${Colors.SUN};
+  margin: 0 0 10px 0;
 `;
 
 export const PanelContainer = styled.div`
@@ -64,6 +69,10 @@ export const PanelHeader = styled.p`
 
 export const ControlPanel = styled(Panel)`
   background-color: ${Colors.URANUS};
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  overflow: hidden;
   padding-top: 0;
 `;
 

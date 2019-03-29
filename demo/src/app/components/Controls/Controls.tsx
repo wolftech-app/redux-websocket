@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Button from '../Button';
-import DropDown from '../DropDown';
 
 import exampleMessages from './exampleMessages';
 
@@ -10,6 +9,7 @@ import {
   Container,
   DisconnectButton,
   DisconnectedStatusIndicator,
+  ExampleMessageDropDown,
   Input,
   InputGroup,
   Label,
@@ -124,11 +124,13 @@ class Controls extends React.Component<Props, State> {
         </InputGroup>
 
         <InputGroup>
-          <DropDown
-            options={exampleMessages}
-            onChange={this.handleExampleMessageChange}
-            placeholder="Testing"
-          />
+          <Label>
+            Example Messages
+            <ExampleMessageDropDown
+              options={exampleMessages}
+              onChange={this.handleExampleMessageChange}
+            />
+          </Label>
         </InputGroup>
 
         <InputGroup>

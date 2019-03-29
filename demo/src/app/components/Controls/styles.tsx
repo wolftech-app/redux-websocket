@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components';
 import Colors from '../../styles/js/colors';
 import * as Typography from '../../styles/js/typography';
-import StatusIndicator from '../StatusIndicator';
 import Button from '../Button';
+import DropDown from '../DropDown';
+import StatusIndicator from '../StatusIndicator';
 
 const sharedInputStyles = css`
   ${Typography.TypeStyleArcturus}
@@ -19,7 +20,13 @@ const sharedInputStyles = css`
 `;
 
 export const Container = styled.div`
+  flex: 1;
+  overflow: auto;
   padding: 20px;
+`;
+
+export const ExampleMessageDropDown = styled(DropDown)`
+  margin-top: 5px;
 `;
 
 export const TextArea = styled.textarea`
@@ -51,7 +58,7 @@ export const Label = styled.label`
 export const StatusContents = styled.div`
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, auto);
   grid-template-rows: auto auto;
   grid-template-areas:
     'a a b c'

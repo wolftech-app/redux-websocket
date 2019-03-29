@@ -23,9 +23,11 @@ const App = () => (
       <PanelGroup>
         <ControlPanel>
           <Header>
-            <Title>redux-websocket</Title>
+            <Title>@giantmachines/redux-websocket</Title>
 
-            <Link href="https://github.com/giantmachines/redux-websocket" target="_blank">Github</Link>
+            <Link href="https://github.com/giantmachines/redux-websocket" target="_blank">
+              GitHub
+            </Link>
           </Header>
 
           <PanelHeader>
