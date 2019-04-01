@@ -6,7 +6,7 @@ import DropDown from '../DropDown';
 import StatusIndicator from '../StatusIndicator';
 
 const sharedInputStyles = css`
-  ${Typography.TypeStyleArcturus}
+  ${Typography.TypeStyleStark}
   background-color: ${Colors.NEPTUNE};
   border: none;
   border-radius: 3px;

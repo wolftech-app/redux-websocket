@@ -101,6 +101,7 @@ class Controls extends React.Component<Props, State> {
             <DisconnectedStatusIndicator
               active={!connected}
               text="Disconnected"
+              type="WARN"
             />
 
             <ConnectButton

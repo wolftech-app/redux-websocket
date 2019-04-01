@@ -3,7 +3,7 @@ import Colors from '../../styles/js/colors';
 import * as Typography from '../../styles/js/typography';
 
 export const Select = styled.select`
-  ${Typography.TypeStyleArcturus}
+  ${Typography.TypeStyleStark}
   background-color: ${Colors.NEPTUNE};
   border: none;
   color: ${Colors.SUN};

@@ -14,7 +14,7 @@ export const AppWrapper = styled.div`
 `;
 
 export const Badge = styled.span`
-  ${Typography.TypeFamilySansSerif}
+  ${Typography.TypeFamilyMono}
   background-color: ${Colors.NEPTUNE};
   border-radius: 10px;
   color: ${Colors.SUN};

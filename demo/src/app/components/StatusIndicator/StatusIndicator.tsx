@@ -6,13 +6,19 @@ interface Props {
   active: boolean;
   className?: string;
   text: string;
+  type?: 'INFO' | 'WARN';
 }
 
-const StatusIndicator = ({ active, className, text }: Props) => (
+const StatusIndicator = ({
+  active,
+  className,
+  text,
+  type = 'INFO',
+}: Props) => (
   <Container className={className}>
-    <StatusBubble active={active} />
+    <StatusBubble active={active} type={type} />
 
-    <StatusText active={active}>
+    <StatusText active={active} type={type}>
       {text}
     </StatusText>
   </Container>

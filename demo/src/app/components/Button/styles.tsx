@@ -13,7 +13,7 @@ export default styled.button`
   color: ${Colors.SUN};
   display: block;
   outline: none;
-  padding: 5px;
+  padding: 5px 15px;
   text-transform: uppercase;
 
   &:hover {
