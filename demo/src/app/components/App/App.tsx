@@ -21,6 +21,8 @@ import {
 
 const { REDUX_WEBSOCKET_VERSION } = process.env;
 
+const Icon = () => (<svg width="9" height="9" xmlns="http://www.w3.org/2000/svg"><path d="M5 0v1H1v7h7V4h1v5H0V0h5zm1 0h3v3L8 2 4 6 3 5l4-4-1-1z" fill="#D8D8D8" fillRule="nonzero"/></svg>);
+
 const App = () => (
   <AppWrapper>
     <PanelContainer>
@@ -36,10 +38,14 @@ const App = () => (
 
               <Link href="https://github.com/giantmachines/redux-websocket" target="_blank">
                 GitHub
+
+                <Icon />
               </Link>
 
               <Link href="https://www.npmjs.com/package/@giantmachines/redux-websocket" target="_blank">
                 npm
+
+                <Icon />
               </Link>
             </LinkContainer>
           </Header>

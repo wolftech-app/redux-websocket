@@ -56,6 +56,14 @@ export const Link = styled.a`
   &:vistited {
     color: ${Colors.SUN};
   }
+
+  svg {
+    margin-left: 5px;
+  }
+
+  path {
+    fill: ${Colors.MARS};
+  }
 `;
 
 export const Title = styled.h1`
