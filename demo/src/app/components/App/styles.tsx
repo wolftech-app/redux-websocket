@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { rgba } from 'polished';
 
 import * as Typography from '../../styles/js/typography';
 import Colors from '../../styles/js/colors';
@@ -15,7 +16,7 @@ export const AppWrapper = styled.div`
 
 export const Badge = styled.span`
   ${Typography.TypeFamilyMono}
-  background-color: ${Colors.NEPTUNE};
+  background-color: ${rgba('#000', 0.22)};
   border-radius: 10px;
   color: ${Colors.SUN};
   font-size: 11px;
