@@ -50,7 +50,7 @@ export const InputGroup = styled.div`
 `;
 
 export const Label = styled.label`
-  ${Typography.TypeStyleArcturus};
+  ${Typography.TypeStyleDeneb};
   color: ${Colors.NIX};
   text-transform: uppercase;
 `;
