@@ -106,6 +106,10 @@ export const ControlPanel = styled(Panel)`
   max-width: 500px;
   overflow: hidden;
   padding-top: 0;
+
+  ${PanelHeader} {
+    margin: 19px 0 11px;
+  }
 `;
 
 export const MessageLogPanel = styled(Panel)`
