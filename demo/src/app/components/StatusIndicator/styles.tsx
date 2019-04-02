@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import Colors from '../../styles/js/colors';
 import * as Typography from '../../styles/js/typography';
@@ -7,11 +7,6 @@ interface StatusStyleProps {
   active: boolean;
   type: 'INFO' | 'WARN';
 }
-
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
 const getColorActiveType = ({ active, type }) => {
   switch (type) {
@@ -24,6 +19,29 @@ const getColorActiveType = ({ active, type }) => {
   }
 };
 
+const getAnimation = (type: string, color: string) => keyframes`
+  0% { ${type}: ${Colors.PROSPERO}; }
+  10% { ${type}: ${color}; }
+  20% { ${type}: ${Colors.PROSPERO}; }
+
+  60% { ${type}: ${color}; }
+  80% { ${type}: ${Colors.PROSPERO}; }
+  100% { ${type}: ${color}; }
+`;
+
+const animateBackground = (color: string) => css`
+  animation: ${getAnimation('background-color', color)} 0.7s step-start;
+`;
+
+const animateColor = (color: string) => css`
+  animation: ${getAnimation('color', color)} 0.7s step-start;
+`;
+
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const StatusBubble = styled.div<StatusStyleProps>`
   background-color: ${getColorActiveType};
   border-radius: 50%;
@@ -33,6 +51,7 @@ export const StatusBubble = styled.div<StatusStyleProps>`
   margin: 4px;
   position: relative;
   width: 15px;
+  ${props => (props.active ? animateBackground(getColorActiveType(props)) : null)}
 `;
 
 export const StatusText = styled.span<StatusStyleProps>`
@@ -42,4 +61,5 @@ export const StatusText = styled.span<StatusStyleProps>`
   font-size: 16px;
   font-style: ${({ type }) => (type === 'WARN' ? 'italic' : 'normal')};
   font-weight: ${({ type }) => (type === 'WARN' ? '500' : '400')};
+  ${props => (props.active ? animateColor(getColorActiveType(props)) : null)}
 `;
