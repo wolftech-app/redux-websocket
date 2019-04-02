@@ -12,7 +12,7 @@ enum Colors {
   SATURN = '#212f3f',
   URANUS = '#354353',
   NEPTUNE = '#1d252f',
-  KUIPER_BELT = '#85ff00',
+  KUIPER_BELT = '#ff0000',
   PLUTO = '#171e26',
   NEBULA = '#212f3f',
   // NEBULA_HOVER = '#A8A7FF',

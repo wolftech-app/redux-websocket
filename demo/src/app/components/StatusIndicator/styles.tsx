@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import Colors from '../../styles/js/colors';
 import * as Typography from '../../styles/js/typography';
 
@@ -12,51 +13,33 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-/* eslint-disable indent */
-export const StatusBubble = styled.div<StatusStyleProps>`
-  background-color: ${Colors.JULIET};
-  border: 2px solid ${Colors.QUARK};
-  border-radius: 50%;
-  flex-shrink: 0;
-  height: 24px;
-  position: relative;
-  width: 24px;
-
-  &::after {
-    background-color: ${({ active, type }) => {
-      switch (type) {
-        case 'INFO':
-          return active ? Colors.PUCK : Colors.PROSPERO;
-        case 'WARN':
-          return active ? Colors.COMET : Colors.PROSPERO;
-        default:
-          return Colors.PROSPERO;
-      }
-    }};
-    border-radius: 50%;
-    content: '';
-    height: 16px;
-    left: 2px;
-    position: absolute;
-    top: 2px;
-    width: 16px;
+const getColorActiveType = ({ active, type }) => {
+  switch (type) {
+    case 'INFO':
+      return active ? Colors.PUCK : Colors.PROSPERO;
+    case 'WARN':
+      return active ? Colors.KUIPER_BELT : Colors.PROSPERO;
+    default:
+      return Colors.PROSPERO;
   }
+};
+
+export const StatusBubble = styled.div<StatusStyleProps>`
+  background-color: ${getColorActiveType};
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #505F6D, 0 0 0 6px #2F3F4F;
+  flex-shrink: 0;
+  height: 15px;
+  margin: 4px;
+  position: relative;
+  width: 15px;
 `;
-/* eslint-enable indent */
 
 export const StatusText = styled.span<StatusStyleProps>`
   ${Typography.TypeStyleCanopus}
-  color: ${({ active, type }) => {
-    switch (type) {
-      case 'INFO':
-        return active ? Colors.PUCK : Colors.PROSPERO;
-      case 'WARN':
-        return active ? Colors.COMET : Colors.PROSPERO;
-      default:
-        return Colors.PROSPERO;
-    }
-  }};
+  color: ${getColorActiveType};
   margin-left: 5px;
   font-size: 16px;
   font-style: ${({ type }) => (type === 'WARN' ? 'italic' : 'normal')};
+  font-weight: ${({ type }) => (type === 'WARN' ? '500' : '400')};
 `;
