@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import Button from '../Button';
 import ControlsContainer from '../../containers/ControlsContainer';
 import DevTools from '../DevTools/DevTools';
 import MessagesContainer from '../../containers/MessagesContainer';
@@ -27,7 +28,11 @@ const Icon = () => (
   </svg>
 );
 
-const App = () => (
+interface Props {
+  clear: () => void
+}
+
+const App = ({ clear }: Props) => (
   <AppWrapper>
     <PanelContainer>
       <PanelGroup>
@@ -64,6 +69,8 @@ const App = () => (
         <MessageLogPanel>
           <PanelHeader>
             Message Log
+
+            <Button onClick={clear} small outlined>clear</Button>
           </PanelHeader>
 
           <MessagesContainer />

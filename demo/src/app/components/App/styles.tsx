@@ -75,6 +75,7 @@ export const Title = styled.h1`
 export const PanelContainer = styled.div`
   display: flex;
   flex: 1;
+  height: 100%;
 
   ${media.desktop`
     flex-direction: column;
@@ -103,7 +104,10 @@ export const Panel = styled.div`
 
 export const PanelHeader = styled.p`
   ${Typography.TypeStyleSirius};
+  align-items: center;
   color: ${Colors.SUN};
+  display: flex;
+  justify-content: space-between;
   padding-left: 20px;
   padding-right: 20px;
 `;

@@ -21,6 +21,12 @@ export const TypeStyleArcturus = `
   font-weight: 500;
 `;
 
+export const TypeStyleCassiopeia = `
+  ${TypeFamilySansSerif};
+  font-size: 10px;
+  font-weight: 500;
+`;
+
 export const TypeStyleStark = `
   ${TypeFamilyMono};
   font-size: 12px;
