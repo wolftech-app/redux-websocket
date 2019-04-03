@@ -107,7 +107,7 @@ export const MessageContents = styled.pre<MessageLogContainerProps>`
       font-weight: 700;
 
       &.string {
-        color: ${Colors.KUIPER_BELT};
+        color: ${Colors.PUCK};
       }
 
       &.punctuation {

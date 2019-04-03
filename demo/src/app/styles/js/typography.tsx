@@ -21,6 +21,18 @@ export const TypeStyleArcturus = `
   font-weight: 500;
 `;
 
+export const TypeStyleCassiopeia = `
+  ${TypeFamilySansSerif};
+  font-size: 10px;
+  font-weight: 500;
+`;
+
+export const TypeStyleStark = `
+  ${TypeFamilyMono};
+  font-size: 12px;
+  font-weight: 500;
+`;
+
 export const TypeStyleProcyon = `
   ${TypeFamilyMono};
   font-size: 14px;
@@ -29,6 +41,13 @@ export const TypeStyleProcyon = `
 export const TypeStyleDeneb = `
   ${TypeFamilyMono};
   font-size: 10px;
+`;
+
+export const TypeStyleTriton = `
+  ${TypeFamilyMono};
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 25px;
 `;
 
 export const TypeStyleEridanus = `

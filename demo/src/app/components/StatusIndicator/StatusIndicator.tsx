@@ -3,17 +3,23 @@ import * as React from 'react';
 import { Container, StatusBubble, StatusText } from './styles';
 
 interface Props {
-  connected: boolean;
+  active: boolean;
+  className?: string;
+  text: string;
+  type?: 'INFO' | 'WARN';
 }
 
-const renderStatusText = (connected: boolean): string => connected ? 'Connected' : 'Disconnected';
+const StatusIndicator = ({
+  active,
+  className,
+  text,
+  type = 'INFO',
+}: Props) => (
+  <Container className={className}>
+    <StatusBubble active={active} type={type} />
 
-const StatusIndicator = ({ connected }: Props) => (
-  <Container>
-    <StatusBubble connected={connected} />
-
-    <StatusText>
-      {renderStatusText(connected)}
+    <StatusText active={active} type={type}>
+      {text}
     </StatusText>
   </Container>
 );

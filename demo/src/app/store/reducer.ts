@@ -12,6 +12,12 @@ export const getConnected = state => state.connected;
 
 const reducer = (state = defaultState, action): State => {
   switch (action.type) {
+    case 'INTERNAL::CLEAR_MESSAGE_LOG':
+      return {
+        ...state,
+        messages: [],
+      };
+
     case REDUX_WEBSOCKET_CONNECT:
       return {
         ...state,
