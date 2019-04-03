@@ -1,6 +1,9 @@
 const path = require('path');
 
+const { NODE_ENV: env = 'development' } = process.env;
+
 module.exports = {
+  mode: env,
   entry: './src/index',
   output: {
     path: path.resolve(__dirname, 'dist'),
