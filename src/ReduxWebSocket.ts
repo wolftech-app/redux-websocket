@@ -1,4 +1,4 @@
-import { AnyAction, MiddlewareAPI } from 'redux';
+import { MiddlewareAPI } from 'redux';
 
 import { Options, Action } from './types';
 import createWebsocket from './createWebsocket';
@@ -27,7 +27,7 @@ export default class ReduxWebSocket {
   /**
    * WebSocket connect event handler.
    */
-  connect = ({ dispatch }: MiddlewareAPI, { payload }: AnyAction) => {
+  connect = ({ dispatch }: MiddlewareAPI, { payload }: Action) => {
     if (this.websocket) {
       this.websocket.close();
     }
