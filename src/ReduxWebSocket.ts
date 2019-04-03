@@ -13,6 +13,7 @@ import ReduxWebSocketError from './ReduxWebSocketError';
 export default class ReduxWebSocket {
   options: Options;
 
+  // WebSocket connection.
   websocket: WebSocket | null = null;
 
   /**
