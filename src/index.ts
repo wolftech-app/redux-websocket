@@ -1,5 +1,5 @@
 import { Middleware, MiddlewareAPI } from 'redux';
-import ReduxWebsocket from './reduxWebsocket';
+import ReduxWebSocket from './ReduxWebSocket';
 import {
   Action,
   ActionType,
@@ -16,7 +16,7 @@ import {
   WEBSOCKET_SEND,
 } from './actionTypes';
 
-const getHandler = (reduxWebsocket: ReduxWebsocket, actionType: ActionType) => {
+const getHandler = (reduxWebsocket: ReduxWebSocket, actionType: ActionType) => {
   const handlers: { [K in ActionType]: ActionHandler } = {
     [WEBSOCKET_CLOSED]: () => {},
     [WEBSOCKET_CONNECT]: reduxWebsocket.connect,
@@ -41,7 +41,7 @@ const createMiddleware = (opt?: Options): Middleware => {
   const actionPrefixExp = RegExp(`^${prefix}::`);
 
   // Create a new redux websocket instance
-  const reduxWebsocket = new ReduxWebsocket(options);
+  const reduxWebsocket = new ReduxWebSocket(options);
 
   return (store: MiddlewareAPI) => next => (action: Action) => {
     const { dispatch } = store;

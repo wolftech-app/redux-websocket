@@ -8,7 +8,7 @@ import ReduxWebSocketError from './ReduxWebSocketError';
  * ReduxWebsocket
  * @class
  */
-export default class ReduxWebsocket {
+export default class ReduxWebSocket {
   options: Options;
 
   websocket: WebSocket | null;
