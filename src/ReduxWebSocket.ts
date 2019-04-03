@@ -5,13 +5,15 @@ import createWebsocket from './createWebsocket';
 import ReduxWebSocketError from './ReduxWebSocketError';
 
 /**
- * ReduxWebsocket
+ * ReduxWebSocket
  * @class
+ *
+ * Manages a WebSocket connection.
  */
 export default class ReduxWebSocket {
   options: Options;
 
-  websocket: WebSocket | null;
+  websocket: WebSocket | null = null;
 
   /**
    * Constructor
@@ -21,11 +23,13 @@ export default class ReduxWebSocket {
    */
   constructor(options: Options) {
     this.options = options;
-    this.websocket = null;
   }
 
   /**
    * WebSocket connect event handler.
+   *
+   * @param {MiddlewareAPI} store
+   * @param {Action} action
    */
   connect = ({ dispatch }: MiddlewareAPI, { payload }: Action) => {
     if (this.websocket) {
@@ -41,9 +45,6 @@ export default class ReduxWebSocket {
    * @throws {ReduxWebSocketError} Socket connection must exist.
    */
   disconnect = () => {
-    // TODO: write a test that checks what happens when a user tries to close
-    // a closed connection. maybe we dispatch an 'error' action with a message?
-    // maybe we throw an error?
     if (this.websocket) {
       this.websocket.close();
 
