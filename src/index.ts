@@ -6,6 +6,7 @@ import {
   ActionHandler,
   Options,
 } from './types';
+import { error } from './actions';
 import {
   WEBSOCKET_CLOSED,
   WEBSOCKET_CONNECT,
@@ -43,13 +44,21 @@ const createMiddleware = (opt?: Options): Middleware => {
   const reduxWebsocket = new ReduxWebsocket(options);
 
   return (store: MiddlewareAPI) => next => (action: Action) => {
+    const { dispatch } = store;
     const { type: actionType } = action;
 
     // Check if action type matches prefix
     if (actionType && actionType.match(actionPrefixExp)) {
       const baseActionType = action.type.replace(actionPrefixExp, '') as ActionType;
       const handler = getHandler(reduxWebsocket, baseActionType);
-      if (handler) handler(store, action);
+
+      if (handler) {
+        try {
+          handler(store, action);
+        } catch (err) {
+          dispatch(error(action, err, prefix));
+        }
+      }
     }
 
     return next(action);

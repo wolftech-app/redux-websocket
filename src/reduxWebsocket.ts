@@ -1,14 +1,24 @@
 import { AnyAction, MiddlewareAPI } from 'redux';
 
+import { Options, Action } from './types';
 import createWebsocket from './createWebsocket';
-import { Options } from './types';
+import ReduxWebSocketError from './ReduxWebSocketError';
 
+/**
+ * ReduxWebsocket
+ * @class
+ */
 export default class ReduxWebsocket {
   options: Options;
 
-  // TODO correctly type this thing
   websocket: WebSocket | null;
 
+  /**
+   * Constructor
+   * @constructor
+   *
+   * @param {Options} options
+   */
   constructor(options: Options) {
     this.options = options;
     this.websocket = null;
@@ -27,6 +37,8 @@ export default class ReduxWebsocket {
 
   /**
    * WebSocket disconnect event handler.
+   *
+   * @throws {ReduxWebSocketError} Socket connection must exist.
    */
   disconnect = () => {
     // TODO: write a test that checks what happens when a user tries to close
@@ -34,8 +46,10 @@ export default class ReduxWebsocket {
     // maybe we throw an error?
     if (this.websocket) {
       this.websocket.close();
+
+      this.websocket = null;
     } else {
-      throw new Error(
+      throw new ReduxWebSocketError(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
     }
@@ -43,10 +57,19 @@ export default class ReduxWebsocket {
 
   /**
    * WebSocket send event handler.
+   *
+   * @param {MiddlewareAPI} _store
+   * @param {Action} action
+   *
+   * @throws {ReduxWebSocketError} Socket connection must exist.
    */
-  send = (_store: MiddlewareAPI, { payload }: AnyAction) => {
+  send = (_store: MiddlewareAPI, { payload }: Action) => {
     if (this.websocket) {
       this.websocket.send(JSON.stringify(payload));
+    } else {
+      throw new ReduxWebSocketError(
+        'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
+      );
     }
   }
 }

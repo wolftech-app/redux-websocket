@@ -5,20 +5,27 @@ import {
   WEBSOCKET_MESSAGE,
   WEBSOCKET_OPEN,
   WEBSOCKET_SEND,
+  WEBSOCKET_ERROR,
 } from './actionTypes';
+import { Action } from './types';
 
-const buildAction = (
-  actionType: string,
-  event: Event | MessageEvent,
-// TODO (brianmcallister) - Figure out a way to type this correctly.
-// See: https://medium.com/@martin_hotell/improved-redux-type-safety-with-typescript-2-8-2c11a8062575
-): any => ({
-  type: actionType,
+type BuiltAction<T> = {
+  type: string,
   payload: {
-    event,
-    timestamp: new Date(),
-  },
-});
+    event: T,
+    timestamp: Date,
+  }
+}
+
+function buildAction<T>(actionType: string, event: T): BuiltAction<T> {
+  return {
+    type: actionType,
+    payload: {
+      event,
+      timestamp: new Date(),
+    },
+  };
+}
 
 export const closed = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_CLOSED}`, event);
 export const connect = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_CONNECT}`, event);
@@ -26,3 +33,12 @@ export const disconnect = (event: Event, prefix: string) => buildAction(`${prefi
 export const message = (event: MessageEvent, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_MESSAGE}`, event);
 export const open = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_OPEN}`, event);
 export const send = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_SEND}`, event);
+
+export const error = (originalAction: Action, err: Error, prefix: string) => ({
+  type: `${prefix}::${WEBSOCKET_ERROR}`,
+  payload: {
+    message: err.message,
+    name: err.name,
+    originalAction,
+  },
+});
