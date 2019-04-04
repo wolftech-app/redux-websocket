@@ -16,7 +16,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src ./test",
     "prepare": "npm run build",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
