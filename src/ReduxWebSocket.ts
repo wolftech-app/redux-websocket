@@ -10,11 +10,11 @@ import {
   reconnected,
 } from './actions';
 import { Action } from './types';
-import ReduxWebSocketError from './ReduxWebSocketError';
 
-interface Options {
+interface ReduxWebSocketOptions {
   prefix: string
   reconnectInterval: number
+  onOpen?: (s: WebSocket) => void
 }
 
 /**
@@ -25,7 +25,7 @@ interface Options {
  */
 export default class ReduxWebSocket {
   // Class options.
-  options: Options;
+  options: ReduxWebSocketOptions;
 
   // WebSocket connection.
   websocket: WebSocket | null = null;
@@ -44,9 +44,9 @@ export default class ReduxWebSocket {
    * Constructor
    * @constructor
    *
-   * @param {Options} options
+   * @param {ReduxWebSocketOptions} options
    */
-  constructor(options: Options) {
+  constructor(options: ReduxWebSocketOptions) {
     this.options = options;
   }
 
@@ -64,6 +64,10 @@ export default class ReduxWebSocket {
     dispatch(broken(prefix));
     dispatch(beginReconnect(prefix));
 
+    this.reconnectCount = 1;
+
+    dispatch(reconnectAttempt(this.reconnectCount, prefix));
+
     // Attempt to reconnect immediately by calling connect with assertions
     // that the arguments conform to the types we expect.
     this.connect(
@@ -71,12 +75,8 @@ export default class ReduxWebSocket {
       { payload: { url: this.lastSocketUrl } } as Action,
     );
 
-    this.reconnectCount = 0;
-
     // Attempt reconnecting on an interval.
     this.reconnectionInterval = setInterval(() => {
-      this.reconnectCount += 1;
-
       dispatch(reconnectAttempt(this.reconnectCount, prefix));
 
       // Call connect again, same way.
@@ -98,7 +98,7 @@ export default class ReduxWebSocket {
       this.websocket.close();
     }
 
-    const { prefix } = this.options;
+    const { prefix, onOpen } = this.options;
 
     this.lastSocketUrl = payload.url;
     this.websocket = new WebSocket(payload.url);
@@ -115,6 +115,11 @@ export default class ReduxWebSocket {
         dispatch(reconnected(prefix));
       }
 
+      // Hook to allow consumers to get access to the raw socket.
+      if (onOpen && this.websocket != null) {
+        onOpen(this.websocket);
+      }
+
       // Now we're fully open and ready to send messages.
       dispatch(open(event, prefix));
     };
@@ -127,14 +132,12 @@ export default class ReduxWebSocket {
         this.handleBrokenConnection(dispatch);
       }
     };
-
-    window.__socket = this.websocket;
   }
 
   /**
    * WebSocket disconnect event handler.
    *
-   * @throws {ReduxWebSocketError} Socket connection must exist.
+   * @throws {Error} Socket connection must exist.
    */
   disconnect = () => {
     if (this.websocket) {
@@ -142,7 +145,7 @@ export default class ReduxWebSocket {
 
       this.websocket = null;
     } else {
-      throw new ReduxWebSocketError(
+      throw new Error(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
     }
@@ -154,13 +157,13 @@ export default class ReduxWebSocket {
    * @param {MiddlewareAPI} _store
    * @param {Action} action
    *
-   * @throws {ReduxWebSocketError} Socket connection must exist.
+   * @throws {Error} Socket connection must exist.
    */
   send = (_store: MiddlewareAPI, { payload }: Action) => {
     if (this.websocket) {
       this.websocket.send(JSON.stringify(payload));
     } else {
-      throw new ReduxWebSocketError(
+      throw new Error(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
     }

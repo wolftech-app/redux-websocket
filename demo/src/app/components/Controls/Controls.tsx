@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Button from '../Button';
 
 import exampleMessages from './exampleMessages';
@@ -22,7 +23,7 @@ interface Props {
   connected: boolean;
   connect: (url: string) => void;
   disconnect: () => void;
-  onSendMessage: (message) => void;
+  onSendMessage: (message: any) => void;
 }
 
 interface State {
@@ -30,31 +31,48 @@ interface State {
   webSocketUrl: string;
 }
 
+/**
+ * Controls component.
+ * @class
+ */
 class Controls extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      message: '',
-      webSocketUrl: 'wss://websocket-echo-server.herokuapp.com',
-    };
+  // State.
+  state = {
+    message: '',
+    webSocketUrl: 'wss://websocket-echo-server.herokuapp.com',
   }
 
+  /**
+   * Component did mount.
+   */
   componentDidMount() {
     const { connect } = this.props;
     const { webSocketUrl } = this.state;
+
     connect(webSocketUrl);
   }
 
+  /**
+   * Handle the example message changing.
+   */
   handleExampleMessageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
-    this.setState({ message: value });
+    const { value: message } = event.target;
+
+    this.setState({ message });
   }
 
+  /**
+   * Handle the message field chaning.
+   */
   handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = event.target;
-    this.setState({ message: value });
+    const { value: message } = event.target;
+
+    this.setState({ message });
   }
 
+  /**
+   * Handle sending a message.
+   */
   handleSendMessage = () => {
     const { onSendMessage } = this.props;
     const { message } = this.state;
@@ -62,16 +80,34 @@ class Controls extends React.Component<Props, State> {
     try {
       onSendMessage(JSON.parse(message));
     } catch {
+      // eslint-disable-next-line no-alert
       alert('Please enter valid JSON!');
     }
   }
 
+  /**
+   * Handle the URL field changing.
+   */
   handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    this.setState({ webSocketUrl: value });
+    const { value: webSocketUrl } = event.target;
+
+    this.setState({ webSocketUrl });
   }
 
-  render() {
+  /**
+   * Simulate a disconnection.
+   */
+  simulateDisconnect = () => {
+    // eslint-disable-next-line no-underscore-dangle
+    (window as any).__socket.close();
+  }
+
+  /**
+   * Render.
+   *
+   * @returns {React.ReactNode}
+   */
+  render(): React.ReactNode {
     const { connect, connected, disconnect } = this.props;
     const { message, webSocketUrl } = this.state;
 
@@ -80,6 +116,7 @@ class Controls extends React.Component<Props, State> {
         <InputGroup>
           <Label>
             Server
+
             <Input
               type="text"
               placeholder="Input server URL here…"
@@ -118,7 +155,7 @@ class Controls extends React.Component<Props, State> {
               Disconnect
             </DisconnectButton>
 
-            <SimulateDisconnectButton onClick={() => alert('Not implemented yet!')}>
+            <SimulateDisconnectButton onClick={this.simulateDisconnect}>
               Simulate Disconnect
             </SimulateDisconnectButton>
           </StatusContents>
@@ -127,6 +164,7 @@ class Controls extends React.Component<Props, State> {
         <InputGroup>
           <Label>
             Example Messages
+
             <ExampleMessageDropDown
               options={exampleMessages}
               onChange={this.handleExampleMessageChange}

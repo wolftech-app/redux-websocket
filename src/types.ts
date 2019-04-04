@@ -30,6 +30,7 @@ type ActionHandler = (_store: MiddlewareAPI, action: Action) => void;
 type Options = {
   prefix?: string
   reconnectInterval?: number
+  onOpen?: (s: WebSocket) => void
 }
 
 // Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877
