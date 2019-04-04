@@ -1,4 +1,5 @@
 // import { Options } from '../src/types';
+import * as actions from '../src/actions';
 import middleware from '../src';
 import ReduxWebSocket from '../src/ReduxWebSocket';
 
@@ -8,6 +9,13 @@ const reduxWebSocketMock = <jest.Mock<ReduxWebSocket>>ReduxWebSocket;
 const connectMock = jest.fn();
 const disconnectMock = jest.fn();
 const sendMock = jest.fn();
+const mockStore = () => {
+  const store = { getState: () => {}, dispatch: (i: any) => i };
+  const wrapper = middleware()(store);
+  const dispatch = wrapper(i => i);
+
+  return { store, wrapper, dispatch };
+};
 
 reduxWebSocketMock.mockImplementation(options => ({
   options,
@@ -61,59 +69,59 @@ describe('middleware', () => {
   });
 
   it('should handle a REDUX_WEBSOCKET::CONNECT action', () => {
-    // Mock everything out all the way down to the dispatch.
-    const store = { getState: () => {}, dispatch: (i: any) => i };
-    const wrapper = middleware()(store);
-    const dispatch = wrapper(i => i);
-    const action = {
+    const { store, dispatch } = mockStore();
+    const dispatchedAction = {
       type: 'REDUX_WEBSOCKET::CONNECT',
-      payload: { url: 'ws://example.com' },
+      meta: { timestamp: expect.any(Date) },
+      payload: {
+        url: 'ws://example.com',
+      },
     };
 
-    const val = dispatch(action);
+    const val = dispatch(actions.connect('ws://example.com'));
 
-    expect(val).toEqual(action);
+    expect(val).toEqual(dispatchedAction);
     expect(connectMock).toHaveBeenCalledTimes(1);
-    expect(connectMock).toHaveBeenCalledWith(store, action);
+    expect(connectMock).toHaveBeenCalledWith(store, dispatchedAction);
   });
 
 
   it('should handle a REDUX_WEBSOCKET::DISCONNECT action', () => {
-    // Mock everything out all the way down to the dispatch.
-    const store = { getState: () => {}, dispatch: (i: any) => i };
-    const wrapper = middleware()(store);
-    const dispatch = wrapper(i => i);
-    const action = { type: 'REDUX_WEBSOCKET::DISCONNECT' };
+    const { store, dispatch } = mockStore();
+    const dispatchedAction = {
+      type: 'REDUX_WEBSOCKET::DISCONNECT',
+      meta: { timestamp: expect.any(Date) },
+    };
 
-    const val = dispatch(action);
+    const val = dispatch(actions.disconnect());
 
-    expect(val).toEqual(action);
+    expect(val).toEqual(dispatchedAction);
     expect(disconnectMock).toHaveBeenCalledTimes(1);
-    expect(disconnectMock).toHaveBeenCalledWith(store, action);
+    expect(disconnectMock).toHaveBeenCalledWith(store, dispatchedAction);
   });
 
   it('should handle a REDUX_WEBSOCKET::SEND action', () => {
-    // Mock everything out all the way down to the dispatch.
-    const store = { getState: () => {}, dispatch: (i: any) => i };
-    const wrapper = middleware()(store);
-    const dispatch = wrapper(i => i);
-    const action = { type: 'REDUX_WEBSOCKET::SEND' };
+    const { store, dispatch } = mockStore();
+    const dispatchedAction = {
+      type: 'REDUX_WEBSOCKET::SEND',
+      meta: { timestamp: expect.any(Date) },
+      payload: {
+        test: 'message',
+      },
+    };
 
-    const val = dispatch(action);
+    const val = dispatch(actions.send({ test: 'message' }));
 
-    expect(val).toEqual(action);
+    expect(val).toEqual(dispatchedAction);
     expect(sendMock).toHaveBeenCalledTimes(1);
-    expect(sendMock).toHaveBeenCalledWith(store, action);
+    expect(sendMock).toHaveBeenCalledWith(store, dispatchedAction);
   });
 
   it('should not break on random actions', () => {
-    // Mock everything out all the way down to the dispatch.
-    const store = { getState: () => {}, dispatch: (i: any) => i };
-    const wrapper = middleware()(store);
-    const dispatch = wrapper(i => i);
+    const { dispatch } = mockStore();
 
-    dispatch({ type: 'REDUX_WEBSOCKET::RANDOM' });
-    dispatch({ type: 'RANDOM::ACTION' });
+    dispatch({ type: `REDUX_WEBSOCKET::${Math.random().toString(36).substring(2, 15)}` });
+    dispatch({ type: 'something-else-entirely' });
 
     expect(connectMock).not.toHaveBeenCalled();
     expect(disconnectMock).not.toHaveBeenCalled();

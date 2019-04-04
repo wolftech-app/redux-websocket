@@ -11,11 +11,11 @@ describe('createWebsocket', () => {
 
   describe('onopen', () => {
     const expected = {
-      payload: {
-        event: payload,
-        timestamp: expect.any(Date),
-      },
       type: 'REDUX_WEBSOCKET::OPEN',
+      meta: { timestamp: expect.any(Date) },
+      payload: {
+        test: 'value',
+      },
     };
 
     it('should return the dispatched action', () => {
@@ -38,11 +38,9 @@ describe('createWebsocket', () => {
 
   describe('onclose', () => {
     const expected = {
-      payload: {
-        event: payload,
-        timestamp: expect.any(Date),
-      },
       type: 'REDUX_WEBSOCKET::CLOSED',
+      meta: { timestamp: expect.any(Date) },
+      payload,
     };
 
     it('should return the dispatched action', () => {
@@ -65,11 +63,9 @@ describe('createWebsocket', () => {
 
   describe('onmessage', () => {
     const expected = {
-      payload: {
-        event: payload,
-        timestamp: expect.any(Date),
-      },
       type: 'REDUX_WEBSOCKET::MESSAGE',
+      meta: { timestamp: expect.any(Date) },
+      payload,
     };
 
     it('should return the dispatched action', () => {

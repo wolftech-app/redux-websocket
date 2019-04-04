@@ -15,7 +15,7 @@ import ReduxWebSocket from './ReduxWebSocket';
  * @private
  */
 const defaultOptions = {
-  prefix: 'REDUX_WEBSOCKET',
+  prefix: actionTypes.DEFAULT_PREFIX,
 };
 
 /**
