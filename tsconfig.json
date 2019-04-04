@@ -7,10 +7,8 @@
     "strict": true,
     "allowSyntheticDefaultImports": true
   },
-  "exclude": [
-    "demo",
-    "dist",
-    "node_modules",
-    "test"
+  "include": [
+    "./src",
+    "./test"
   ]
 }
