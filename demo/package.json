@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@giantmachines/redux-websocket": "^1.0.0-alpha",
+    "@giantmachines/redux-websocket": "1.0.0-alpha.2",
     "@types/prismjs": "1.9.1",
     "@types/react": "16.8.2",
     "@types/react-dom": "16.8.0",

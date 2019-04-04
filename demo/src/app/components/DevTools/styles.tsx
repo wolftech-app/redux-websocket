@@ -3,9 +3,14 @@ import { lighten, rgba } from 'polished';
 
 import * as Typography from '../../styles/js/typography';
 import Colors from '../../styles/js/colors';
+import media from '../../styles/js/media';
 
 export default styled.div`
   flex: 1;
+
+  ${media.desktop`
+    display: flex;
+  `}
 
   & > div {
     background-color: transparent;

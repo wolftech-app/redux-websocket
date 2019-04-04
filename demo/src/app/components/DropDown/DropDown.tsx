@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Option, Select } from './styles';
 
-interface Props {
+interface Props extends React.SelectHTMLAttributes<HTMLSelectElement>{
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   options: {
     name: string;
@@ -10,8 +10,17 @@ interface Props {
   placeholder?: string;
 }
 
-const DropDown = ({onChange, options, placeholder}: Props) => (
-  <Select onChange={onChange} placeholder={placeholder}>
+const DropDown = ({
+  onChange,
+  options,
+  placeholder,
+  ...restProps
+}: Props) => (
+  <Select
+    onChange={onChange}
+    placeholder={placeholder}
+    {...restProps}
+  >
     {
       options.map(option => (
         <Option value={option.value} key={JSON.stringify(option)}>

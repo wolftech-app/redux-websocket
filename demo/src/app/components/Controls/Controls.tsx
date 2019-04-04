@@ -1,19 +1,25 @@
 import * as React from 'react';
 import Button from '../Button';
-import DropDown from '../DropDown';
-import Label from '../Label';
-import StatusIndicatorContainer from '../../containers/StatusIndicatorContainer';
 
 import exampleMessages from './exampleMessages';
 
 import {
+  ConnectedStatusIndicator,
+  ConnectButton,
   Container,
-  InputGroup,
+  DisconnectButton,
+  DisconnectedStatusIndicator,
+  ExampleMessageDropDown,
   Input,
+  InputGroup,
+  Label,
   TextArea,
+  SimulateDisconnectButton,
+  StatusContents,
 } from './styles';
 
 interface Props {
+  connected: boolean;
   connect: (url: string) => void;
   disconnect: () => void;
   onSendMessage: (message) => void;
@@ -24,27 +30,24 @@ interface State {
   webSocketUrl: string;
 }
 
-interface Controls {
-  webSocketUrl: string;
-}
-
 class Controls extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       message: '',
       webSocketUrl: 'wss://websocket-echo-server.herokuapp.com',
-    }
+    };
   }
 
   componentDidMount() {
+    const { connect } = this.props;
     const { webSocketUrl } = this.state;
-    this.props.connect(webSocketUrl);
+    connect(webSocketUrl);
   }
 
   handleExampleMessageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
-    this.setState({ message: value});
+    this.setState({ message: value });
   }
 
   handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -69,43 +72,72 @@ class Controls extends React.Component<Props, State> {
   }
 
   render() {
-    const { disconnect } = this.props;
+    const { connect, connected, disconnect } = this.props;
     const { message, webSocketUrl } = this.state;
 
     return (
       <Container>
         <InputGroup>
-          <Input
-            type="text"
-            onChange={this.handleUrlChange}
-            value={webSocketUrl}
-          />
-
-          <Button onClick={() => this.props.connect(webSocketUrl)}>
-            Connect
-          </Button>
-
-          <Button onClick={disconnect}>
-            Disconnect
-          </Button>
-
-          <StatusIndicatorContainer />
+          <Label>
+            Server
+            <Input
+              type="text"
+              placeholder="Input server URL here…"
+              onChange={this.handleUrlChange}
+              value={webSocketUrl}
+            />
+          </Label>
         </InputGroup>
 
         <InputGroup>
-          <Label text="Example Messages" />
+          <Label>Status</Label>
 
-          <DropDown
-            options={exampleMessages}
-            onChange={this.handleExampleMessageChange}
-            placeholder="Testing"
-          />
+          <StatusContents>
+            <ConnectedStatusIndicator
+              active={connected}
+              text="Connected"
+            />
+
+            <DisconnectedStatusIndicator
+              active={!connected}
+              text="Disconnected"
+              type="WARN"
+            />
+
+            <ConnectButton
+              disabled={connected}
+              onClick={() => connect(webSocketUrl)}
+            >
+              Connect
+            </ConnectButton>
+
+            <DisconnectButton
+              disabled={!connected}
+              onClick={disconnect}
+            >
+              Disconnect
+            </DisconnectButton>
+
+            <SimulateDisconnectButton onClick={() => alert('Not implemented yet!')}>
+              Simulate Disconnect
+            </SimulateDisconnectButton>
+          </StatusContents>
+        </InputGroup>
+
+        <InputGroup>
+          <Label>
+            Example Messages
+            <ExampleMessageDropDown
+              options={exampleMessages}
+              onChange={this.handleExampleMessageChange}
+            />
+          </Label>
         </InputGroup>
 
         <InputGroup>
           <TextArea
             onChange={this.handleMessageChange}
-            placeholder="Input JSON formated message here..."
+            placeholder="Input JSON formated message here…"
             value={message}
             rows={10}
           />
