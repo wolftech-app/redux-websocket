@@ -9,9 +9,9 @@ describe('actions', () => {
 
       expect(act).toEqual({
         type: `${PREFIX}::${actionTypes.WEBSOCKET_CLOSED}`,
+        meta: { timestamp: expect.any(Date) },
         payload: {
-          event: { test: 'value' },
-          timestamp: expect.any(Date),
+          test: 'value',
         },
       });
     });
@@ -20,13 +20,13 @@ describe('actions', () => {
   describe('connect', () => {
     it('should return the correct action', () => {
       const PREFIX = 'ACTION_PREFIX';
-      const act = actions.connect({ test: 'value' } as any, PREFIX);
+      const act = actions.connect('fake url', PREFIX);
 
       expect(act).toEqual({
         type: `${PREFIX}::${actionTypes.WEBSOCKET_CONNECT}`,
+        meta: { timestamp: expect.any(Date) },
         payload: {
-          event: { test: 'value' },
-          timestamp: expect.any(Date),
+          url: 'fake url',
         },
       });
     });
@@ -35,14 +35,11 @@ describe('actions', () => {
   describe('disconnect', () => {
     it('should return the correct action', () => {
       const PREFIX = 'ACTION_PREFIX';
-      const act = actions.disconnect({ test: 'value' } as any, PREFIX);
+      const act = actions.disconnect(PREFIX);
 
       expect(act).toEqual({
         type: `${PREFIX}::${actionTypes.WEBSOCKET_DISCONNECT}`,
-        payload: {
-          event: { test: 'value' },
-          timestamp: expect.any(Date),
-        },
+        meta: { timestamp: expect.any(Date) },
       });
     });
   });
@@ -54,9 +51,9 @@ describe('actions', () => {
 
       expect(act).toEqual({
         type: `${PREFIX}::${actionTypes.WEBSOCKET_MESSAGE}`,
+        meta: { timestamp: expect.any(Date) },
         payload: {
-          event: { test: 'value' },
-          timestamp: expect.any(Date),
+          test: 'value',
         },
       });
     });
@@ -69,9 +66,9 @@ describe('actions', () => {
 
       expect(act).toEqual({
         type: `${PREFIX}::${actionTypes.WEBSOCKET_OPEN}`,
+        meta: { timestamp: expect.any(Date) },
         payload: {
-          event: { test: 'value' },
-          timestamp: expect.any(Date),
+          test: 'value',
         },
       });
     });
@@ -84,9 +81,9 @@ describe('actions', () => {
 
       expect(act).toEqual({
         type: `${PREFIX}::${actionTypes.WEBSOCKET_SEND}`,
+        meta: { timestamp: expect.any(Date) },
         payload: {
-          event: { test: 'value' },
-          timestamp: expect.any(Date),
+          test: 'value',
         },
       });
     });

@@ -8,7 +8,7 @@ import {
 
 import defaultState, { State } from './defaultState';
 
-export const getConnected = state => state.connected;
+export const getConnected = (state: State) => state.connected;
 
 const reducer = (state = defaultState, action): State => {
   switch (action.type) {
@@ -42,9 +42,9 @@ const reducer = (state = defaultState, action): State => {
         messages: [
           ...state.messages,
           {
-            data: JSON.parse(action.payload.event.data),
-            origin: action.payload.event.origin,
-            timestamp: action.payload.timestamp,
+            data: JSON.parse(action.payload.data),
+            origin: action.payload.origin,
+            timestamp: action.meta.timestamp,
             type: 'INCOMING',
           },
         ],

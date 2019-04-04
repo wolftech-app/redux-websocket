@@ -1,55 +1,65 @@
 import { Middleware, MiddlewareAPI } from 'redux';
-import ReduxWebsocket from './reduxWebsocket';
+
 import {
   Action,
-  ActionType,
   ActionHandler,
+  ActionType,
   Options,
 } from './types';
-import {
-  WEBSOCKET_CLOSED,
-  WEBSOCKET_CONNECT,
-  WEBSOCKET_DISCONNECT,
-  WEBSOCKET_MESSAGE,
-  WEBSOCKET_OPEN,
-  WEBSOCKET_SEND,
-} from './actionTypes';
+import { error } from './actions';
+import * as actionTypes from './actionTypes';
+import ReduxWebSocket from './ReduxWebSocket';
 
-const getHandler = (reduxWebsocket: ReduxWebsocket, actionType: ActionType) => {
-  const handlers: { [K in ActionType]: ActionHandler } = {
-    [WEBSOCKET_CLOSED]: () => {},
-    [WEBSOCKET_CONNECT]: reduxWebsocket.connect,
-    [WEBSOCKET_DISCONNECT]: reduxWebsocket.disconnect,
-    [WEBSOCKET_MESSAGE]: () => {},
-    [WEBSOCKET_OPEN]: () => {},
-    [WEBSOCKET_SEND]: reduxWebsocket.send,
-  };
-
-  return handlers[actionType];
-};
-
-// Default middleware options
+/**
+ * Default middleware creator options.
+ * @private
+ */
 const defaultOptions = {
-  prefix: 'REDUX_WEBSOCKET',
+  prefix: actionTypes.DEFAULT_PREFIX,
 };
 
-// Middleware function.
-const createMiddleware = (opt?: Options): Middleware => {
-  const options = { ...defaultOptions, ...opt };
+/**
+ * Create a middleware.
+ *
+ * @param {Options} rawOptions
+ *
+ * @returns {Middleware}
+ */
+const createMiddleware = (rawOptions?: Options): Middleware => {
+  const options = { ...defaultOptions, ...rawOptions };
   const { prefix } = options;
   const actionPrefixExp = RegExp(`^${prefix}::`);
 
-  // Create a new redux websocket instance
-  const reduxWebsocket = new ReduxWebsocket(options);
+  // Create a new redux websocket instance.
+  const reduxWebsocket = new ReduxWebSocket(options);
 
+  // Define the list of handlers, now that we have an instance of ReduxWebSocket.
+  const handlers: { [K in ActionType]: ActionHandler } = {
+    [actionTypes.WEBSOCKET_CLOSED]: () => {},
+    [actionTypes.WEBSOCKET_CONNECT]: reduxWebsocket.connect,
+    [actionTypes.WEBSOCKET_DISCONNECT]: reduxWebsocket.disconnect,
+    [actionTypes.WEBSOCKET_MESSAGE]: () => {},
+    [actionTypes.WEBSOCKET_OPEN]: () => {},
+    [actionTypes.WEBSOCKET_SEND]: reduxWebsocket.send,
+  };
+
+  // Middleware function.
   return (store: MiddlewareAPI) => next => (action: Action) => {
+    const { dispatch } = store;
     const { type: actionType } = action;
 
     // Check if action type matches prefix
     if (actionType && actionType.match(actionPrefixExp)) {
-      const baseActionType = action.type.replace(actionPrefixExp, '') as ActionType;
-      const handler = getHandler(reduxWebsocket, baseActionType);
-      if (handler) handler(store, action);
+      const baseActionType = action.type.replace(actionPrefixExp, '');
+      const handler = Reflect.get(handlers, baseActionType);
+
+      if (handler) {
+        try {
+          handler(store, action);
+        } catch (err) {
+          dispatch(error(action, err, prefix));
+        }
+      }
     }
 
     return next(action);
