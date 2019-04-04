@@ -15,6 +15,7 @@ import ReduxWebSocket from './ReduxWebSocket';
  * @private
  */
 const defaultOptions = {
+  reconnectInterval: 2000,
   prefix: actionTypes.DEFAULT_PREFIX,
 };
 

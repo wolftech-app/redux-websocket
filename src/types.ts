@@ -28,7 +28,8 @@ type Action =
 type ActionHandler = (_store: MiddlewareAPI, action: Action) => void;
 
 type Options = {
-  prefix: string;
+  prefix?: string
+  reconnectInterval?: number
 }
 
 // Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877

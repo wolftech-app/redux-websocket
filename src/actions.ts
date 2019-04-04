@@ -1,5 +1,9 @@
 import {
   DEFAULT_PREFIX,
+  WEBSOCKET_BROKEN,
+  WEBSOCKET_BEGIN_RECONNECT,
+  WEBSOCKET_RECONNECT_ATTEMPT,
+  WEBSOCKET_RECONNECTED,
   WEBSOCKET_CLOSED,
   WEBSOCKET_CONNECT,
   WEBSOCKET_DISCONNECT,
@@ -37,9 +41,14 @@ export const disconnect = (prefix?: string) => buildAction(`${prefix || DEFAULT_
 export const send = (msg: any, prefix?: string) => buildAction(`${prefix || DEFAULT_PREFIX}::${WEBSOCKET_SEND}`, msg);
 
 // Action creators for actions dispatched by redux-websocket.
+export const beginReconnect = (prefix?: string) => buildAction(`${prefix}::${WEBSOCKET_BEGIN_RECONNECT}`);
+export const reconnectAttempt = (count: number, prefix?: string) => buildAction(`${prefix}::${WEBSOCKET_RECONNECT_ATTEMPT}`, { count });
+export const reconnected = (prefix?: string) => buildAction(`${prefix}::${WEBSOCKET_RECONNECTED}`);
+
 export const closed = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_CLOSED}`, event);
 export const message = (event: MessageEvent, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_MESSAGE}`, event);
 export const open = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_OPEN}`, event);
+export const broken = (prefix?: string) => buildAction(`${prefix}::${WEBSOCKET_BROKEN}`);
 export const error = (originalAction: Action, err: Error, prefix: string) => (
   buildAction(`${prefix}::${WEBSOCKET_ERROR}`, {
     message: err.message,

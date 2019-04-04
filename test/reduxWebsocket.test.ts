@@ -1,37 +1,15 @@
 import ReduxWebSocket from '../src/ReduxWebSocket';
-import createWebsocket from '../src/createWebsocket';
-import { Action, Options } from '../src/types';
+import { Action } from '../src/types';
 
 jest.mock('../src/createWebsocket');
 
-const createWebsocketMock = <jest.Mock>createWebsocket;
-
 describe('ReduxWebSocket', () => {
-  const options: Options = {
+  const options = {
     prefix: 'REDUX_WEBSOCKET',
+    reconnectInterval: 2000,
   };
 
-  beforeEach(() => {
-    createWebsocketMock.mockClear();
-  });
-
   describe('connect', () => {
-    it('creates the websocket', () => {
-      const dispatch = jest.fn(i => i);
-      const store = { dispatch, getState: () => {} };
-      const inst = new ReduxWebSocket(options);
-      const action = {
-        type: 'REDUX_WEBSOCKET::CONNECT',
-        payload: {
-          url: 'ws://fake.com',
-        },
-      };
-
-      inst.connect(store, action as Action);
-
-      expect(createWebsocketMock).toHaveBeenCalledWith(dispatch, action.payload.url, options);
-    });
-
     it('closes the websocket if it exists', () => {
       const store = { dispatch: (i: any) => i, getState: () => {} };
       const reduxWebSocket = new ReduxWebSocket(options);

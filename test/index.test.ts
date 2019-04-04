@@ -19,6 +19,10 @@ const mockStore = () => {
 
 reduxWebSocketMock.mockImplementation(options => ({
   options,
+  reconnectCount: 0,
+  reconnectionInterval: null,
+  lastSocketUrl: '',
+  handleBrokenConnection: () => {},
   websocket: null,
   connect: connectMock,
   disconnect: disconnectMock,
