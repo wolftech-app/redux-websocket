@@ -48,6 +48,7 @@ describe('middleware', () => {
 
     expect(reduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'REDUX_WEBSOCKET',
+      reconnectInterval: 2000,
     });
   });
 
@@ -56,6 +57,7 @@ describe('middleware', () => {
 
     expect(reduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'CUSTOM',
+      reconnectInterval: 2000,
     });
   });
 
@@ -66,9 +68,11 @@ describe('middleware', () => {
     expect(reduxWebSocketMock).toHaveBeenCalledTimes(2);
     expect(reduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'ONE',
+      reconnectInterval: 2000,
     });
     expect(reduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'TWO',
+      reconnectInterval: 2000,
     });
   });
 

@@ -1,8 +1,6 @@
 import ReduxWebSocket from '../src/ReduxWebSocket';
 import { Action } from '../src/types';
 
-jest.mock('../src/createWebsocket');
-
 describe('ReduxWebSocket', () => {
   const options = {
     prefix: 'REDUX_WEBSOCKET',

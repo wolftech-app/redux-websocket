@@ -53,7 +53,11 @@ describe('actions', () => {
         type: `${PREFIX}::${actionTypes.WEBSOCKET_MESSAGE}`,
         meta: { timestamp: expect.any(Date) },
         payload: {
-          test: 'value',
+          event: {
+            test: 'value',
+          },
+          message: undefined,
+          origin: undefined,
         },
       });
     });
