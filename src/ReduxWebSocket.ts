@@ -77,6 +77,8 @@ export default class ReduxWebSocket {
 
     // Attempt reconnecting on an interval.
     this.reconnectionInterval = setInterval(() => {
+      this.reconnectCount += 1;
+
       dispatch(reconnectAttempt(this.reconnectCount, prefix));
 
       // Call connect again, same way.
