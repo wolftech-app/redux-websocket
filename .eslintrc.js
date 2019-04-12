@@ -26,5 +26,15 @@ module.exports = {
       ignoreRestSiblings: false,
     }],
     'implicit-arrow-linebreak': 0,
+    "react/sort-comp": [1, {
+      order: [
+        'type-annotations',
+        'static-methods',
+        'instance-variables',
+        'lifecycle',
+        'everything-else',
+        'render',
+      ],
+    }]
   },
 }

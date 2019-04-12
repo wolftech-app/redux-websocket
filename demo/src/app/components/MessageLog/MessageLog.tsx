@@ -1,5 +1,6 @@
-import * as React from 'react';
 import * as Prism from 'prismjs';
+import * as React from 'react';
+import * as debounce from 'debounce';
 
 import { MessageState } from '../../store/defaultState';
 
@@ -26,13 +27,19 @@ interface State {
 }
 
 /**
- * Message Log Component
+ * MessageLog Component
  */
 export default class MessageLog extends React.Component<Props, State> {
+  debouncedScroll: (container: HTMLDivElement) => void;
+
+  // Create a container ref so we can automatically scroll it.
   containerRef = React.createRef<HTMLDivElement>();
 
   /**
    * Constructor
+   * @constructor
+   *
+   * @param {Props} props
    */
   constructor(props: Props) {
     super(props);
@@ -41,17 +48,22 @@ export default class MessageLog extends React.Component<Props, State> {
       autoScroll: true,
       isHovered: false,
     };
+
+    this.debouncedScroll = debounce((container: HTMLDivElement) => {
+      // eslint-disable-next-line no-param-reassign
+      container.scrollTop = container.scrollHeight;
+    }, 200);
   }
 
   /**
    * Component did update.
    * Highlight code blocks and handle scrolling log to bottom.
    *
-   * @param prevProps
-   * @param _prevState
-   * @param snapshot
+   * @param {Props} prevProps
+   * @param {State} _prevState
+   * @param {State} snapshot
    */
-  componentDidUpdate(prevProps: Props, _prevState: State, snapshot: State) {
+  componentDidUpdate(prevProps: Props, _prevState: State, snapshot: State): void {
     const { messages: prevMessages } = prevProps;
     const { messages } = this.props;
     const container = this.containerRef.current;
@@ -61,11 +73,7 @@ export default class MessageLog extends React.Component<Props, State> {
     }
 
     if (snapshot && snapshot.autoScroll) {
-      // Help prevent a little bit of flickering.
-      // TODO (brianmcallister) - Debounce this?
-      setTimeout(() => {
-        container.scrollTop = container.scrollHeight;
-      }, 100);
+      this.debouncedScroll(container);
     }
   }
 
@@ -73,6 +81,7 @@ export default class MessageLog extends React.Component<Props, State> {
    * Get snapshot before update.
    *
    * @param prevProps
+   *
    * @returns {State}
    */
   getSnapshotBeforeUpdate(prevProps: Props): State {
@@ -91,7 +100,7 @@ export default class MessageLog extends React.Component<Props, State> {
    *
    * @param event
    */
-  handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+  handleScroll = (event: React.UIEvent<HTMLDivElement>): void => {
     // Only handle scroll events when the user is causing the scroll event
     // with the mouse. This prevents the smooth scroll behavior, which is
     // triggered by a button click in another element, from causing autoScroll
@@ -112,9 +121,13 @@ export default class MessageLog extends React.Component<Props, State> {
   }
 
   /**
-   * Render messages
+   * Render messages.
+   *
+   * @param {MessageState[]}
+   *
+   * @returns {React.ReactNode}
    */
-  renderMessages = (messages: MessageState[]): JSX.Element[] => (
+  renderMessages = (messages: MessageState[]): React.ReactNode => (
     messages.map((message) => {
       const {
         data,
@@ -145,8 +158,10 @@ export default class MessageLog extends React.Component<Props, State> {
 
   /**
    * Render
+   *
+   * @returns {React.ReactElement<typeof MessageLogWrapper>}
    */
-  render() {
+  render(): React.ReactElement<typeof MessageLogWrapper> {
     const { autoScroll } = this.state;
     const { messages } = this.props;
 
