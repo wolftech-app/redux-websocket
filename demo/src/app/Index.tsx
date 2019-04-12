@@ -38,7 +38,7 @@ const disconnectSimulatorMiddleware = () => {
       };
     }
 
-    // Keep track of how many reconnnection attempts were made, and if we had
+    // Monitor how many reconnnection attempts were made, and if we had
     // enough, allow a reconnect to happen by restoring the original WebSocket.
     if (type === `${WEBSOCKET_PREFIX}::RECONNECT_ATTEMPT`) {
       const { count } = payload;
