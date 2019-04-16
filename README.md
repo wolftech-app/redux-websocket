@@ -65,7 +65,7 @@ These actions must be dispatched by you, however we do export action creator fun
 
 ###### Example:
 
-```
+```js
 import { connect } from '@giantmachines/redux-websocket';
 
 store.dispatch(connect('wss://my-server.com'));
@@ -82,7 +82,7 @@ store.dispatch(connect('wss://my-server.com'));
 
 ###### Example:
 
-```
+```js
 import { disconnect } from '@giantmachines/redux-websocket';
 
 store.dispatch(disconnect());
@@ -98,7 +98,7 @@ store.dispatch(disconnect());
 
 ###### Example:
 
-```
+```js
 import { disconnect } from '@giantmachines/redux-websocket';
 
 store.dispatch(send({ my: 'message' }));
@@ -121,7 +121,7 @@ Dispatched when the WebSocket connection successfully opens, including after aut
 
 ###### Structure
 
-```
+```js
 {
     type: 'REDUX_WEBSOCKET::OPEN',
     meta: {
@@ -138,7 +138,7 @@ Dispatched when the WebSocket connection successfully closes, both when you ask 
 
 ###### Structure
 
-```
+```js
 {
     type: 'REDUX_WEBSOCKET::CLOSED',
     meta: {
@@ -155,7 +155,7 @@ Dispatched when the WebSocket connection receives a message. The payload include
 
 ###### Structure
 
-```
+```js
 {
     type: 'REDUX_WEBSOCKET::MESSAGE',
     meta: {
@@ -176,7 +176,7 @@ Dispatched when the WebSocket connection is dropped. This action will always be 
 
 ###### Structure
 
-```
+```js
 {
     type: 'REDUX_WEBSOCKET::BROKEN',
     meta: {
@@ -193,7 +193,7 @@ Dispatched when the middleware is starting the reconnection process.
 
 ###### Structure
 
-```
+```js
 {
     type: 'REDUX_WEBSOCKET::BEGIN_RECONNECT',
     meta: {
@@ -210,7 +210,7 @@ Dispatched every time the middleware attempts a reconnection. Includes a `count`
 
 ###### Structure
 
-```
+```js
 {
     type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
     meta: {
@@ -230,7 +230,7 @@ Dispatched when the middleware reconnects. This action is dispached right before
 
 ###### Structure
 
-```
+```js
 {
     type: 'REDUX_WEBSOCKET::RECONNECTED',
     meta: {
@@ -247,7 +247,7 @@ General purpose error action.
 
 ###### Structure
 
-```
+```js
 {
     type: 'REDUX_WEBSOCKET::ERROR',
     meta: {
