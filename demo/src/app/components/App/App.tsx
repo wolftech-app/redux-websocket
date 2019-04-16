@@ -45,6 +45,12 @@ const App = ({ clear }: Props) => (
                 { `v${REDUX_WEBSOCKET_VERSION.split('.').slice(0, 2).join('.')}` }
               </Badge>
 
+              <Link href="https://www.giantmachines.com" target="_blank">
+                Giant Machines
+
+                <Icon />
+              </Link>
+
               <Link href="https://github.com/giantmachines/redux-websocket" target="_blank">
                 GitHub
 

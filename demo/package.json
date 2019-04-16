@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@giantmachines/redux-websocket": "1.0.0-alpha.2",
+    "@types/debounce": "1.2.0",
     "@types/prismjs": "1.9.1",
     "@types/react": "16.8.2",
     "@types/react-dom": "16.8.0",
@@ -22,6 +23,7 @@
     "babel-plugin-styled-components": "1.10.0",
     "clean-webpack-plugin": "2.0.1",
     "css-loader": "2.1.0",
+    "debounce": "1.2.0",
     "html-webpack-plugin": "3.2.0",
     "node-sass": "4.11.0",
     "polished": "3.1.0",
