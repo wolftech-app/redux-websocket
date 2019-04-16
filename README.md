@@ -99,7 +99,7 @@ store.dispatch(disconnect());
 ###### Example:
 
 ```js
-import { disconnect } from '@giantmachines/redux-websocket';
+import { send } from '@giantmachines/redux-websocket';
 
 store.dispatch(send({ my: 'message' }));
 ```
