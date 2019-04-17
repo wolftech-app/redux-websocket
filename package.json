@@ -1,6 +1,6 @@
 {
   "name": "@giantmachines/redux-websocket",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0",
   "description": "A redux middleware to handle websocket connections",
   "main": "dist/bundle.js",
   "types": "dist/types/index.d.ts",
