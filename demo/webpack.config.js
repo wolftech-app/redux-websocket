@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const packageJson = require('./package.json');
 
 const REDUX_WEBSOCKET_VERSION = packageJson.dependencies['@giantmachines/redux-websocket'];
+const { NODE_ENV: env = 'development' } = process.env;
 
 module.exports = {
   entry: {
@@ -49,9 +50,13 @@ module.exports = {
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
+        NODE_ENV: JSON.stringify(env),
         REDUX_WEBSOCKET_VERSION: JSON.stringify(REDUX_WEBSOCKET_VERSION),
       },
     }),
-    new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'app', 'index.html') }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src', 'app', 'index.html'),
+      env,
+    }),
   ],
 };

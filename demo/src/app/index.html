@@ -11,5 +11,19 @@
 </head>
 <body>
     <div id="root"></div>
+
+    <% if (htmlWebpackPlugin.options.env === 'production') { %>
+      <script>
+        var _StatHat = _StatHat || [];
+        _StatHat.push(['_setUser', 'NSCHKZ_eiqflpUcrO8kdakAw']);
+        (function() {
+          var sh = document.createElement('script'); sh.type = 'text/javascript';
+          sh.async = true;
+          sh.src = '//www.stathat.com/javascripts/api.js';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(sh, s);
+        })();
+      </script>
+    <% } %>
 </body>
 </html>
