@@ -4,6 +4,14 @@
 
 This middleware uses actions to interact with a WebSocket connection including connecting, disconnecting, sending messages, and receiving messages. All actions follow the [Flux Standard Action](https://github.com/acdlite/flux-standard-action) model.
 
+### Features
+
+- Written in TypeScript.
+- Interact with a WebSocket connection by dispatching actions.
+- Connect to multiple WebSocket streams by creating multiple middleware instances.
+- Handle WebSocket events with Redux middleware, integrate with Saga, and use reducers to persist state.
+- Automatically handle reconnection.
+
 ## Installation
 
 ```sh
