@@ -1,62 +1,40 @@
-const path = require('path');
-
 module.exports = {
-  extends: [
-    "plugin:flowtype/recommended",
-    'airbnb',
-  ],
-  globals: {},
-  parser: 'babel-eslint',
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-      experimentalObjectRestSpread: true
-    }
+  env: {
+    browser: true,
   },
   plugins: [
-    'react',
-    'flowtype'
+    'eslint-comments',
+    'jest',
+    'promise',
+    '@typescript-eslint',
   ],
-  settings: {
-    'import/resolver': {
-      webpack: {
-        config: 'webpack.config.js'
-      },
-      node: {
-        paths: [
-          path.resolve(__dirname),
-        ],
-      },
-    },
-  },
-  // See ESLint Rules: http://eslint.org/docs/rules/
+  parser: '@typescript-eslint/parser',
+  extends: [
+    'airbnb-typescript',
+    'plugin:eslint-comments/recommended',
+    'plugin:jest/recommended',
+    'plugin:promise/recommended',
+  ],
   rules: {
-    'no-console': 'off', // @todo Reinstate this after dev is nearly complete.
-    'linebreak-style': 'off',
-    'import/prefer-default-export': 0,
-    'import/no-named-as-default': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'jsx-a11y/no-static-element-interactions': 0,
-    'class-methods-use-this': 0,
-    'arrow-parens': 0,
-    'comma-dangle': ['error', {
-      'arrays': 'only-multiline',
-      'objects': 'only-multiline',
-      'imports': 'only-multiline',
-      'exports': 'only-multiline',
-      'functions': 'never',
+    'indent': ['error', 2, {
+      'SwitchCase': 1,
     }],
-    'react/forbid-prop-types': 'off',
-    'react/sort-comp': [2, {
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', {
+      vars: 'all',
+      args: 'after-used',
+      ignoreRestSiblings: false,
+    }],
+    'implicit-arrow-linebreak': 0,
+    "react/sort-comp": [1, {
       order: [
         'type-annotations',
         'static-methods',
+        'instance-variables',
         'lifecycle',
         'everything-else',
-        'render'
-      ]
-    }],
-  }
-};
+        'render',
+      ],
+    }]
+  },
+}
