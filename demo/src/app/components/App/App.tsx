@@ -20,6 +20,10 @@ import {
   Title,
 } from './styles';
 
+interface Props {
+  clear: () => void
+}
+
 const { REDUX_WEBSOCKET_VERSION } = process.env;
 
 const Icon = () => (
@@ -28,11 +32,14 @@ const Icon = () => (
   </svg>
 );
 
-interface Props {
-  clear: () => void
-}
-
-const App = ({ clear }: Props) => (
+/**
+ * App component.
+ *
+ * @param {Props}
+ *
+ * @returns {React.ReactNode}
+ */
+const App = ({ clear }: Props): React.ReactElement<null> => (
   <AppWrapper>
     <PanelContainer>
       <PanelGroup>
@@ -42,7 +49,7 @@ const App = ({ clear }: Props) => (
 
             <LinkContainer>
               <Badge>
-                { `v${REDUX_WEBSOCKET_VERSION.split('.').slice(0, 2).join('.')}` }
+                {`v${REDUX_WEBSOCKET_VERSION}`}
               </Badge>
 
               <Link href="https://www.giantmachines.com" target="_blank">

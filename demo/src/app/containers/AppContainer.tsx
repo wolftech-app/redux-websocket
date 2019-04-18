@@ -1,10 +1,12 @@
 import { connect } from 'react-redux';
 
-// import { websocketConnect, websocketDisconnect, websocketSend } from '../store/actions';
 import App from '../components/App';
 
-const mapDispatchToProps = {
+/**
+ * Map dispatch.
+ */
+const mapDispatch = {
   clear: () => ({ type: 'INTERNAL::CLEAR_MESSAGE_LOG' }),
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(null, mapDispatch)(App);
