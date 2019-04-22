@@ -18,15 +18,17 @@ const mockStore = () => {
 };
 
 reduxWebSocketMock.mockImplementation(options => ({
+  close: () => {},
+  connect: connectMock,
+  disconnect: disconnectMock,
+  handleBrokenConnection: () => {},
+  hasOpened: false,
+  lastSocketUrl: '',
   options,
   reconnectCount: 0,
   reconnectionInterval: null,
-  lastSocketUrl: '',
-  handleBrokenConnection: () => {},
-  websocket: null,
-  connect: connectMock,
-  disconnect: disconnectMock,
   send: sendMock,
+  websocket: null,
 }));
 
 describe('middleware', () => {
