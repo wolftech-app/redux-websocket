@@ -27,6 +27,9 @@
   ],
   "author": "Giant Machines <contact@giantmachines.com> (https://giantmachines.com)",
   "license": "MIT",
+  "peerDependencies": {
+    "redux": "~4"
+  },
   "devDependencies": {
     "@babel/cli": "7.2.0",
     "@babel/core": "7.2.0",
@@ -48,7 +51,6 @@
     "eslint-plugin-promise": "4.0.1",
     "eslint-plugin-react": "7.12.4",
     "jest": "24.1.0",
-    "redux": "4.0.1",
     "redux-mock-store": "1.5.3",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.1",
