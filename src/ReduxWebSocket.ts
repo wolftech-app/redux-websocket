@@ -107,8 +107,17 @@ export default class ReduxWebSocket {
     this.lastSocketUrl = payload.url;
     this.websocket = new WebSocket(payload.url);
 
-    this.websocket.onmessage = (event: MessageEvent) => dispatch(message(event, prefix));
-    this.websocket.onerror = (event) => {
+    this.websocket.addEventListener('close', (event) => {
+      const isNull = this.websocket == null;
+
+      dispatch(closed(event, prefix));
+
+      if (!isNull && this.hasOpened) {
+        this.handleBrokenConnection(dispatch);
+      }
+    });
+
+    this.websocket.addEventListener('error', (event) => {
       // Only attempt to reconnect if the connection has ever successfully opened.
       // This prevents ongoing reconnect loops to connections that have not
       // successfully opened before, such as net::ERR_CONNECTION_REFUSED errors.
@@ -120,8 +129,9 @@ export default class ReduxWebSocket {
       const { url } = currentTarget as WebSocket;
 
       dispatch(error(null, new Error(`\`redux-websocket\` erorr. Could not open WebSocket connection to "${url}".`), prefix));
-    };
-    this.websocket.onopen = (event: Event) => {
+    });
+
+    this.websocket.addEventListener('open', (event) => {
       // Clean up any outstanding reconnection attempts.
       if (this.reconnectionInterval) {
         clearInterval(this.reconnectionInterval);
@@ -144,16 +154,11 @@ export default class ReduxWebSocket {
       // for error handling later, ensuring we don't try to reconnect when a
       // connection was never able to open in the first place.
       this.hasOpened = true;
-    };
-    this.websocket.onclose = (event: Event) => {
-      const isNull = this.websocket == null;
+    });
 
-      dispatch(closed(event, prefix));
-
-      if (!isNull && this.hasOpened) {
-        this.handleBrokenConnection(dispatch);
-      }
-    };
+    this.websocket.addEventListener('message', (event: MessageEvent) => {
+      dispatch(message(event, prefix));
+    });
   }
 
   /**
