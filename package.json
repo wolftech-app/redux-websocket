@@ -27,7 +27,7 @@
   ],
   "author": "Giant Machines <contact@giantmachines.com> (https://giantmachines.com)",
   "license": "MIT",
-  "peerDependencies": {
+  "dependencies": {
     "redux": "~4"
   },
   "devDependencies": {
