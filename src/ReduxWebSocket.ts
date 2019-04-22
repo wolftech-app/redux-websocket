@@ -143,7 +143,7 @@ export default class ReduxWebSocket {
    */
   disconnect = () => {
     if (this.websocket) {
-      this.websocket.close();
+      this.websocket.close(1000, 'WebSocket connection closed by redux-websocket.');
 
       this.websocket = null;
     } else {
