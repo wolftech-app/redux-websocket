@@ -53,7 +53,7 @@ export const message = (event: MessageEvent, prefix: string) => {
 };
 export const open = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_OPEN}`, event);
 export const broken = (prefix: string) => buildAction(`${prefix}::${WEBSOCKET_BROKEN}`);
-export const error = (originalAction: Action, err: Error, prefix: string) => (
+export const error = (originalAction: Action | null, err: Error, prefix: string) => (
   buildAction(`${prefix}::${WEBSOCKET_ERROR}`, {
     message: err.message,
     name: err.name,

@@ -37,6 +37,8 @@ const disconnectSimulatorMiddleware = () => {
     if (type === `${WEBSOCKET_PREFIX}::BROKEN`) {
       (window as any).WebSocket = class FakeWebSocket {
         close = () => {}
+
+        addEventListener = () => {}
       };
     }
 
