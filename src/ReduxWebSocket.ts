@@ -128,7 +128,7 @@ export default class ReduxWebSocket {
       const { currentTarget } = event;
       const { url } = currentTarget as WebSocket;
 
-      dispatch(error(null, new Error(`\`redux-websocket\` erorr. Could not open WebSocket connection to "${url}".`), prefix));
+      dispatch(error(null, new Error(`\`redux-websocket\` error. Could not open WebSocket connection to "${url}".`), prefix));
     });
 
     this.websocket.addEventListener('open', (event) => {
