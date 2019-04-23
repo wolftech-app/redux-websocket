@@ -1,16 +1,16 @@
-// import { Options } from '../src/types';
-import * as actions from '../src/actions';
-import middleware from '../src';
-import ReduxWebSocket from '../src/ReduxWebSocket';
+import * as actions from '../actions';
+import middleware from '../createMiddleware';
+import ReduxWebSocket from '../ReduxWebSocket';
 
-jest.mock('../src/ReduxWebSocket');
+jest.mock('../ReduxWebSocket');
 
-const reduxWebSocketMock = <jest.Mock<ReduxWebSocket>>ReduxWebSocket;
+const reduxWebSocketMock = ReduxWebSocket as jest.Mock<ReduxWebSocket>;
 const connectMock = jest.fn();
 const disconnectMock = jest.fn();
 const sendMock = jest.fn();
+const dispatchMock = jest.fn(i => i);
 const mockStore = () => {
-  const store = { getState: () => {}, dispatch: (i: any) => i };
+  const store = { getState: () => {}, dispatch: dispatchMock };
   const wrapper = middleware()(store);
   const dispatch = wrapper(i => i);
 
@@ -136,5 +136,34 @@ describe('middleware', () => {
     expect(connectMock).not.toHaveBeenCalled();
     expect(disconnectMock).not.toHaveBeenCalled();
     expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it('shoud dispatch an error action if a handler throws an error', () => {
+    sendMock.mockImplementation(() => { throw new Error('whoops'); });
+
+    const { dispatch } = mockStore();
+
+    const result = dispatch(actions.send({ test: 'message' }));
+    const expectedResult = {
+      type: 'REDUX_WEBSOCKET::SEND',
+      meta: {
+        timestamp: expect.any(Date),
+      },
+      payload: {
+        test: 'message',
+      },
+    };
+
+    expect(result).toEqual(expectedResult);
+    expect(dispatchMock).toHaveBeenCalledTimes(1);
+    expect(dispatchMock).toHaveBeenCalledWith({
+      type: 'REDUX_WEBSOCKET::ERROR',
+      meta: { timestamp: expect.any(Date) },
+      payload: {
+        message: 'whoops',
+        name: 'Error',
+        originalAction: expectedResult,
+      },
+    });
   });
 });

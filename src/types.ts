@@ -1,5 +1,3 @@
-import { MiddlewareAPI } from 'redux';
-
 import {
   WEBSOCKET_CLOSED,
   WEBSOCKET_CONNECT,
@@ -25,8 +23,6 @@ type Action =
   | { type: typeof WEBSOCKET_OPEN, payload: any }
   | { type: typeof WEBSOCKET_SEND, payload: any };
 
-type ActionHandler = (_store: MiddlewareAPI, action: Action) => void;
-
 type Options = {
   prefix?: string
   reconnectInterval?: number
@@ -38,7 +34,6 @@ type Options = {
 export {
   Action,
   ActionType,
-  ActionHandler,
   Options,
 };
 /* eslint-enable no-undef */
