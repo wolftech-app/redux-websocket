@@ -22,6 +22,14 @@ type BuiltAction<T> = {
   payload?: T,
 }
 
+/**
+ * Create an FSA compliant action.
+ *
+ * @param {string} actionType
+ * @param {T} payload
+ *
+ * @returns {BuiltAction<T>}
+ */
 function buildAction<T>(actionType: string, payload?: T): BuiltAction<T> {
   const base = {
     type: actionType,
@@ -31,28 +39,28 @@ function buildAction<T>(actionType: string, payload?: T): BuiltAction<T> {
   return payload ? { ...base, payload } : base;
 }
 
-// Action creators for user dispatched actions.
+// Action creators for user dispatched actions. These actions are all optionally
+// prefixed.
 export const connect = (url: string, prefix?: string) => buildAction(`${prefix || DEFAULT_PREFIX}::${WEBSOCKET_CONNECT}`, { url });
 export const disconnect = (prefix?: string) => buildAction(`${prefix || DEFAULT_PREFIX}::${WEBSOCKET_DISCONNECT}`);
 export const send = (msg: any, prefix?: string) => buildAction(`${prefix || DEFAULT_PREFIX}::${WEBSOCKET_SEND}`, msg);
 
-// Action creators for actions dispatched by redux-websocket.
+// Action creators for actions dispatched by redux-websocket. All of these must
+// take a prefix. The default prefix should be used unless a user has created
+// this middleware with the prefix option set.
 export const beginReconnect = (prefix: string) => buildAction(`${prefix}::${WEBSOCKET_BEGIN_RECONNECT}`);
 export const reconnectAttempt = (count: number, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_RECONNECT_ATTEMPT}`, { count });
 export const reconnected = (prefix: string) => buildAction(`${prefix}::${WEBSOCKET_RECONNECTED}`);
-
+export const open = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_OPEN}`, event);
+export const broken = (prefix: string) => buildAction(`${prefix}::${WEBSOCKET_BROKEN}`);
 export const closed = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_CLOSED}`, event);
-export const message = (event: MessageEvent, prefix: string) => {
-  const payload = {
+export const message = (event: MessageEvent, prefix: string) => (
+  buildAction(`${prefix}::${WEBSOCKET_MESSAGE}`, {
     event,
     message: event.data,
     origin: event.origin,
-  };
-
-  return buildAction(`${prefix}::${WEBSOCKET_MESSAGE}`, payload);
-};
-export const open = (event: Event, prefix: string) => buildAction(`${prefix}::${WEBSOCKET_OPEN}`, event);
-export const broken = (prefix: string) => buildAction(`${prefix}::${WEBSOCKET_BROKEN}`);
+  })
+);
 export const error = (originalAction: Action | null, err: Error, prefix: string) => (
   buildAction(`${prefix}::${WEBSOCKET_ERROR}`, {
     message: err.message,
