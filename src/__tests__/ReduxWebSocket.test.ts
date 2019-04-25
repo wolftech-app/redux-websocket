@@ -79,23 +79,71 @@ describe('ReduxWebSocket', () => {
       });
     });
 
-    it('handles an error event', () => {
-      const event = addEventListenerMock.mock.calls.find(call => call[0] === 'error');
-      const testEvent = { currentTarget: { url: 'test url' } };
+    it('handles a message event', () => {
+      const event = addEventListenerMock.mock.calls.find(call => call[0] === 'message');
+      const data = '{ "test": "message" }';
+      const testEvent = { data, origin: 'test origin' };
 
       event[1](testEvent);
 
       expect(store.dispatch).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'REDUX_WEBSOCKET::ERROR',
+        type: 'REDUX_WEBSOCKET::MESSAGE',
         meta: {
           timestamp: expect.any(Date),
         },
         payload: {
-          message: '`redux-websocket` error. Could not open WebSocket connection to "test url".',
-          name: 'Error',
-          originalAction: null,
+          event: testEvent,
+          message: data,
+          origin: 'test origin',
         },
+      });
+    });
+
+    describe('error event', () => {
+      it('handles an error event', () => {
+        const event = addEventListenerMock.mock.calls.find(call => call[0] === 'error');
+        const testEvent = { currentTarget: { url: 'test url' } };
+
+        event[1](testEvent);
+
+        expect(store.dispatch).toHaveBeenCalledTimes(1);
+        expect(store.dispatch).toHaveBeenCalledWith({
+          type: 'REDUX_WEBSOCKET::ERROR',
+          meta: {
+            timestamp: expect.any(Date),
+          },
+          payload: {
+            message: '`redux-websocket` error. Could not open WebSocket connection to "test url".',
+            name: 'Error',
+            originalAction: null,
+          },
+        });
+      });
+
+      it('calls handleBrokenConnection', () => {
+        const dispatch = jest.fn();
+
+        // @ts-ignore
+        reduxWebSocket.handleBrokenConnection = jest.fn();
+
+        // @ts-ignore
+        reduxWebSocket.handleError(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
+
+        // @ts-ignore
+        expect(reduxWebSocket.handleBrokenConnection).not.toHaveBeenCalled();
+
+        // @ts-ignore
+        reduxWebSocket.hasOpened = true;
+
+        // @ts-ignore
+        reduxWebSocket.handleError(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
+
+        // @ts-ignore
+        expect(reduxWebSocket.handleBrokenConnection).toHaveBeenCalledTimes(1);
+
+        // @ts-ignore
+        expect(reduxWebSocket.handleBrokenConnection).toHaveBeenCalledWith(dispatch);
       });
     });
 
@@ -164,27 +212,6 @@ describe('ReduxWebSocket', () => {
           },
           payload: 'test event',
         });
-      });
-    });
-
-    it('handles a message event', () => {
-      const event = addEventListenerMock.mock.calls.find(call => call[0] === 'message');
-      const data = '{ "test": "message" }';
-      const testEvent = { data, origin: 'test origin' };
-
-      event[1](testEvent);
-
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'REDUX_WEBSOCKET::MESSAGE',
-        meta: {
-          timestamp: expect.any(Date),
-        },
-        payload: {
-          event: testEvent,
-          message: data,
-          origin: 'test origin',
-        },
       });
     });
   });
