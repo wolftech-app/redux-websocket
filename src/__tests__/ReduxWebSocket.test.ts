@@ -248,4 +248,63 @@ describe('ReduxWebSocket', () => {
         .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
     });
   });
+
+  describe('handleBrokenConnection', () => {
+    jest.useFakeTimers();
+
+    it('should reconnect on an interval', () => {
+      const dispatch = jest.fn();
+
+      // @ts-ignore
+      reduxWebSocket.handleBrokenConnection(dispatch);
+
+      jest.advanceTimersByTime(5000);
+
+      // Make sure we actually check all of the calls to `dispatch`.
+      expect.assertions(7);
+
+      expect(dispatch).toHaveBeenCalledTimes(5);
+      // @ts-ignore
+      expect(reduxWebSocket.reconnectCount).toEqual(3);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: 'REDUX_WEBSOCKET::BROKEN',
+        meta: {
+          timestamp: expect.any(Date),
+        },
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: 'REDUX_WEBSOCKET::BEGIN_RECONNECT',
+        meta: {
+          timestamp: expect.any(Date),
+        },
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(3, {
+        type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
+        meta: {
+          timestamp: expect.any(Date),
+        },
+        payload: {
+          count: 1,
+        },
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(4, {
+        type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
+        meta: {
+          timestamp: expect.any(Date),
+        },
+        payload: {
+          count: 2,
+        },
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(5, {
+        type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
+        meta: {
+          timestamp: expect.any(Date),
+        },
+        payload: {
+          count: 3,
+        },
+      });
+    });
+  });
 });
