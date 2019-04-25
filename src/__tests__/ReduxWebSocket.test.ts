@@ -99,6 +99,74 @@ describe('ReduxWebSocket', () => {
       });
     });
 
+    describe('open event', () => {
+      it('dispatches an open action and sets the hasOpened flag', () => {
+        const event = addEventListenerMock.mock.calls.find(call => call[0] === 'open');
+
+        event[1]();
+
+        expect(store.dispatch).toHaveBeenCalledTimes(1);
+        expect(store.dispatch).toHaveBeenCalledWith({
+          type: 'REDUX_WEBSOCKET::OPEN',
+          meta: {
+            timestamp: expect.any(Date),
+          },
+        });
+        // @ts-ignore
+        expect(reduxWebSocket.hasOpened).toEqual(true);
+      });
+
+      it('calls an onOpen function with a reference to the opened socket', () => {
+        const onOpen = jest.fn();
+
+        // @ts-ignore
+        reduxWebSocket.options.onOpen = onOpen;
+        reduxWebSocket.connect(store, action as Action);
+
+        const event = addEventListenerMock.mock.calls.find(call => call[0] === 'open');
+
+        event[1]('test event');
+
+        expect(onOpen).toHaveBeenCalledTimes(1);
+        // @ts-ignore
+        expect(onOpen).toHaveBeenCalledWith(reduxWebSocket.websocket);
+      });
+
+      it('handles successful reconnection', () => {
+        const event = addEventListenerMock.mock.calls.find(call => call[0] === 'open');
+
+        // @ts-ignore
+        reduxWebSocket.reconnectionInterval = 'truthy';
+        // @ts-ignore
+        reduxWebSocket.reconnectCount = 9999;
+
+        global.clearInterval = jest.fn();
+
+        event[1]('test event');
+
+        // @ts-ignore
+        expect(reduxWebSocket.reconnectionInterval).toBeNull();
+        // @ts-ignore
+        expect(reduxWebSocket.reconnectCount).toEqual(0);
+
+        // Once for the reconnected action, once for the open action.
+        expect(store.dispatch).toHaveBeenCalledTimes(2);
+        expect(store.dispatch).toHaveBeenCalledWith({
+          type: 'REDUX_WEBSOCKET::RECONNECTED',
+          meta: {
+            timestamp: expect.any(Date),
+          },
+        });
+        expect(store.dispatch).toHaveBeenCalledWith({
+          type: 'REDUX_WEBSOCKET::OPEN',
+          meta: {
+            timestamp: expect.any(Date),
+          },
+          payload: 'test event',
+        });
+      });
+    });
+
     it('handles a message event', () => {
       const event = addEventListenerMock.mock.calls.find(call => call[0] === 'message');
       const data = '{ "test": "message" }';

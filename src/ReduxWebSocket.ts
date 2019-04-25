@@ -63,14 +63,16 @@ export default class ReduxWebSocket {
   connect = ({ dispatch }: MiddlewareAPI, { payload }: Action) => {
     this.close();
 
-    const { prefix, onOpen } = this.options;
+    const { prefix } = this.options;
 
     this.lastSocketUrl = payload.url;
     this.websocket = new WebSocket(payload.url);
 
     this.websocket.addEventListener('close', event => this.handleClose(dispatch, prefix, event));
     this.websocket.addEventListener('error', event => this.handleError(dispatch, prefix, event));
-    this.websocket.addEventListener('open', event => this.handleOpen(dispatch, prefix, onOpen, event));
+    this.websocket.addEventListener('open', (event) => {
+      this.handleOpen(dispatch, prefix, this.options.onOpen, event);
+    });
     this.websocket.addEventListener('message', event => this.handleMessage(dispatch, prefix, event));
   }
 
