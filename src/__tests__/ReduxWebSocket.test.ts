@@ -24,6 +24,8 @@ describe('ReduxWebSocket', () => {
   beforeEach(() => {
     reduxWebSocket = new ReduxWebSocket(options);
 
+    store.dispatch.mockClear();
+
     addEventListenerMock.mockClear();
     closeMock.mockClear();
     sendMock.mockClear();
@@ -36,19 +38,18 @@ describe('ReduxWebSocket', () => {
   });
 
   describe('connect', () => {
-    it('creates a new WebSocket instance', () => {
-      const action = { type: 'SEND', payload: { url } };
+    const action = { type: 'SEND', payload: { url } };
 
+    beforeEach(() => {
       reduxWebSocket.connect(store, action as Action);
+    });
 
+    it('creates a new WebSocket instance', () => {
       expect(global.WebSocket).toHaveBeenCalledTimes(1);
       expect(global.WebSocket).toHaveBeenCalledWith(url);
     });
 
     it('closes any existing connections', () => {
-      const action = { type: 'SEND', payload: { url } };
-
-      reduxWebSocket.connect(store, action as Action);
       reduxWebSocket.connect(store, action as Action);
 
       expect(closeMock).toHaveBeenCalledTimes(1);
@@ -56,10 +57,6 @@ describe('ReduxWebSocket', () => {
     });
 
     it('binds all event listeners', () => {
-      const action = { type: 'SEND', payload: { url } };
-
-      reduxWebSocket.connect(store, action as Action);
-
       expect(addEventListenerMock).toHaveBeenCalledTimes(4);
       expect(addEventListenerMock).toHaveBeenCalledWith('close', expect.any(Function));
       expect(addEventListenerMock).toHaveBeenCalledWith('error', expect.any(Function));
@@ -68,10 +65,6 @@ describe('ReduxWebSocket', () => {
     });
 
     it('handles a close event', () => {
-      const action = { type: 'SEND', payload: { url } };
-
-      reduxWebSocket.connect(store, action as Action);
-
       const event = addEventListenerMock.mock.calls.find(call => call[0] === 'close');
 
       event[1]('test event');
@@ -83,6 +76,27 @@ describe('ReduxWebSocket', () => {
           timestamp: expect.any(Date),
         },
         payload: 'test event',
+      });
+    });
+
+    it('handles a message event', () => {
+      const event = addEventListenerMock.mock.calls.find(call => call[0] === 'message');
+      const data = '{ "test": "message" }';
+      const testEvent = { data, origin: 'test origin' };
+
+      event[1](testEvent);
+
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'REDUX_WEBSOCKET::MESSAGE',
+        meta: {
+          timestamp: expect.any(Date),
+        },
+        payload: {
+          event: testEvent,
+          message: data,
+          origin: 'test origin',
+        },
       });
     });
   });
