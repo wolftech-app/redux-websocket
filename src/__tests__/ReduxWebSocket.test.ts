@@ -10,20 +10,34 @@ declare global {
 }
 
 describe('ReduxWebSocket', () => {
+  const store = { dispatch: jest.fn((i: any) => i), getState: () => {} };
+  const url = 'ws://fake.com';
   const options = {
     prefix: 'REDUX_WEBSOCKET',
     reconnectInterval: 2000,
   };
+  const closeMock = jest.fn();
+  const sendMock = jest.fn();
+  const addEventListenerMock = jest.fn();
+  let reduxWebSocket: ReduxWebSocket;
+
+  beforeEach(() => {
+    reduxWebSocket = new ReduxWebSocket(options);
+
+    addEventListenerMock.mockClear();
+    closeMock.mockClear();
+    sendMock.mockClear();
+
+    global.WebSocket = jest.fn(() => ({
+      addEventListener: addEventListenerMock,
+      close: closeMock,
+      send: sendMock,
+    }));
+  });
 
   describe('connect', () => {
     it('creates a new WebSocket instance', () => {
-      const store = { dispatch: (i: any) => i, getState: () => {} };
-      const url = 'ws://fake.com';
       const action = { type: 'SEND', payload: { url } };
-      global.WebSocket = jest.fn(() => ({
-        addEventListener: jest.fn(),
-      }));
-      const reduxWebSocket = new ReduxWebSocket(options);
 
       reduxWebSocket.connect(store, action as Action);
 
@@ -32,15 +46,7 @@ describe('ReduxWebSocket', () => {
     });
 
     it('closes any existing connections', () => {
-      const store = { dispatch: (i: any) => i, getState: () => {} };
-      const url = 'ws://fake.com';
       const action = { type: 'SEND', payload: { url } };
-      const closeMock = jest.fn();
-      global.WebSocket = jest.fn(() => ({
-        addEventListener: jest.fn(),
-        close: closeMock,
-      }));
-      const reduxWebSocket = new ReduxWebSocket(options);
 
       reduxWebSocket.connect(store, action as Action);
       reduxWebSocket.connect(store, action as Action);
@@ -48,48 +54,69 @@ describe('ReduxWebSocket', () => {
       expect(closeMock).toHaveBeenCalledTimes(1);
       expect(closeMock).toHaveBeenCalledWith(1000, 'WebSocket connection closed by redux-websocket.');
     });
+
+    it('binds all event listeners', () => {
+      const action = { type: 'SEND', payload: { url } };
+
+      reduxWebSocket.connect(store, action as Action);
+
+      expect(addEventListenerMock).toHaveBeenCalledTimes(4);
+      expect(addEventListenerMock).toHaveBeenCalledWith('close', expect.any(Function));
+      expect(addEventListenerMock).toHaveBeenCalledWith('error', expect.any(Function));
+      expect(addEventListenerMock).toHaveBeenCalledWith('open', expect.any(Function));
+      expect(addEventListenerMock).toHaveBeenCalledWith('message', expect.any(Function));
+    });
+
+    it('handles a close event', () => {
+      const action = { type: 'SEND', payload: { url } };
+
+      reduxWebSocket.connect(store, action as Action);
+
+      const event = addEventListenerMock.mock.calls.find(call => call[0] === 'close');
+
+      event[1]('test event');
+
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'REDUX_WEBSOCKET::CLOSED',
+        meta: {
+          timestamp: expect.any(Date),
+        },
+        payload: 'test event',
+      });
+    });
   });
 
-  // describe('disconnect', () => {
-  //   it('closes the websocket if it exists', () => {
-  //     const reduxWebSocket = new ReduxWebSocket(options);
-  //     const closeMock = jest.fn(() => {});
+  describe('disconnect', () => {
+    it('should close any open connection', () => {
+      const action = { type: 'SEND', payload: { url } };
 
-  //     reduxWebSocket.websocket = new WebSocket('ws://fake.com');
-  //     reduxWebSocket.websocket.close = closeMock;
+      reduxWebSocket.connect(store, action as Action);
+      reduxWebSocket.disconnect();
 
-  //     reduxWebSocket.disconnect();
+      expect(closeMock).toHaveBeenCalledTimes(1);
+    });
 
-  //     expect(closeMock).toHaveBeenCalledTimes(1);
-  //   });
+    it('should throw an error if no connection exists', () => {
+      expect(() => reduxWebSocket.disconnect())
+        .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
+    });
+  });
 
-  //   it('throws an error if there is no websocket', () => {
-  //     const reduxWebSocket = new ReduxWebSocket(options);
+  describe('send', () => {
+    it('should send a JSON message', () => {
+      const action = { type: 'SEND', payload: { url } };
 
-  //     expect(reduxWebSocket.disconnect).toThrow();
-  //   });
-  // });
+      reduxWebSocket.connect(store, action as Action);
+      reduxWebSocket.send(null as any, { payload: { test: 'value' } } as any);
 
-  // describe('send', () => {
-  //   it('sends a stringified message', () => {
-  //     const store = { dispatch: (i: any) => i, getState: () => {} };
-  //     const reduxWebSocket = new ReduxWebSocket(options);
-  //     const sendMock = jest.fn(() => {});
-  //     const action = {
-  //       type: 'REDUX_WEBSOCKET::SEND',
-  //       payload: {
-  //         name: 'John',
-  //         age: 20,
-  //       },
-  //     };
+      expect(sendMock).toHaveBeenCalledTimes(1);
+      expect(sendMock).toHaveBeenCalledWith('{"test":"value"}');
+    });
 
-  //     reduxWebSocket.websocket = new WebSocket('ws://fake.com');
-  //     reduxWebSocket.websocket.send = sendMock;
-
-  //     reduxWebSocket.send(store, action as Action);
-
-  //     expect(sendMock).toHaveBeenCalledTimes(1);
-  //     expect(sendMock).toHaveBeenCalledWith(JSON.stringify(action.payload));
-  //   });
-  // });
+    it('should throw an error if no connection exists', () => {
+      expect(() => reduxWebSocket.send(null as any, { payload: null } as any))
+        .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
+    });
+  });
 });
