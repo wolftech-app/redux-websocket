@@ -19,6 +19,7 @@ blocks:
       jobs:
         - name: eslint
           commands:
+            - cd demo && npm i && cd -
             - npm run lint
 
         - name: tsc
