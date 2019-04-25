@@ -17,8 +17,8 @@ export default [
         age: 25,
         sex: 'M',
         created: new Date(),
-      }
-    ], null, 2)
+      },
+    ], null, 2),
   },
   {
     name: 'Date',
