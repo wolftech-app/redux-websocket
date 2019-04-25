@@ -4,7 +4,7 @@ import ReduxWebSocket from '../ReduxWebSocket';
 
 jest.mock('../ReduxWebSocket');
 
-const reduxWebSocketMock = ReduxWebSocket as jest.Mock<ReduxWebSocket>;
+const ReduxWebSocketMock = ReduxWebSocket as jest.Mock<ReduxWebSocket>;
 const connectMock = jest.fn();
 const disconnectMock = jest.fn();
 const sendMock = jest.fn();
@@ -17,23 +17,34 @@ const mockStore = () => {
   return { store, wrapper, dispatch };
 };
 
-reduxWebSocketMock.mockImplementation(options => ({
-  close: () => {},
-  connect: connectMock,
-  disconnect: disconnectMock,
-  handleBrokenConnection: () => {},
-  hasOpened: false,
-  lastSocketUrl: '',
-  options,
-  reconnectCount: 0,
-  reconnectionInterval: null,
-  send: sendMock,
-  websocket: null,
-}));
+// @ts-ignore
+ReduxWebSocketMock.mockImplementation((options) => {
+  /* eslint-disable lines-between-class-members */
+  class Fake {
+    close = () => {}
+    connect = connectMock
+    disconnect = disconnectMock
+    handleBrokenConnection = () => {}
+    hasOpened = false
+    lastSocketUrl = ''
+    private options = options
+    reconnectCount = 0
+    reconnectionInterval = null
+    send = sendMock
+    websocket = null
+    handleClose = () => {}
+    handleError = () => {}
+    handleOpen = () => {}
+    handleMessage = () => {}
+  }
+  /* eslint-enable lines-between-class-members */
+
+  return new Fake();
+});
 
 describe('middleware', () => {
   beforeEach(() => {
-    reduxWebSocketMock.mockClear();
+    ReduxWebSocketMock.mockClear();
     connectMock.mockClear();
     disconnectMock.mockClear();
     sendMock.mockClear();
@@ -42,13 +53,13 @@ describe('middleware', () => {
   it('creates a new ReduxWebSocket instance', () => {
     middleware();
 
-    expect(reduxWebSocketMock).toHaveBeenCalled();
+    expect(ReduxWebSocketMock).toHaveBeenCalled();
   });
 
   it('passes default options to the ReduxWebSocket constructor', () => {
     middleware();
 
-    expect(reduxWebSocketMock).toHaveBeenCalledWith({
+    expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'REDUX_WEBSOCKET',
       reconnectInterval: 2000,
     });
@@ -57,7 +68,7 @@ describe('middleware', () => {
   it('passes custom options to the ReduxWebSocket constructor', () => {
     middleware({ prefix: 'CUSTOM' });
 
-    expect(reduxWebSocketMock).toHaveBeenCalledWith({
+    expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'CUSTOM',
       reconnectInterval: 2000,
     });
@@ -67,12 +78,12 @@ describe('middleware', () => {
     middleware({ prefix: 'ONE' });
     middleware({ prefix: 'TWO' });
 
-    expect(reduxWebSocketMock).toHaveBeenCalledTimes(2);
-    expect(reduxWebSocketMock).toHaveBeenCalledWith({
+    expect(ReduxWebSocketMock).toHaveBeenCalledTimes(2);
+    expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'ONE',
       reconnectInterval: 2000,
     });
-    expect(reduxWebSocketMock).toHaveBeenCalledWith({
+    expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'TWO',
       reconnectInterval: 2000,
     });
