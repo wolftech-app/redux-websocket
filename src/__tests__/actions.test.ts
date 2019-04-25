@@ -1,5 +1,5 @@
-import * as actions from '../src/actions';
-import * as actionTypes from '../src/actionTypes';
+import * as actions from '../actions';
+import * as actionTypes from '../actionTypes';
 
 describe('actions', () => {
   describe('closed', () => {
