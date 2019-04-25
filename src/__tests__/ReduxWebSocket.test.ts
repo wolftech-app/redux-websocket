@@ -79,6 +79,26 @@ describe('ReduxWebSocket', () => {
       });
     });
 
+    it('handles an error event', () => {
+      const event = addEventListenerMock.mock.calls.find(call => call[0] === 'error');
+      const testEvent = { currentTarget: { url: 'test url' } };
+
+      event[1](testEvent);
+
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'REDUX_WEBSOCKET::ERROR',
+        meta: {
+          timestamp: expect.any(Date),
+        },
+        payload: {
+          message: '`redux-websocket` error. Could not open WebSocket connection to "test url".',
+          name: 'Error',
+          originalAction: null,
+        },
+      });
+    });
+
     it('handles a message event', () => {
       const event = addEventListenerMock.mock.calls.find(call => call[0] === 'message');
       const data = '{ "test": "message" }';

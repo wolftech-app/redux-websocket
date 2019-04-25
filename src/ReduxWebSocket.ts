@@ -115,13 +115,7 @@ export default class ReduxWebSocket {
    * @param {Event} event
    */
   private handleClose = (dispatch: Dispatch, prefix: string, event: Event) => {
-    const isNull = this.websocket == null;
-
     dispatch(closed(event, prefix));
-
-    if (!isNull && this.hasOpened) {
-      this.handleBrokenConnection(dispatch);
-    }
   }
 
   /**
