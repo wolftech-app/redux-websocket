@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import MessageLog from '../components/MessageLog';
 
 const mapStateToProps = state => ({
