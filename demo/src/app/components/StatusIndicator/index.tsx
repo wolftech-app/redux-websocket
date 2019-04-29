@@ -1,3 +1,3 @@
-import  StatusIndicator from './StatusIndicator';
+import StatusIndicator from './StatusIndicator';
 
 export default StatusIndicator;

@@ -56,6 +56,24 @@ export default class MessageLog extends React.Component<Props, State> {
   }
 
   /**
+   * Get snapshot before update.
+   *
+   * @param prevProps
+   *
+   * @returns {State}
+   */
+  getSnapshotBeforeUpdate(prevProps: Props): State {
+    const { messages: prevMessages } = prevProps;
+    const { messages } = this.props;
+
+    if (prevMessages.length !== messages.length) {
+      return this.state;
+    }
+
+    return null;
+  }
+
+  /**
    * Component did update.
    * Highlight code blocks and handle scrolling log to bottom.
    *
@@ -75,24 +93,6 @@ export default class MessageLog extends React.Component<Props, State> {
     if (snapshot && snapshot.autoScroll) {
       this.debouncedScroll(container);
     }
-  }
-
-  /**
-   * Get snapshot before update.
-   *
-   * @param prevProps
-   *
-   * @returns {State}
-   */
-  getSnapshotBeforeUpdate(prevProps: Props): State {
-    const { messages: prevMessages } = prevProps;
-    const { messages } = this.props;
-
-    if (prevMessages.length !== messages.length) {
-      return this.state;
-    }
-
-    return null;
   }
 
   /**

@@ -14,7 +14,7 @@
     "clean": "rimraf dist",
     "check-types": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src ./test",
+    "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty --ignore-path .gitignore ./src ./demo",
     "prepare": "npm run build",
     "test": "jest --coverage"
   },
