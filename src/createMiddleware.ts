@@ -1,11 +1,6 @@
 import { Middleware, MiddlewareAPI } from 'redux';
 
-import {
-  Action,
-  ActionHandler,
-  ActionType,
-  Options,
-} from './types';
+import { Action, Options } from './types';
 import { error } from './actions';
 import * as actionTypes from './actionTypes';
 import ReduxWebSocket from './ReduxWebSocket';
@@ -35,12 +30,9 @@ export default (rawOptions?: Options): Middleware => {
   const reduxWebsocket = new ReduxWebSocket(options);
 
   // Define the list of handlers, now that we have an instance of ReduxWebSocket.
-  const handlers: { [K in ActionType]: ActionHandler } = {
-    [actionTypes.WEBSOCKET_CLOSED]: () => {},
+  const handlers = {
     [actionTypes.WEBSOCKET_CONNECT]: reduxWebsocket.connect,
     [actionTypes.WEBSOCKET_DISCONNECT]: reduxWebsocket.disconnect,
-    [actionTypes.WEBSOCKET_MESSAGE]: () => {},
-    [actionTypes.WEBSOCKET_OPEN]: () => {},
     [actionTypes.WEBSOCKET_SEND]: reduxWebsocket.send,
   };
 
