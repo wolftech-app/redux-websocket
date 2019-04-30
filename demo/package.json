@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "7.4.4",
     "@giantmachines/redux-websocket": "latest",
     "@types/debounce": "1.2.0",
     "@types/prismjs": "1.9.1",
@@ -19,7 +20,6 @@
     "@types/react-redux": "7.0.1",
     "@types/styled-components": "4.1.10",
     "awesome-typescript-loader": "5.2.1",
-    "babel-core": "6.26.3",
     "babel-plugin-styled-components": "1.10.0",
     "clean-webpack-plugin": "2.0.1",
     "css-loader": "2.1.0",
