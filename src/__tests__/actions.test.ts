@@ -38,6 +38,7 @@ describe('actions', () => {
       it('should return the correct action with a default prefix', () => {
         const act = actions.disconnect();
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${actionTypes.DEFAULT_PREFIX}::${actionTypes.WEBSOCKET_DISCONNECT}`,
           meta: { timestamp: expect.any(Date) },
@@ -47,6 +48,7 @@ describe('actions', () => {
       it('should return the correct action with user prefix', () => {
         const act = actions.disconnect(PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_DISCONNECT}`,
           meta: { timestamp: expect.any(Date) },
@@ -58,6 +60,7 @@ describe('actions', () => {
       it('should return the correct action with a default prefix', () => {
         const act = actions.send({ test: 'value' });
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${actionTypes.DEFAULT_PREFIX}::${actionTypes.WEBSOCKET_SEND}`,
           meta: { timestamp: expect.any(Date) },
@@ -70,6 +73,7 @@ describe('actions', () => {
       it('should return the correct action with user prefix', () => {
         const act = actions.send({ test: 'value' }, PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_SEND}`,
           meta: { timestamp: expect.any(Date) },
@@ -86,6 +90,7 @@ describe('actions', () => {
       it('should return the correct action', () => {
         const act = actions.beginReconnect(PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_BEGIN_RECONNECT}`,
           meta: { timestamp: expect.any(Date) },
@@ -97,6 +102,7 @@ describe('actions', () => {
       it('should return the correct action', () => {
         const act = actions.reconnectAttempt(1, PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_RECONNECT_ATTEMPT}`,
           meta: { timestamp: expect.any(Date) },
@@ -111,6 +117,7 @@ describe('actions', () => {
       it('should return the correct action', () => {
         const act = actions.reconnected(PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_RECONNECTED}`,
           meta: { timestamp: expect.any(Date) },
@@ -122,6 +129,7 @@ describe('actions', () => {
       it('should return the correct action', () => {
         const act = actions.closed({ test: 'value' } as any, PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_CLOSED}`,
           meta: { timestamp: expect.any(Date) },
@@ -136,6 +144,7 @@ describe('actions', () => {
       it('should return the correct action', () => {
         const act = actions.message({ test: 'value' } as any, PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_MESSAGE}`,
           meta: { timestamp: expect.any(Date) },
@@ -154,6 +163,7 @@ describe('actions', () => {
       it('should return the correct action', () => {
         const act = actions.open({ test: 'value' } as any, PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_OPEN}`,
           meta: { timestamp: expect.any(Date) },
@@ -168,6 +178,7 @@ describe('actions', () => {
       it('should return the correct action', () => {
         const act = actions.broken(PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_BROKEN}`,
           meta: { timestamp: expect.any(Date) },
