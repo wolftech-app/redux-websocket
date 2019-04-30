@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   connect: (url: string) => dispatch(websocketConnect(url, WEBSOCKET_PREFIX)),
-  disconnect: () => dispatch(disconnect, WEBSOCKET_PREFIX),
+  disconnect: () => dispatch(disconnect(WEBSOCKET_PREFIX)),
   onSendMessage: (message: string) => dispatch(send(message, WEBSOCKET_PREFIX)),
 });
 
