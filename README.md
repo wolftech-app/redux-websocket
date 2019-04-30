@@ -258,13 +258,13 @@ General purpose error action.
 ```js
 {
     type: 'REDUX_WEBSOCKET::ERROR',
+    error: true,
     meta: {
         timestamp: string,
-    },
-    payload: {
         message: string,
         name: string,
-        originalAction: Action,
+        originalAction: Action | null,
     },
+    payload: Error,
 }
 ```
