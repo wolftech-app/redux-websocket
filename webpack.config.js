@@ -7,7 +7,7 @@ module.exports = {
   entry: './src/index',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: 'index.js',
     libraryTarget: 'commonjs2',
   },
   resolve: {
