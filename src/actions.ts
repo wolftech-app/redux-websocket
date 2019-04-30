@@ -30,10 +30,15 @@ type BuiltAction<T> = {
  *
  * @returns {BuiltAction<T>}
  */
-function buildAction<T>(actionType: string, payload?: T): BuiltAction<T> {
+function buildAction<T>(actionType: string, payload?: T, meta?: any): BuiltAction<T> {
   const base = {
     type: actionType,
-    meta: { timestamp: new Date() },
+    meta: {
+      timestamp: new Date(),
+      ...meta,
+    },
+    // Mixin the `error` key if the payload is an Error.
+    ...(payload instanceof Error ? { error: true } : null),
   };
 
   return payload ? { ...base, payload } : base;
@@ -62,7 +67,7 @@ export const message = (event: MessageEvent, prefix: string) => (
   })
 );
 export const error = (originalAction: Action | null, err: Error, prefix: string) => (
-  buildAction(`${prefix}::${WEBSOCKET_ERROR}`, {
+  buildAction(`${prefix}::${WEBSOCKET_ERROR}`, err, {
     message: err.message,
     name: err.name,
     originalAction,

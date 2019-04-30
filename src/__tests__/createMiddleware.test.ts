@@ -150,10 +150,11 @@ describe('middleware', () => {
   });
 
   it('shoud dispatch an error action if a handler throws an error', () => {
-    sendMock.mockImplementation(() => { throw new Error('whoops'); });
+    const err = new Error('whoops');
+
+    sendMock.mockImplementation(() => { throw err; });
 
     const { dispatch } = mockStore();
-
     const result = dispatch(actions.send({ test: 'message' }));
     const expectedResult = {
       type: 'REDUX_WEBSOCKET::SEND',
@@ -168,13 +169,15 @@ describe('middleware', () => {
     expect(result).toEqual(expectedResult);
     expect(dispatchMock).toHaveBeenCalledTimes(1);
     expect(dispatchMock).toHaveBeenCalledWith({
+      error: true,
       type: 'REDUX_WEBSOCKET::ERROR',
-      meta: { timestamp: expect.any(Date) },
-      payload: {
-        message: 'whoops',
-        name: 'Error',
+      meta: {
+        timestamp: expect.any(Date),
         originalAction: expectedResult,
+        name: 'Error',
+        message: 'whoops',
       },
+      payload: err,
     });
   });
 });
