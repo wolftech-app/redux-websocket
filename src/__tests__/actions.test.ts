@@ -1,3 +1,5 @@
+import { isFSA, isError } from 'flux-standard-action';
+
 import * as actions from '../actions';
 import * as actionTypes from '../actionTypes';
 
@@ -9,6 +11,7 @@ describe('actions', () => {
       it('should return the correct action with a default prefix', () => {
         const act = actions.connect('fake url');
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${actionTypes.DEFAULT_PREFIX}::${actionTypes.WEBSOCKET_CONNECT}`,
           meta: { timestamp: expect.any(Date) },
@@ -174,32 +177,40 @@ describe('actions', () => {
 
     describe('error', () => {
       it('should return the correct action with a test action', () => {
-        const act = actions.error({ type: 'TEST' } as any, new Error('test'), PREFIX);
+        const err = new Error('test');
+        const act = actions.error({ type: 'TEST' } as any, err, PREFIX);
 
+        expect(isError(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_ERROR}`,
-          meta: { timestamp: expect.any(Date) },
-          payload: {
+          error: true,
+          meta: {
+            timestamp: expect.any(Date),
             message: 'test',
             name: 'Error',
             originalAction: {
               type: 'TEST',
             },
           },
+          payload: err,
         });
       });
 
       it('should return the correct action with a null action', () => {
-        const act = actions.error(null, new Error('test'), PREFIX);
+        const err = new Error('test');
+        const act = actions.error(null, err, PREFIX);
 
+        expect(isError(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_ERROR}`,
-          meta: { timestamp: expect.any(Date) },
-          payload: {
+          error: true,
+          meta: {
+            timestamp: expect.any(Date),
             message: 'test',
             name: 'Error',
             originalAction: null,
           },
+          payload: err,
         });
       });
     });

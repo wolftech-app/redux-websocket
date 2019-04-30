@@ -112,12 +112,12 @@ describe('ReduxWebSocket', () => {
           type: 'REDUX_WEBSOCKET::ERROR',
           meta: {
             timestamp: expect.any(Date),
-          },
-          payload: {
             message: '`redux-websocket` error. Could not open WebSocket connection to "test url".',
             name: 'Error',
             originalAction: null,
           },
+          payload: expect.any(Error),
+          error: true,
         });
       });
 
