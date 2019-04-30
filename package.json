@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npm run clean && npm run build:types && webpack && rimraf dist/__tests__",
     "build:types": "tsc --emitDeclarationOnly --outdir dist",
-    "build:watch": "npm run build -- --watch",
+    "build:watch": "npm run clean && npm run build:types && webpack --watch",
     "clean": "rimraf dist",
     "check-types": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.ts\"",
