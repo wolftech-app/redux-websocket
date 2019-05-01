@@ -1,4 +1,5 @@
 import {
+  REDUX_WEBSOCKET_BROKEN,
   REDUX_WEBSOCKET_CLOSED,
   REDUX_WEBSOCKET_CONNECT,
   REDUX_WEBSOCKET_MESSAGE,
@@ -30,6 +31,7 @@ const reducer = (state = defaultState, action): State => {
         connected: true,
       };
 
+    case REDUX_WEBSOCKET_BROKEN:
     case REDUX_WEBSOCKET_CLOSED:
       return {
         ...state,

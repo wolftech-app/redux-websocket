@@ -109,7 +109,7 @@ class Controls extends React.Component<Props, State> {
    */
   simulateDisconnect = () => {
     // eslint-disable-next-line no-underscore-dangle
-    (window as any).__socket.close();
+    (window as any).__socket.dispatchEvent(new Event('error'));
   }
 
   /**
