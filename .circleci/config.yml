@@ -1,0 +1,21 @@
+version: 2
+
+jobs:
+  lint:
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run lint
+
+  typescript:
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run check-types
+
+  test:
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm test -- --coverage
+      - run: bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage-final.json
