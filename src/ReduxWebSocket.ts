@@ -130,10 +130,14 @@ export default class ReduxWebSocket {
   private handleError = (dispatch: Dispatch, prefix: string) => {
     dispatch(error(null, new Error('`redux-websocket` error'), prefix));
 
-    // Only attempt to reconnect if the connection has ever successfully opened.
+    // Only attempt to reconnect if the connection has ever successfully opened,
+    // and we're not currently trying to reconnect.
+    //
     // This prevents ongoing reconnect loops to connections that have not
     // successfully opened before, such as net::ERR_CONNECTION_REFUSED errors.
-    if (this.hasOpened) {
+    //
+    // This also prevents starting multiple reconnection attempt loops.
+    if (this.hasOpened && this.reconnectionInterval == null) {
       this.handleBrokenConnection(dispatch);
     }
   }
