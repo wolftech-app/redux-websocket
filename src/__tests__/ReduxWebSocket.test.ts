@@ -15,7 +15,6 @@ describe('ReduxWebSocket', () => {
   const options = {
     prefix: 'REDUX_WEBSOCKET',
     reconnectInterval: 2000,
-    reconnectOnClose: false,
   };
   const closeMock = jest.fn();
   const sendMock = jest.fn();
@@ -129,9 +128,7 @@ describe('ReduxWebSocket', () => {
         reduxWebSocket.handleBrokenConnection = jest.fn();
 
         // @ts-ignore
-        reduxWebSocket.handleError(dispatch, 'prefix', {
-          currentTarget: { url: 'test' },
-        } as any);
+        reduxWebSocket.handleError(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
 
         // @ts-ignore
         expect(reduxWebSocket.handleBrokenConnection).not.toHaveBeenCalled();
@@ -140,9 +137,7 @@ describe('ReduxWebSocket', () => {
         reduxWebSocket.hasOpened = true;
 
         // @ts-ignore
-        reduxWebSocket.handleError(dispatch, 'prefix', {
-          currentTarget: { url: 'test' },
-        } as any);
+        reduxWebSocket.handleError(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
 
         // @ts-ignore
         expect(reduxWebSocket.handleBrokenConnection).toHaveBeenCalledTimes(1);
@@ -232,9 +227,8 @@ describe('ReduxWebSocket', () => {
     });
 
     it('should throw an error if no connection exists', () => {
-      expect(() => reduxWebSocket.disconnect()).toThrow(
-        'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
-      );
+      expect(() => reduxWebSocket.disconnect())
+        .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
     });
   });
 
@@ -250,9 +244,8 @@ describe('ReduxWebSocket', () => {
     });
 
     it('should throw an error if no connection exists', () => {
-      expect(() => reduxWebSocket.send(null as any, { payload: null } as any)).toThrow(
-        'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
-      );
+      expect(() => reduxWebSocket.send(null as any, { payload: null } as any))
+        .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
     });
   });
 

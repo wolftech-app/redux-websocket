@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode=production",
-    "start": "webpack-dev-server --open --hot",
-    "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src"
+    "start": "webpack-dev-server --open --hot"
   },
   "keywords": [],
   "author": "",
