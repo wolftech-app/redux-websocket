@@ -26,6 +26,7 @@ type Action =
 type Options = {
   prefix?: string
   reconnectInterval?: number
+  reconnectOnClose?: boolean
   onOpen?: (s: WebSocket) => void
 }
 

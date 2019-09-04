@@ -30,6 +30,7 @@ ReduxWebSocketMock.mockImplementation((options) => {
     private options = options
     reconnectCount = 0
     reconnectionInterval = null
+    reconnectOnClose = false
     send = sendMock
     websocket = null
     handleClose = () => {}
@@ -62,6 +63,7 @@ describe('middleware', () => {
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'REDUX_WEBSOCKET',
       reconnectInterval: 2000,
+      reconnectOnClose: false,
     });
   });
 
@@ -71,21 +73,24 @@ describe('middleware', () => {
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'CUSTOM',
       reconnectInterval: 2000,
+      reconnectOnClose: false,
     });
   });
 
   it('can create multiple instances of ReduxWebSocket', () => {
     middleware({ prefix: 'ONE' });
-    middleware({ prefix: 'TWO' });
+    middleware({ prefix: 'TWO', reconnectOnClose: true });
 
     expect(ReduxWebSocketMock).toHaveBeenCalledTimes(2);
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'ONE',
       reconnectInterval: 2000,
+      reconnectOnClose: false,
     });
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'TWO',
       reconnectInterval: 2000,
+      reconnectOnClose: true,
     });
   });
 
