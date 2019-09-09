@@ -15,6 +15,7 @@ describe('ReduxWebSocket', () => {
   const options = {
     prefix: 'REDUX_WEBSOCKET',
     reconnectInterval: 2000,
+    reconnectOnClose: false,
   };
   const closeMock = jest.fn();
   const sendMock = jest.fn();
@@ -77,6 +78,21 @@ describe('ReduxWebSocket', () => {
         },
         payload: 'test event',
       });
+    });
+
+    it('handles closed as broken if flag "reconnectOnClose" set', () => {
+      const dispatch = jest.fn();
+      const rws = new ReduxWebSocket({
+        ...options,
+        reconnectOnClose: true,
+      }) as any; // cast to avoid compile errors
+      rws.handleBrokenConnection = jest.fn();
+      rws.handleClose(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
+      expect(rws.handleBrokenConnection).not.toHaveBeenCalled();
+      rws.hasOpened = true;
+      rws.handleClose(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
+      expect(rws.handleBrokenConnection).toHaveBeenCalledTimes(1);
+      expect(rws.handleBrokenConnection).toHaveBeenCalledWith(dispatch);
     });
 
     it('handles a message event', () => {
