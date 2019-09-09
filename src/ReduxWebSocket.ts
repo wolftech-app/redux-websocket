@@ -15,6 +15,7 @@ import { Action } from './types';
 interface ReduxWebSocketOptions {
   prefix: string
   reconnectInterval: number
+  reconnectOnClose: boolean
   onOpen?: (s: WebSocket) => void
 }
 
@@ -120,6 +121,12 @@ export default class ReduxWebSocket {
    */
   private handleClose = (dispatch: Dispatch, prefix: string, event: Event) => {
     dispatch(closed(event, prefix));
+
+    // Conditionally attempt reconnection if enabled and applicable
+    const { reconnectOnClose } = this.options;
+    if (reconnectOnClose && this.canAttemptReconnect()) {
+      this.handleBrokenConnection(dispatch);
+    }
   }
 
   /**
@@ -131,15 +138,7 @@ export default class ReduxWebSocket {
    */
   private handleError = (dispatch: Dispatch, prefix: string) => {
     dispatch(error(null, new Error('`redux-websocket` error'), prefix));
-
-    // Only attempt to reconnect if the connection has ever successfully opened,
-    // and we're not currently trying to reconnect.
-    //
-    // This prevents ongoing reconnect loops to connections that have not
-    // successfully opened before, such as net::ERR_CONNECTION_REFUSED errors.
-    //
-    // This also prevents starting multiple reconnection attempt loops.
-    if (this.hasOpened && this.reconnectionInterval == null) {
+    if (this.canAttemptReconnect()) {
       this.handleBrokenConnection(dispatch);
     }
   }
@@ -247,5 +246,16 @@ export default class ReduxWebSocket {
         { payload: { url: this.lastSocketUrl } } as Action,
       );
     }, reconnectInterval);
+  }
+
+  // Only attempt to reconnect if the connection has ever successfully opened,
+  // and we're not currently trying to reconnect.
+  //
+  // This prevents ongoing reconnect loops to connections that have not
+  // successfully opened before, such as net::ERR_CONNECTION_REFUSED errors.
+  //
+  // This also prevents starting multiple reconnection attempt loops.
+  private canAttemptReconnect(): boolean {
+    return this.hasOpened && this.reconnectionInterval == null;
   }
 }
