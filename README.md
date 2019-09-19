@@ -1,4 +1,4 @@
-# redux-websocket [![codecov](https://codecov.io/gh/giantmachines/redux-websocket/branch/master/graph/badge.svg)](https://codecov.io/gh/giantmachines/redux-websocket) [![npm version](https://badge.fury.io/js/%40giantmachines%2Fredux-websocket.svg)](https://badge.fury.io/js/%40giantmachines%2Fredux-websocket)
+# redux-websocket [![codecov](https://codecov.io/gh/giantmachines/redux-websocket/branch/master/graph/badge.svg)](https://codecov.io/gh/giantmachines/redux-websocket) [![npm version](https://badge.fury.io/js/%40giantmachines%2Fredux-websocket.svg)](https://badge.fury.io/js/%40giantmachines%2Fredux-websocket) ![npm](https://img.shields.io/npm/dm/@giantmachines/redux-websocket)
 
 `redux-websocket` is a Redux middleware for managing data over a WebSocket connection.
 
