@@ -104,6 +104,13 @@ export default class ReduxWebSocket {
    */
   send = (_store: MiddlewareAPI, { payload }: Action) => {
     if (this.websocket) {
+      const isPayloadBinary = payload instanceof Buffer || payload instanceof ArrayBuffer;
+      if (isPayloadBinary && !this.websocket.binaryType) {
+        throw new Error(
+          'Attempted to send binary data but data type is set to String. Set binaryType inside onOpen method',
+        );
+      }
+
       if (this.websocket.binaryType) {
         this.websocket.send(payload);
       } else {
