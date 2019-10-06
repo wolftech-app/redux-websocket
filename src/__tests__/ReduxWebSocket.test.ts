@@ -272,13 +272,13 @@ describe('ReduxWebSocket', () => {
       expect(sendMock).toHaveBeenCalledWith(binaryPayload);
     });
 
-    it('should send a Buffer message', () => {
+    it('should send a Blob message', () => {
       const binaryPayload = Buffer.from('test');
       const action = { type: 'SEND', payload: binaryPayload };
 
       reduxWebSocket.connect(store, action as Action);
       // @ts-ignore
-      reduxWebSocket.websocket.binaryType = 'arraybuffer';
+      reduxWebSocket.websocket.binaryType = 'blob';
       reduxWebSocket.send(null as any, { payload: binaryPayload } as any);
 
       expect(sendMock).toHaveBeenCalledTimes(1);
