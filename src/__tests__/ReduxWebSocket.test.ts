@@ -262,9 +262,9 @@ describe('ReduxWebSocket', () => {
     it('should send a ArrayBuffer message', () => {
       const binaryPayload = new Uint8Array([1, 2, 3]).buffer;
       const action = { type: 'SEND', payload: binaryPayload };
-  
+
       reduxWebSocket.connect(store, action as Action);
-      //@ts-ignore
+      // @ts-ignore
       reduxWebSocket.websocket.binaryType = 'arraybuffer';
       reduxWebSocket.send(null as any, { payload: binaryPayload } as any);
 
@@ -273,11 +273,11 @@ describe('ReduxWebSocket', () => {
     });
 
     it('should send a Buffer message', () => {
-      const binaryPayload = new Buffer('test');
+      const binaryPayload = Buffer.from('test');
       const action = { type: 'SEND', payload: binaryPayload };
-  
+
       reduxWebSocket.connect(store, action as Action);
-      //@ts-ignore
+      // @ts-ignore
       reduxWebSocket.websocket.binaryType = 'arraybuffer';
       reduxWebSocket.send(null as any, { payload: binaryPayload } as any);
 
@@ -288,11 +288,11 @@ describe('ReduxWebSocket', () => {
     it('should fail when trying to send a Binary message without setting binaryType', () => {
       const binaryPayload = new Uint8Array([1, 2, 3]).buffer;
       const action = { type: 'SEND', payload: binaryPayload };
-  
+
       reduxWebSocket.connect(store, action as Action);
-  
+
       expect(() => reduxWebSocket.send(null as any, { payload: binaryPayload } as any))
-        .toThrow('Attempted to send binary data while data type is set to String. Set binaryType inside onOpen method');
+        .toThrow('Attempted to send binary data but data type is set to String. Set binaryType inside onOpen method');
     });
 
     it('should throw an error if no connection exists', () => {
