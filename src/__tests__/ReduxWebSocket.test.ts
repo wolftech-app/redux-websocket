@@ -273,7 +273,7 @@ describe('ReduxWebSocket', () => {
     });
 
     it('should send a Blob message', () => {
-      const binaryPayload = Buffer.from('test');
+      const binaryPayload = new Blob(['{}'], {type : 'application/json'});
       const action = { type: 'SEND', payload: binaryPayload };
 
       reduxWebSocket.connect(store, action as Action);
