@@ -24,6 +24,7 @@ describe('actions', () => {
       it('should return the correct action with user prefix', () => {
         const act = actions.connect('fake url', PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_CONNECT}`,
           meta: { timestamp: expect.any(Date) },
@@ -36,6 +37,7 @@ describe('actions', () => {
       it('should return the correct action with protocols', () => {
         const act = actions.connect('fake url', ['protocol']);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${actionTypes.DEFAULT_PREFIX}::${actionTypes.WEBSOCKET_CONNECT}`,
           meta: { timestamp: expect.any(Date) },
@@ -49,6 +51,7 @@ describe('actions', () => {
       it('should return the correct action with protocols and a user prefix', () => {
         const act = actions.connect('fake url', ['protocol'], PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_CONNECT}`,
           meta: { timestamp: expect.any(Date) },
@@ -217,6 +220,7 @@ describe('actions', () => {
         const err = new Error('test');
         const act = actions.error({ type: 'TEST' } as any, err, PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(isError(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_ERROR}`,
@@ -237,6 +241,7 @@ describe('actions', () => {
         const err = new Error('test');
         const act = actions.error(null, err, PREFIX);
 
+        expect(isFSA(act)).toBe(true);
         expect(isError(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_ERROR}`,
