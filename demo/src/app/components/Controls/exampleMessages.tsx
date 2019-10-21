@@ -7,15 +7,15 @@ export default [
     name: 'Array',
     value: JSON.stringify([
       {
-        name: 'Jane',
-        age: 26,
-        sex: 'F',
-        created: new Date(),
+        ins: 'AAPL',
+        amt: 550,
+        side: 'buy',
+        date: new Date(),
       },
       {
-        name: 'John',
-        age: 25,
-        sex: 'M',
+        ins: 'GOOG',
+        amt: 200,
+        sex: 'sell',
         created: new Date(),
       },
     ], null, 2),
@@ -27,10 +27,10 @@ export default [
   {
     name: 'Object',
     value: JSON.stringify({
-      name: 'John',
-      age: 25,
-      sex: 'M',
-      created: new Date(),
+      ins: 'AAPL',
+      amt: 550,
+      side: 'buy',
+      date: new Date(),
     }, null, 2),
   },
   {
