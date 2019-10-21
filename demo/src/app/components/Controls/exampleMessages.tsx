@@ -15,7 +15,7 @@ export default [
       {
         ins: 'GOOG',
         amt: 200,
-        sex: 'sell',
+        side: 'sell',
         created: new Date(),
       },
     ], null, 2),
