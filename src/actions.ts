@@ -122,7 +122,7 @@ export const message = (event: MessageEvent, instanceName: string) => (
   )
 );
 
-export const error = (originalAction: Action | null, err: Error, instanceName: string) => (
+export const error = (originalAction: Action | null, err: Error, instanceName?: string) => (
   buildAction(
     WEBSOCKET_ERROR,
     err,
@@ -130,7 +130,7 @@ export const error = (originalAction: Action | null, err: Error, instanceName: s
       message: err.message,
       name: err.name,
       originalAction,
-      instanceName,
+      ...createMetaObj(instanceName),
     },
   )
 );

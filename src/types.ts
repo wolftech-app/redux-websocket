@@ -5,6 +5,7 @@ import {
   WEBSOCKET_MESSAGE,
   WEBSOCKET_OPEN,
   WEBSOCKET_SEND,
+  WEBSOCKET_ERROR,
 } from './actionTypes';
 
 type ActionType =
@@ -15,24 +16,65 @@ type ActionType =
   | typeof WEBSOCKET_OPEN
   | typeof WEBSOCKET_SEND;
 
+interface Meta {
+  timestamp: string;
+  instanceName?: string;
+}
+
 interface ClosedAction {
   type: typeof WEBSOCKET_CLOSED;
-  meta: any;
+  meta: Meta;
 }
 
 interface ConnectAction {
   type: typeof WEBSOCKET_CONNECT;
-  payload: { url: string, protocols?: string | string[] };
-  meta: any;
+  payload: {
+    url: string;
+    protocols?: string | string[];
+  };
+  meta: Meta;
+}
+
+interface DisconnectAction {
+  type: typeof WEBSOCKET_DISCONNECT;
+  meta: Meta;
+}
+
+interface MessageAction {
+  type: typeof WEBSOCKET_MESSAGE;
+  payload: string;
+  meta: Meta;
+}
+
+interface OpenAction {
+  type: typeof WEBSOCKET_OPEN;
+  meta: Meta;
+}
+
+interface SendAction {
+  type: typeof WEBSOCKET_SEND;
+  meta: Meta;
+  payload: any;
+}
+
+interface ErrorAction {
+  type: typeof WEBSOCKET_ERROR;
+  error: true;
+  meta: Meta & {
+    message: string;
+    name: string;
+    originalAction: any;
+  };
 }
 
 type Action =
   | ClosedAction
   | ConnectAction
-  | { type: typeof WEBSOCKET_DISCONNECT, payload: any }
-  | { type: typeof WEBSOCKET_MESSAGE, payload: any }
-  | { type: typeof WEBSOCKET_OPEN, payload: any }
-  | { type: typeof WEBSOCKET_SEND, payload: any };
+  | DisconnectAction
+  | MessageAction
+  | OpenAction
+  | SendAction
+  | ErrorAction;
 
 type Options = {
   prefix?: string

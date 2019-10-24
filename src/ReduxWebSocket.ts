@@ -11,6 +11,7 @@ import {
   reconnected,
 } from './actions';
 import { Action } from './types';
+import * as actionTypes from './actionTypes';
 
 interface ReduxWebSocketOptions {
   instanceName?: string;
@@ -102,9 +103,13 @@ export default class ReduxWebSocket {
    *
    * @throws {Error} Socket connection must exist.
    */
-  send = (_store: MiddlewareAPI, { payload }: Action) => {
+  send = (_store: MiddlewareAPI, action: Action) => {
+    if (action.type !== actionTypes.WEBSOCKET_SEND) {
+      return;
+    }
+
     if (this.websocket) {
-      this.websocket.send(JSON.stringify(payload));
+      this.websocket.send(JSON.stringify(action.payload));
     } else {
       throw new Error(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
