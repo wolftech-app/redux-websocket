@@ -14,7 +14,6 @@ import './styles/style.scss';
 const { NODE_ENV } = process.env;
 
 const websocketMiddleware = websocket({
-  prefix: WEBSOCKET_PREFIX,
   onOpen: (socket: WebSocket) => {
     // @ts-ignore
     window.__socket = socket; // eslint-disable-line no-underscore-dangle

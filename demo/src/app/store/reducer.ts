@@ -1,11 +1,11 @@
 import {
-  REDUX_WEBSOCKET_BROKEN,
-  REDUX_WEBSOCKET_CLOSED,
-  REDUX_WEBSOCKET_CONNECT,
-  REDUX_WEBSOCKET_MESSAGE,
-  REDUX_WEBSOCKET_OPEN,
-  REDUX_WEBSOCKET_SEND,
-} from './actionTypes';
+  WEBSOCKET_BROKEN,
+  WEBSOCKET_CLOSED,
+  WEBSOCKET_CONNECT,
+  WEBSOCKET_MESSAGE,
+  WEBSOCKET_OPEN,
+  WEBSOCKET_SEND,
+} from '@giantmachines/redux-websocket';
 
 import defaultState, { State } from './defaultState';
 
@@ -19,26 +19,26 @@ const reducer = (state = defaultState, action): State => {
         messages: [],
       };
 
-    case REDUX_WEBSOCKET_CONNECT:
+    case WEBSOCKET_CONNECT:
       return {
         ...state,
         url: action.payload.url,
       };
 
-    case REDUX_WEBSOCKET_OPEN:
+    case WEBSOCKET_OPEN:
       return {
         ...state,
         connected: true,
       };
 
-    case REDUX_WEBSOCKET_BROKEN:
-    case REDUX_WEBSOCKET_CLOSED:
+    case WEBSOCKET_BROKEN:
+    case WEBSOCKET_CLOSED:
       return {
         ...state,
         connected: false,
       };
 
-    case REDUX_WEBSOCKET_MESSAGE:
+    case WEBSOCKET_MESSAGE:
       return {
         ...state,
         messages: [
@@ -52,7 +52,7 @@ const reducer = (state = defaultState, action): State => {
         ],
       };
 
-    case REDUX_WEBSOCKET_SEND:
+    case WEBSOCKET_SEND:
       return {
         ...state,
         messages: [

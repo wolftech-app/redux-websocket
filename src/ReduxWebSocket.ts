@@ -13,10 +13,10 @@ import {
 import { Action } from './types';
 
 interface ReduxWebSocketOptions {
-  prefix: string
-  reconnectInterval: number
-  reconnectOnClose: boolean
-  onOpen?: (s: WebSocket) => void
+  instanceName?: string;
+  reconnectInterval: number;
+  reconnectOnClose: boolean;
+  onOpen?: (s: WebSocket) => void;
 }
 
 /**
