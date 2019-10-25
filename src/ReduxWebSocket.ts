@@ -63,6 +63,8 @@ export default class ReduxWebSocket {
    * @param {Action} action
    */
   connect = ({ dispatch }: MiddlewareAPI, action: Action) => {
+    console.log('----- connnect', action);
+
     if (action.type !== actionTypes.WEBSOCKET_CONNECT) {
       return;
     }
@@ -72,7 +74,7 @@ export default class ReduxWebSocket {
     this.close();
 
     this.lastSocketUrl = payload.url;
-    this.websocket = payload.protocols
+    this.websocket = 'protocols' in payload
       ? new WebSocket(payload.url, payload.protocols)
       : new WebSocket(payload.url);
 
@@ -112,12 +114,20 @@ export default class ReduxWebSocket {
       return;
     }
 
-    if (this.websocket) {
-      this.websocket.send(JSON.stringify(action.payload));
+    const { instanceName } = this.options;
+
+    if (this.websocket && 'payload' in action) {
+      try {
+        this.websocket.send(JSON.stringify(action.payload));
+      } catch (err) {
+        _store.dispatch(error(action, err, { instanceName }));
+      }
     } else {
-      throw new Error(
+      const err = new Error(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
+
+      _store.dispatch(error(action, err, { instanceName }));
     }
   }
 
@@ -130,7 +140,7 @@ export default class ReduxWebSocket {
   private handleClose = (dispatch: Dispatch, event: Event) => {
     const { instanceName } = this.options;
 
-    dispatch(closed(event, instanceName));
+    dispatch(closed(event, { instanceName }));
 
     // Conditionally attempt reconnection if enabled and applicable
     const { reconnectOnClose } = this.options;
@@ -148,7 +158,7 @@ export default class ReduxWebSocket {
   private handleError = (dispatch: Dispatch) => {
     const { instanceName } = this.options;
 
-    dispatch(error(null, new Error('`redux-websocket` error'), instanceName));
+    dispatch(error(null, new Error('`redux-websocket` error'), { instanceName }));
 
     if (this.canAttemptReconnect()) {
       this.handleBrokenConnection(dispatch);
@@ -176,7 +186,7 @@ export default class ReduxWebSocket {
       this.reconnectionInterval = null;
       this.reconnectCount = 0;
 
-      dispatch(reconnected(instanceName));
+      dispatch(reconnected({ instanceName }));
     }
 
     // Hook to allow consumers to get access to the raw socket.
@@ -185,7 +195,7 @@ export default class ReduxWebSocket {
     }
 
     // Now we're fully open and ready to send messages.
-    dispatch(open(event, instanceName));
+    dispatch(open(event, { instanceName }));
 
     // Track that we've been able to open the connection. We can use this flag
     // for error handling later, ensuring we don't try to reconnect when a
@@ -202,7 +212,7 @@ export default class ReduxWebSocket {
   private handleMessage = (dispatch: Dispatch, event: MessageEvent) => {
     const { instanceName } = this.options;
 
-    dispatch(message(event, instanceName));
+    dispatch(message(event, { instanceName }));
   }
 
   /**
@@ -210,7 +220,7 @@ export default class ReduxWebSocket {
    * @private
    *
    * @param {number} [code]
-   * @param {string} [reason]
+   * @param {strin} [reason]
    */
   private close = (code?: number, reason?: string) => {
     if (this.websocket) {
@@ -233,30 +243,30 @@ export default class ReduxWebSocket {
     this.websocket = null;
 
     // First, dispatch actions to notify Redux that our connection broke.
-    dispatch(broken(instanceName));
-    dispatch(beginReconnect(instanceName));
+    dispatch(broken({ instanceName }));
+    dispatch(beginReconnect({ instanceName }));
 
     this.reconnectCount = 1;
 
-    dispatch(reconnectAttempt(this.reconnectCount, instanceName));
+    dispatch(reconnectAttempt(this.reconnectCount, { instanceName }));
 
     // Attempt to reconnect immediately by calling connect with assertions
     // that the arguments conform to the types we expect.
     this.connect(
       { dispatch } as MiddlewareAPI,
-      { payload: { url: this.lastSocketUrl } } as Action,
+      { type: actionTypes.WEBSOCKET_CONNECT, payload: { url: this.lastSocketUrl } } as Action,
     );
 
     // Attempt reconnecting on an interval.
     this.reconnectionInterval = setInterval(() => {
       this.reconnectCount += 1;
 
-      dispatch(reconnectAttempt(this.reconnectCount, instanceName));
+      dispatch(reconnectAttempt(this.reconnectCount, { instanceName }));
 
       // Call connect again, same way.
       this.connect(
         { dispatch } as MiddlewareAPI,
-        { payload: { url: this.lastSocketUrl } } as Action,
+        { type: actionTypes.WEBSOCKET_CONNECT, payload: { url: this.lastSocketUrl } } as Action,
       );
     }, reconnectInterval);
   }

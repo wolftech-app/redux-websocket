@@ -9,9 +9,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  connect: (url: string) => dispatch(websocketConnect(url)),
-  disconnect: () => dispatch(disconnect()),
-  onSendMessage: (message: string) => dispatch(send(message)),
+  connect: (url: string) => dispatch(websocketConnect(url, { instanceName: 'something' })),
+  disconnect: () => dispatch(disconnect({ instanceName: 'adf' })),
+  onSendMessage: (message: any) => dispatch(send(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Controls);

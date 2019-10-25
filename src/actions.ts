@@ -1,3 +1,5 @@
+import { action as actionHelper, createAction } from 'typesafe-actions';
+
 import {
   WEBSOCKET_BROKEN,
   WEBSOCKET_BEGIN_RECONNECT,
@@ -11,126 +13,146 @@ import {
   WEBSOCKET_OPEN,
   WEBSOCKET_SEND,
 } from './actionTypes';
-import { Action } from './types';
 
-type WithProtocols = [string[]] | [string[], string];
-type WithInstanceName = [string];
-type ConnectRestArgs = [] | WithProtocols | WithInstanceName;
+const createMetaObj = (instanceName?: string) => ({
+  timestamp: new Date(),
+  ...(instanceName ? { instanceName } : undefined),
+});
 
-type BuiltAction<T> = {
-  type: string,
-  meta?: {
-    timestamp: Date;
-    instanceName?: string,
+/*
+ * ------------------------------------
+ * Action creators dispatched by users.
+ * ------------------------------------
+ */
+export const connect = createAction(
+  WEBSOCKET_CONNECT,
+  action => (
+    url: string,
+    options: { protocols?: string | string[]; instanceName?: string } = {},
+  ) => {
+    const { protocols, instanceName } = options;
+    const payload = {
+      url,
+      ...(protocols ? { protocols } : undefined),
+    };
+    const meta = createMetaObj(instanceName);
+
+    return action(payload, meta);
   },
-  payload?: T,
-}
+);
 
-interface UserProvidedMeta {
-  instanceName?: string;
-}
+export const disconnect = createAction(
+  WEBSOCKET_DISCONNECT,
+  action => (options: { instanceName?: string } = {}) => {
+    const { instanceName } = options;
+    const meta = createMetaObj(instanceName);
 
-const createMetaObj = (instanceName?: string) => (instanceName ? { instanceName } : undefined);
+    return action(undefined, meta);
+  },
+);
 
-/**
- * Determine if the rest args to `connect` contains protocols or not.
- * @private
+export const send = createAction(
+  WEBSOCKET_SEND,
+  action => (msg: any, options: { instanceName?: string } = {}) => {
+    const { instanceName } = options;
+    const meta = createMetaObj(instanceName);
+
+    return action(msg, meta);
+  },
+);
+
+/*
+ * ------------------------------------
+ * Action creators dispatched by redux-websocket.
+ * ------------------------------------
  */
-const isWithProtocols = (args: ConnectRestArgs): args is WithProtocols => Array.isArray(args[0]);
+export const beginReconnect = createAction(
+  WEBSOCKET_BEGIN_RECONNECT,
+  action => (options: { instanceName?: string } = {}) => {
+    const { instanceName } = options;
+    const meta = createMetaObj(instanceName);
 
-/**
- * Create an FSA compliant action.
- *
- * @param {string} actionType
- * @param {T} payload
- *
- * @returns {BuiltAction<T>}
- */
-function buildAction<T>(actionType: string, payload?: T, meta?: UserProvidedMeta): BuiltAction<T> {
-  const base = {
-    type: actionType,
-    // Mixin the `error` key if the payload is an Error.
-    ...(payload instanceof Error ? { error: true } : null),
-    meta: {
-      timestamp: new Date(),
-      ...meta,
-    },
-  };
+    return action(undefined, meta);
+  },
+);
 
-  return payload ? { ...base, payload } : base;
-}
+export const reconnectAttempt = createAction(
+  WEBSOCKET_RECONNECT_ATTEMPT,
+  action => (count: number, options: { instanceName?: string } = {}) => {
+    const { instanceName } = options;
+    const meta = createMetaObj(instanceName);
 
-// Action creators for user dispatched actions.
-export const connect = (url: string, ...args: ConnectRestArgs) => {
-  let instanceName: string | undefined;
-  let protocols: string[] | undefined;
+    return action({ count }, meta);
+  },
+);
 
-  // If there's only one argument, check if it's protocols or a instanceName.
-  if (args.length === 1) {
-    [protocols, instanceName] = isWithProtocols(args) ? args : [undefined, args[0]];
-  }
+export const reconnected = createAction(
+  WEBSOCKET_RECONNECTED,
+  action => (options: { instanceName?: string } = {}) => {
+    const { instanceName } = options;
+    const meta = createMetaObj(instanceName);
 
-  // If there are two arguments after `url`, assume it's protocols and instanceName.
-  if (args.length === 2) {
-    [protocols, instanceName] = args;
-  }
+    return action(undefined, meta);
+  },
+);
 
-  return buildAction(
-    WEBSOCKET_CONNECT,
-    { url, protocols },
-    createMetaObj(instanceName),
-  );
-};
+export const open = createAction(
+  WEBSOCKET_OPEN,
+  action => (event: Event, options: { instanceName?: string } = {}) => {
+    const { instanceName } = options;
+    const meta = createMetaObj(instanceName);
 
-export const disconnect = (instanceName?: string) =>
-  buildAction(WEBSOCKET_DISCONNECT, undefined, createMetaObj(instanceName));
+    return action(event, meta);
+  },
+);
 
-export const send = (msg: any, instanceName?: string) =>
-  buildAction(WEBSOCKET_SEND, msg, createMetaObj(instanceName));
+export const broken = createAction(
+  WEBSOCKET_BROKEN,
+  action => (options: { instanceName?: string } = {}) => {
+    const { instanceName } = options;
+    const meta = createMetaObj(instanceName);
 
-// Action creators for actions dispatched by redux-websocket. All of these must
-// take an instanceName.
-export const beginReconnect = (instanceName?: string) =>
-  buildAction(WEBSOCKET_BEGIN_RECONNECT, undefined, createMetaObj(instanceName));
+    return action(undefined, meta);
+  },
+);
 
-export const reconnectAttempt = (count: number, instanceName?: string) =>
-  buildAction(WEBSOCKET_RECONNECT_ATTEMPT, { count }, createMetaObj(instanceName));
+export const closed = createAction(
+  WEBSOCKET_CLOSED,
+  action => (event: Event, options: { instanceName?: string } = {}) => {
+    const { instanceName } = options;
+    const meta = createMetaObj(instanceName);
 
-export const reconnected = (instanceName?: string) =>
-  buildAction(WEBSOCKET_RECONNECTED, undefined, createMetaObj(instanceName));
+    return action(event, meta);
+  },
+);
 
-export const open = (event: Event, instanceName?: string) =>
-  buildAction(WEBSOCKET_OPEN, event, createMetaObj(instanceName));
-
-export const broken = (instanceName?: string) =>
-  buildAction(WEBSOCKET_BROKEN, undefined, createMetaObj(instanceName));
-
-export const closed = (event: Event, instanceName?: string) =>
-  buildAction(WEBSOCKET_CLOSED, event, createMetaObj(instanceName));
-
-export const message = (event: MessageEvent, instanceName?: string) => (
-  buildAction(
-    WEBSOCKET_MESSAGE,
-    {
+export const message = createAction(
+  WEBSOCKET_MESSAGE,
+  action => (event: MessageEvent, options: { instanceName?: string } = {}) => {
+    const { instanceName } = options;
+    const meta = createMetaObj(instanceName);
+    const payload = {
       event,
       message: event.data,
       origin: event.origin,
-    },
-    createMetaObj(instanceName),
-  )
+    };
+
+    return action(payload, meta);
+  },
 );
 
-// @ts-ignore
-export const error = (originalAction: Action | null, err: Error, instanceName?: string) => (
-  buildAction(
-    WEBSOCKET_ERROR,
-    err,
-    {
-      // @ts-ignore
-      message: err.message,
-      name: err.name,
-      originalAction,
-      ...createMetaObj(instanceName),
-    },
-  )
-);
+export const error = (
+  originalAction: any,
+  err: Error,
+  options: { instanceName?: string } = {},
+) => {
+  const { instanceName } = options;
+  const meta = {
+    message: err.message,
+    name: err.name,
+    originalAction,
+    ...createMetaObj(instanceName),
+  };
+
+  return actionHelper(WEBSOCKET_ERROR, err, meta, true);
+};

@@ -33,7 +33,7 @@ const disconnectSimulatorMiddleware = () => {
 
     // If the connection breaks, block reconnection by overwriting the WebSocket
     // class with a fake class.
-    if (type === `${WEBSOCKET_PREFIX}::BROKEN`) {
+    if (type === 'REDUX_WEBSOCKET::BROKEN') {
       (window as any).WebSocket = class FakeWebSocket {
         close = () => {}
 
@@ -43,7 +43,9 @@ const disconnectSimulatorMiddleware = () => {
 
     // Monitor how many reconnnection attempts were made, and if we had
     // enough, allow a reconnect to happen by restoring the original WebSocket.
-    if (type === `${WEBSOCKET_PREFIX}::RECONNECT_ATTEMPT`) {
+    if (type === 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT') {
+      console.log('-------a ', action);
+
       const { count } = payload;
 
       if (count > 2) {
