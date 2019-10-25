@@ -10,6 +10,7 @@ import ReduxWebSocket from './ReduxWebSocket';
  * @private
  */
 const defaultOptions = {
+  instanceName: undefined,
   reconnectInterval: 2000,
   reconnectOnClose: false,
 };
@@ -43,7 +44,7 @@ export default (rawOptions?: Options): Middleware => {
       try {
         handler(store, action);
       } catch (err) {
-        dispatch(error(action, err, prefix));
+        dispatch(error(action, err, options.instanceName));
       }
     }
 

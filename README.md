@@ -44,10 +44,11 @@ You may also pass options to the `reduxWebsocket` function.
 
 ```js
 interface Options {
-  // Defaults to 'REDUX_WEBSOCKET'. Use this option to set a custom action type
-  // prefix. This is useful when you're creating multiple instances of the
-  // middleware, and need to handle actions dispatched by each middleware instance separately.
-  prefix?: string,
+  // Use this option to add a unique name into the `meta` key in each action,
+  // per middleware instance. This is useful when you're creating multiple
+  // instances of the middleware, and need to handle actions dispatched by
+  // each middleware instance separately.
+  instanceName?: string,
   // Defaults to 2000. Amount of time to wait between reconnection attempts.
   reconnectInterval?: number,
   // Defaults to false. If set to true, will attempt to reconnect when conn is closed without error event
@@ -68,7 +69,7 @@ interface Options {
 
 These actions must be dispatched by you, however we do export action creator functions that can be used.
 
-> ⚠️ If you have created your middleware with a `prefix` option, make sure you pass that prefix as the second argument to all of these action creators.
+> ⚠️ If you have created your middleware with a `instanceName` option, make sure you pass that name as the second argument to all of these action creators.
 
 ---
 
@@ -86,19 +87,20 @@ store.dispatch(connect('wss://my-server.com'));
 //
 // Note that this function only allows passing an array of protocols, even though
 // the spec allows passing a string or an array of strings. This is to support
-// the prefix argument, in the case that you've prefixed your action names.
+// the `instanceName` argument, in the case that you've used a unique name
+// for your middleware instance.
 store.dispatch(connect('wss://my-server.com', ['v1.stream.example.com']));
 
 // ...other ways to call this function:
-store.dispatch(connect('wss://my-server.com', ['v1.stream.example.com'], 'MY_PREFIX'));
-store.dispatch(connect('wss://my-server.com', 'MY_PREFIX'));
+store.dispatch(connect('wss://my-server.com', ['v1.stream.example.com'], 'MY_INSTANCE_NAME'));
+store.dispatch(connect('wss://my-server.com', 'MY_INSTANCE_NAME'));
 ```
 
 ###### Arguments:
 
 1. `url` *(`string`)*: WebSocket URL to connect to.
 2. \[`protocols`\] *(`string[]`)*: Optional sub-protocols.
-2. \[`prefix`\] *(`string`)*: Optional action type prefix.
+2. \[`instanceName`\] *(`string`)*: Optional instance name.
 
 ---
 
@@ -114,7 +116,7 @@ store.dispatch(disconnect());
 
 ###### Arguments:
 
-1. \[`prefix`\] *(`string`)*: Optional action type prefix.
+1. \[`instanceName`\] *(`string`)*: Optional instance name.
 
 ---
 
@@ -131,7 +133,7 @@ store.dispatch(send({ my: 'message' }));
 ###### Arguments:
 
 1. `message` *(`any`)*: Any JSON serializable value. This will be stringified and sent over the connection. If the value passed is not serializable, `JSON.stringify` will throw an error.
-2. \[`prefix`\] *(`string`)*: Optional action type prefix.
+1. \[`instanceName`\] *(`string`)*: Optional instance name.
 
 ---
 
@@ -150,6 +152,7 @@ Dispatched when the WebSocket connection successfully opens, including after aut
     type: 'REDUX_WEBSOCKET::OPEN',
     meta: {
         timestamp: string,
+        instanceName?: string,
     },
 }
 ```
@@ -167,6 +170,7 @@ Dispatched when the WebSocket connection successfully closes, both when you ask 
     type: 'REDUX_WEBSOCKET::CLOSED',
     meta: {
         timestamp: string,
+        instanceName?: string,
     },
 }
 ```
@@ -184,6 +188,7 @@ Dispatched when the WebSocket connection receives a message. The payload include
     type: 'REDUX_WEBSOCKET::MESSAGE',
     meta: {
         timestamp: string,
+        instanceName?: string,
     },
     payload: {
         message: string,
@@ -205,6 +210,7 @@ Dispatched when the WebSocket connection is dropped. This action will always be 
     type: 'REDUX_WEBSOCKET::BROKEN',
     meta: {
         timestamp: string,
+        instanceName?: string,
     },
 }
 ```
@@ -222,6 +228,7 @@ Dispatched when the middleware is starting the reconnection process.
     type: 'REDUX_WEBSOCKET::BEGIN_RECONNECT',
     meta: {
         timestamp: string,
+        instanceName?: string,
     },
 }
 ```
@@ -239,6 +246,7 @@ Dispatched every time the middleware attempts a reconnection. Includes a `count`
     type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
     meta: {
         timestamp: string,
+        instanceName?: string,
     },
     payload: {
         count: number,
@@ -259,6 +267,7 @@ Dispatched when the middleware reconnects. This action is dispached right before
     type: 'REDUX_WEBSOCKET::RECONNECTED',
     meta: {
         timestamp: string,
+        instanceName?: string,
     },
 }
 ```
@@ -280,6 +289,7 @@ General purpose error action.
         message: string,
         name: string,
         originalAction: Action | null,
+        instanceName?: string,
     },
     payload: Error,
 }

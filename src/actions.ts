@@ -60,8 +60,7 @@ function buildAction<T>(actionType: string, payload?: T, meta?: UserProvidedMeta
   return payload ? { ...base, payload } : base;
 }
 
-// Action creators for user dispatched actions. These actions are all optionally
-// prefixed.
+// Action creators for user dispatched actions.
 export const connect = (url: string, ...args: ConnectRestArgs) => {
   let instanceName: string | undefined;
   let protocols: string[] | undefined;
@@ -90,27 +89,26 @@ export const send = (msg: any, instanceName?: string) =>
   buildAction(WEBSOCKET_SEND, msg, createMetaObj(instanceName));
 
 // Action creators for actions dispatched by redux-websocket. All of these must
-// take a prefix. The default prefix should be used unless a user has created
-// this middleware with the prefix option set.
-export const beginReconnect = (instanceName: string) =>
+// take an instanceName.
+export const beginReconnect = (instanceName?: string) =>
   buildAction(WEBSOCKET_BEGIN_RECONNECT, undefined, createMetaObj(instanceName));
 
-export const reconnectAttempt = (count: number, instanceName: string) =>
+export const reconnectAttempt = (count: number, instanceName?: string) =>
   buildAction(WEBSOCKET_RECONNECT_ATTEMPT, { count }, createMetaObj(instanceName));
 
-export const reconnected = (instanceName: string) =>
+export const reconnected = (instanceName?: string) =>
   buildAction(WEBSOCKET_RECONNECTED, undefined, createMetaObj(instanceName));
 
-export const open = (event: Event, instanceName: string) =>
+export const open = (event: Event, instanceName?: string) =>
   buildAction(WEBSOCKET_OPEN, event, createMetaObj(instanceName));
 
-export const broken = (instanceName: string) =>
+export const broken = (instanceName?: string) =>
   buildAction(WEBSOCKET_BROKEN, undefined, createMetaObj(instanceName));
 
-export const closed = (event: Event, instanceName: string) =>
+export const closed = (event: Event, instanceName?: string) =>
   buildAction(WEBSOCKET_CLOSED, event, createMetaObj(instanceName));
 
-export const message = (event: MessageEvent, instanceName: string) => (
+export const message = (event: MessageEvent, instanceName?: string) => (
   buildAction(
     WEBSOCKET_MESSAGE,
     {
@@ -122,11 +120,13 @@ export const message = (event: MessageEvent, instanceName: string) => (
   )
 );
 
+// @ts-ignore
 export const error = (originalAction: Action | null, err: Error, instanceName?: string) => (
   buildAction(
     WEBSOCKET_ERROR,
     err,
     {
+      // @ts-ignore
       message: err.message,
       name: err.name,
       originalAction,
