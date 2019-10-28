@@ -7,16 +7,30 @@ This middleware uses actions to interact with a WebSocket connection including c
 ### Features
 
 - Written in TypeScript.
+- All exported action creators are created with [typesafe-actions](https://github.com/piotrwitek/typesafe-actions).
 - Interact with a WebSocket connection by dispatching actions.
 - Connect to multiple WebSocket streams by creating multiple middleware instances.
 - Handle WebSocket events with Redux middleware, integrate with Saga, and use reducers to persist state.
 - Automatically handle reconnection.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [API](#api)
+    - [connect](#connect)
+    - [send](#send)
+    - [disconnect](#disconnect)
+- [Library dispatched actions](#library-dispatched-actions)
 
 ## Installation
 
 ```sh
 $ npm i @giantmachines/redux-websocket
 ```
+
+[⇧ back to top](#table-of-contents)
 
 ## Configuration
 
@@ -39,6 +53,8 @@ const store = createStore(
 ```
 
 You may also pass options to the `reduxWebsocket` function.
+
+[⇧ back to top](#table-of-contents)
 
 #### Available options
 
@@ -69,77 +85,90 @@ interface Options {
 
 These actions must be dispatched by you, however we do export action creator functions that can be used.
 
-> ⚠️ If you have created your middleware with a `instanceName` option, make sure you pass that name as the second argument to all of these action creators.
+> ⚠️ If you have created your middleware with the `instanceName` option, make sure you pass that name as the second argument to all of these action creators.
 
----
+[⇧ back to top](#table-of-contents)
 
-##### ➡️ `REDUX_WEBSOCKET::WEBSOCKET_CONNECT`
+## API
 
-###### Example:
+### `connect`
 
-```js
-import { connect } from '@giantmachines/redux-websocket';
-
-store.dispatch(connect('wss://my-server.com'));
-
-// You can also provide protocols if needed.
-// See: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket
-//
-// Note that this function only allows passing an array of protocols, even though
-// the spec allows passing a string or an array of strings. This is to support
-// the `instanceName` argument, in the case that you've used a unique name
-// for your middleware instance.
-store.dispatch(connect('wss://my-server.com', ['v1.stream.example.com']));
-
-// ...other ways to call this function:
-store.dispatch(connect('wss://my-server.com', ['v1.stream.example.com'], 'MY_INSTANCE_NAME'));
-store.dispatch(connect('wss://my-server.com', 'MY_INSTANCE_NAME'));
-```
-
-###### Arguments:
-
-1. `url` *(`string`)*: WebSocket URL to connect to.
-2. \[`protocols`\] *(`string[]`)*: Optional sub-protocols.
-2. \[`instanceName`\] *(`string`)*: Optional instance name.
-
----
-
-##### ➡️ `REDUX_WEBSOCKET::WEBSOCKET_DISCONNECT`
-
-###### Example:
+Use this action creator to open up a WebSocket connection.
 
 ```js
-import { disconnect } from '@giantmachines/redux-websocket';
-
-store.dispatch(disconnect());
+connect(url: string, options?: { protocols?: string | string[], instanceName?: string });
 ```
 
-###### Arguments:
-
-1. \[`instanceName`\] *(`string`)*: Optional instance name.
-
----
-
-##### ➡️ `REDUX_WEBSOCKET::WEBSOCKET_SEND`
-
-###### Example:
+###### Returns:
 
 ```js
-import { send } from '@giantmachines/redux-websocket';
-
-store.dispatch(send({ my: 'message' }));
+{
+    type: 'REDUX_WEBSOCKET::CONNECT',
+    payload: {
+        url: string,
+        protocols?: string | string[],
+    },
+    meta: {
+        timestamp: string,
+        instanceName?: string,
+    },
+}
 ```
 
-###### Arguments:
-
-1. `message` *(`any`)*: Any JSON serializable value. This will be stringified and sent over the connection. If the value passed is not serializable, `JSON.stringify` will throw an error.
-1. \[`instanceName`\] *(`string`)*: Optional instance name.
+[⇧ back to top](#table-of-contents)
 
 ---
 
-### Library dispatched actions
+### `send`
 
-These actions are dispatched automatically by the middlware.
+Use this action to send a message out. Pass any JSON serializable value.
+
+```js
+send(msg: any, options?: { instanceName?: string });
+```
+
+###### Returns:
+
+```js
+{
+    type: 'REDUX_WEBSOCKET::SEND',
+    payload: any,
+    meta: {
+        timestamp: string,
+        instanceName?: string,
+    },
+}
+```
+
+[⇧ back to top](#table-of-contents)
+
+---
+
+### `disconnect`
+
+This action will immediately close your WebSocket connection. You can use `connect` to open it again.
+
+```js
+disconnect(options?: { instanceName?: string });
+```
+
+###### Returns:
+
+```js
+{
+    type: 'REDUX_WEBSOCKET::DISCONNECT',
+    meta: {
+        timestamp: string,
+        instanceName?: string,
+    }
+}
+```
+
+[⇧ back to top](#table-of-contents)
+
+## Library dispatched actions
+
+These actions are dispatched automatically by `redux-websocket`.
 
 ##### ⬅️ `REDUX_WEBSOCKET::OPEN`
 
@@ -294,3 +323,5 @@ General purpose error action.
     payload: Error,
 }
 ```
+
+[⇧ back to top](#table-of-contents)
