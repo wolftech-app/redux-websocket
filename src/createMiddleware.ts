@@ -51,11 +51,14 @@ export default (rawOptions?: Options): Middleware => {
 
     if (handler) {
       try {
+        const instanceHasName = options.instanceName != null;
+        const actionHasName = 'meta' in action && 'instanceName' in action.meta && action.meta.instanceName != null;
+
         // If an instanceName is set in the options, then only run the handler
-        // if the same instanceName is in the action's meta data.
+        // if the same instanceName is also in the action's meta data.
         //
         // If there's no instanceName set, just run the handler.
-        if (options.instanceName != null) {
+        if (instanceHasName || actionHasName) {
           const instanceName = Reflect.get(action.meta, 'instanceName');
 
           if (instanceName === options.instanceName) {

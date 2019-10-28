@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect as RwsConnect, disconnect as RwsDisconnect, send as RwsSend } from '@giantmachines/redux-websocket';
 
 import Button from '../Button';
 import exampleMessages from './exampleMessages';
@@ -22,9 +23,9 @@ const { NODE_ENV } = process.env;
 
 interface Props {
   connected: boolean;
-  connect: (url: string) => void;
-  disconnect: () => void;
-  onSendMessage: (message: any) => void;
+  connect: typeof RwsConnect;
+  disconnect: typeof RwsDisconnect;
+  onSendMessage: typeof RwsSend;
 }
 
 interface State {
@@ -160,7 +161,7 @@ class Controls extends React.Component<Props, State> {
 
             <DisconnectButton
               disabled={!connected}
-              onClick={disconnect}
+              onClick={() => disconnect()}
             >
               Disconnect
             </DisconnectButton>
