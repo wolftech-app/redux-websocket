@@ -327,7 +327,7 @@ describe('ReduxWebSocket', () => {
         type: actionTypes.WEBSOCKET_ERROR,
         payload: expect.any(Error),
         meta: {
-          message: 'Converting circular structure to JSON',
+          message: expect.stringContaining('Converting circular structure to JSON'),
           name: 'TypeError',
           timestamp: expect.any(Date),
           originalAction: act,
