@@ -5,7 +5,6 @@ import * as actions from './actions';
 type Action = ActionType<typeof actions>;
 
 type Options = {
-  prefix?: string
   instanceName?: string;
   reconnectInterval?: number
   reconnectOnClose?: boolean

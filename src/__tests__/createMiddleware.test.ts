@@ -1,3 +1,5 @@
+import { applyMiddleware, createStore } from 'redux';
+
 import * as actions from '../actions';
 import middleware from '../createMiddleware';
 import ReduxWebSocket from '../ReduxWebSocket';
@@ -25,18 +27,19 @@ ReduxWebSocketMock.mockImplementation((options) => {
     connect = connectMock
     disconnect = disconnectMock
     handleBrokenConnection = () => {}
+    handleClose = () => {}
+    handleError = () => {}
+    handleMessage = () => {}
+    handleOpen = () => {}
     hasOpened = false
     lastSocketUrl = ''
+    private canAttemptReconnect = () => {}
     private options = options
     reconnectCount = 0
     reconnectionInterval = null
     reconnectOnClose = false
     send = sendMock
     websocket = null
-    handleClose = () => {}
-    handleError = () => {}
-    handleOpen = () => {}
-    handleMessage = () => {}
   }
   /* eslint-enable lines-between-class-members */
 
@@ -61,34 +64,33 @@ describe('middleware', () => {
     middleware();
 
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
-      prefix: 'REDUX_WEBSOCKET',
       reconnectInterval: 2000,
       reconnectOnClose: false,
     });
   });
 
   it('passes custom options to the ReduxWebSocket constructor', () => {
-    middleware({ prefix: 'CUSTOM' });
+    middleware({ instanceName: 'test', reconnectInterval: 1, reconnectOnClose: true });
 
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
-      prefix: 'CUSTOM',
-      reconnectInterval: 2000,
-      reconnectOnClose: false,
+      instanceName: 'test',
+      reconnectInterval: 1,
+      reconnectOnClose: true,
     });
   });
 
   it('can create multiple instances of ReduxWebSocket', () => {
-    middleware({ prefix: 'ONE' });
-    middleware({ prefix: 'TWO', reconnectOnClose: true });
+    middleware({ instanceName: 'test-one' });
+    middleware({ instanceName: 'test-two', reconnectOnClose: true });
 
     expect(ReduxWebSocketMock).toHaveBeenCalledTimes(2);
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
-      prefix: 'ONE',
+      instanceName: 'test-one',
       reconnectInterval: 2000,
       reconnectOnClose: false,
     });
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
-      prefix: 'TWO',
+      instanceName: 'test-two',
       reconnectInterval: 2000,
       reconnectOnClose: true,
     });
@@ -110,7 +112,6 @@ describe('middleware', () => {
     expect(connectMock).toHaveBeenCalledTimes(1);
     expect(connectMock).toHaveBeenCalledWith(store, dispatchedAction);
   });
-
 
   it('should handle a REDUX_WEBSOCKET::DISCONNECT action', () => {
     const { store, dispatch } = mockStore();
@@ -143,7 +144,48 @@ describe('middleware', () => {
     expect(sendMock).toHaveBeenCalledWith(store, dispatchedAction);
   });
 
-  it('should not break on random actions', () => {
+  it('should only call through to the correct ReduxWebSocket instance, when an instance name is set', () => {
+    const storeMatcher = { dispatch: expect.any(Function), getState: expect.any(Function) };
+    const mockOne = middleware({ instanceName: 'mock-one' });
+    const store = createStore(
+      () => ({}),
+      applyMiddleware(
+        mockOne,
+      ),
+    );
+
+    // Connect
+    const connectAction = actions.connect('ws://example.com', { instanceName: 'mock-one' });
+
+    store.dispatch(connectAction);
+    store.dispatch(actions.connect('ws://example.com'));
+    store.dispatch(actions.connect('ws://example.com', { instanceName: 'something' }));
+
+    expect(connectMock).toHaveBeenCalledTimes(1);
+    expect(connectMock).toHaveBeenCalledWith(storeMatcher, connectAction);
+
+    // Send
+    const sendAction = actions.send({ test: 'value' }, { instanceName: 'mock-one' });
+
+    store.dispatch(sendAction);
+    store.dispatch(actions.send({ test: 'value' }, { instanceName: 'something' }));
+    store.dispatch(actions.send({ test: 'value' }));
+
+    expect(sendMock).toHaveBeenCalledTimes(1);
+    expect(sendMock).toHaveBeenCalledWith(storeMatcher, sendAction);
+
+    // Disconnect
+    const disconnectAction = actions.disconnect({ instanceName: 'mock-one' });
+
+    store.dispatch(disconnectAction);
+    store.dispatch(actions.disconnect({ instanceName: 'something' }));
+    store.dispatch(actions.disconnect());
+
+    expect(disconnectMock).toHaveBeenCalledTimes(1);
+    expect(disconnectMock).toHaveBeenCalledWith(storeMatcher, disconnectAction);
+  });
+
+  it('should not do anything on random actions', () => {
     const { dispatch } = mockStore();
 
     dispatch({ type: `REDUX_WEBSOCKET::${Math.random().toString(36).substring(2, 15)}` });
