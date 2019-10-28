@@ -1,3 +1,5 @@
+export const DEFAULT_PREFIX = 'temp';
+
 // Library dispatched action types.
 export const WEBSOCKET_BEGIN_RECONNECT = 'REDUX_WEBSOCKET::BEGIN_RECONNECT';
 export const WEBSOCKET_RECONNECT_ATTEMPT = 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT';

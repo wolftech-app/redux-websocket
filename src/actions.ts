@@ -18,7 +18,7 @@ interface BaseOptions {
   instanceName?: string;
 }
 
-const createMetaFromOptions = (options: BaseOptions) => {
+const createMetaFromOptions = (options: BaseOptions = {}) => {
   const { instanceName } = options;
 
   return {
@@ -36,9 +36,9 @@ export const connect = createAction(
   WEBSOCKET_CONNECT,
   action => (
     url: string,
-    options: BaseOptions & { protocols?: string | string[] } = {},
+    options?: BaseOptions & { protocols?: string | string[] },
   ) => {
-    const { protocols } = options;
+    const { protocols = undefined } = options || {};
     const payload = {
       url,
       ...(protocols ? { protocols } : undefined),
@@ -50,14 +50,14 @@ export const connect = createAction(
 
 export const disconnect = createAction(
   WEBSOCKET_DISCONNECT,
-  action => (options: BaseOptions = {}) => (
+  action => (options?: BaseOptions) => (
     action(undefined, createMetaFromOptions(options))
   ),
 );
 
 export const send = createAction(
   WEBSOCKET_SEND,
-  action => (msg: any, options: BaseOptions = {}) => (
+  action => (msg: any, options?: BaseOptions) => (
     action(msg, createMetaFromOptions(options))
   ),
 );
@@ -69,49 +69,49 @@ export const send = createAction(
  */
 export const beginReconnect = createAction(
   WEBSOCKET_BEGIN_RECONNECT,
-  action => (options: BaseOptions = {}) => (
+  action => (options?: BaseOptions) => (
     action(undefined, createMetaFromOptions(options))
   ),
 );
 
 export const reconnectAttempt = createAction(
   WEBSOCKET_RECONNECT_ATTEMPT,
-  action => (count: number, options: BaseOptions = {}) => (
+  action => (count: number, options?: BaseOptions) => (
     action({ count }, createMetaFromOptions(options))
   ),
 );
 
 export const reconnected = createAction(
   WEBSOCKET_RECONNECTED,
-  action => (options: BaseOptions = {}) => (
+  action => (options?: BaseOptions) => (
     action(undefined, createMetaFromOptions(options))
   ),
 );
 
 export const open = createAction(
   WEBSOCKET_OPEN,
-  action => (event: Event, options: BaseOptions = {}) => (
+  action => (event: Event, options?: BaseOptions) => (
     action(event, createMetaFromOptions(options))
   ),
 );
 
 export const broken = createAction(
   WEBSOCKET_BROKEN,
-  action => (options: BaseOptions = {}) => (
+  action => (options?: BaseOptions) => (
     action(undefined, createMetaFromOptions(options))
   ),
 );
 
 export const closed = createAction(
   WEBSOCKET_CLOSED,
-  action => (event: Event, options: BaseOptions = {}) => (
+  action => (event: Event, options?: BaseOptions) => (
     action(event, createMetaFromOptions(options))
   ),
 );
 
 export const message = createAction(
   WEBSOCKET_MESSAGE,
-  action => (event: MessageEvent, options: BaseOptions = {}) => {
+  action => (event: MessageEvent, options?: BaseOptions) => {
     const payload = {
       event,
       message: event.data,
@@ -125,7 +125,7 @@ export const message = createAction(
 export const error = (
   originalAction: any,
   err: Error,
-  options: BaseOptions = {},
+  options?: BaseOptions,
 ) => {
   const meta = {
     message: err.message,
