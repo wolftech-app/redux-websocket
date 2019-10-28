@@ -131,6 +131,7 @@ export default class ReduxWebSocket {
 
   /**
    * Handle a close event.
+   * @private
    *
    * @param {Dispatch} dispatch
    * @param {Event} event
@@ -149,6 +150,7 @@ export default class ReduxWebSocket {
 
   /**
    * Handle an error event.
+   * @private
    *
    * @param {Dispatch} dispatch
    * @param {Event} event
@@ -165,6 +167,7 @@ export default class ReduxWebSocket {
 
   /**
    * Handle an open event.
+   * @private
    *
    * @param {Dispatch} dispatch
    * @param {(s: WebSocket) => void | undefined} onOpen
@@ -203,6 +206,7 @@ export default class ReduxWebSocket {
 
   /**
    * Handle a message event.
+   * @private
    *
    * @param {Dispatch} dispatch
    * @param {MessageEvent} event
@@ -269,13 +273,18 @@ export default class ReduxWebSocket {
     }, reconnectInterval);
   }
 
-  // Only attempt to reconnect if the connection has ever successfully opened,
-  // and we're not currently trying to reconnect.
-  //
-  // This prevents ongoing reconnect loops to connections that have not
-  // successfully opened before, such as net::ERR_CONNECTION_REFUSED errors.
-  //
-  // This also prevents starting multiple reconnection attempt loops.
+  /**
+   * Only attempt to reconnect if the connection has ever successfully opened,
+   * and we're not currently trying to reconnect.
+   * @private
+   *
+   * This prevents ongoing reconnect loops to connections that have not
+   * successfully opened before, such as net::ERR_CONNECTION_REFUSED errors.
+   *
+   * This also prevents starting multiple reconnection attempt loops.
+   *
+   * @returns {boolean}
+   */
   private canAttemptReconnect(): boolean {
     return this.hasOpened && this.reconnectionInterval == null;
   }
