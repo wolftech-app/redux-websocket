@@ -63,8 +63,6 @@ export default class ReduxWebSocket {
    * @param {Action} action
    */
   connect = ({ dispatch }: MiddlewareAPI, action: Action) => {
-    console.log('----- connnect', action);
-
     if (action.type !== actionTypes.WEBSOCKET_CONNECT) {
       return;
     }

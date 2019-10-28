@@ -38,13 +38,22 @@ export default (rawOptions?: Options): Middleware => {
   // Middleware function.
   return (store: MiddlewareAPI) => next => (action: Action) => {
     const { dispatch } = store;
-    const handler = handlers[action.type];
+    let handler;
+
+    switch (action.type) {
+      case actionTypes.WEBSOCKET_CONNECT:
+      case actionTypes.WEBSOCKET_DISCONNECT:
+      case actionTypes.WEBSOCKET_SEND:
+        handler = handlers[action.type];
+        break;
+      default:
+    }
 
     if (handler) {
       try {
         handler(store, action);
       } catch (err) {
-        dispatch(error(action, err, options.instanceName));
+        dispatch(error(action, err, { instanceName: options.instanceName }));
       }
     }
 
