@@ -62,11 +62,12 @@ export default class ReduxWebSocket {
    * @param {MiddlewareAPI} store
    * @param {Action} action
    */
-  connect = ({ dispatch }: MiddlewareAPI, action: Action) => {
+  connect = (store: MiddlewareAPI, action: Action) => {
     if (action.type !== actionTypes.WEBSOCKET_CONNECT) {
       return;
     }
 
+    const { dispatch } = store;
     const { payload } = action;
 
     this.close();
@@ -87,15 +88,22 @@ export default class ReduxWebSocket {
   /**
    * WebSocket disconnect event handler.
    *
+   * @param {MiddlewareAPI} _store
+   * @param {Action} action
+   *
    * @throws {Error} Socket connection must exist.
    */
-  disconnect = () => {
+  disconnect = (store: MiddlewareAPI, action: Action) => {
     if (this.websocket) {
       this.close();
     } else {
-      throw new Error(
+      const { instanceName } = this.options;
+
+      const err = new Error(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
+
+      store.dispatch(error(action, err, { instanceName }));
     }
   }
 
@@ -107,7 +115,7 @@ export default class ReduxWebSocket {
    *
    * @throws {Error} Socket connection must exist.
    */
-  send = (_store: MiddlewareAPI, action: Action) => {
+  send = (store: MiddlewareAPI, action: Action) => {
     if (action.type !== actionTypes.WEBSOCKET_SEND) {
       return;
     }
@@ -118,14 +126,14 @@ export default class ReduxWebSocket {
       try {
         this.websocket.send(JSON.stringify(action.payload));
       } catch (err) {
-        _store.dispatch(error(action, err, { instanceName }));
+        store.dispatch(error(action, err, { instanceName }));
       }
     } else {
       const err = new Error(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
 
-      _store.dispatch(error(action, err, { instanceName }));
+      store.dispatch(error(action, err, { instanceName }));
     }
   }
 

@@ -1,5 +1,7 @@
-import ReduxWebSocket from '../ReduxWebSocket';
 import { Action } from '../types';
+import * as actionTypes from '../actionTypes';
+import ReduxWebSocket from '../ReduxWebSocket';
+import * as actions from '../actions';
 
 declare global {
   namespace NodeJS {
@@ -13,7 +15,6 @@ describe('ReduxWebSocket', () => {
   const store = { dispatch: jest.fn((i: any) => i), getState: () => {} };
   const url = 'ws://fake.com';
   const options = {
-    prefix: 'REDUX_WEBSOCKET',
     reconnectInterval: 2000,
     reconnectOnClose: false,
   };
@@ -39,7 +40,7 @@ describe('ReduxWebSocket', () => {
   });
 
   describe('connect', () => {
-    const action = { type: 'SEND', payload: { url } };
+    const action = { type: actionTypes.WEBSOCKET_CONNECT, payload: { url } };
 
     beforeEach(() => {
       reduxWebSocket.connect(store, action as Action);
@@ -48,6 +49,28 @@ describe('ReduxWebSocket', () => {
     it('creates a new WebSocket instance', () => {
       expect(global.WebSocket).toHaveBeenCalledTimes(1);
       expect(global.WebSocket).toHaveBeenCalledWith(url);
+    });
+
+    it('creates a new WebSocket instance, with protocols', () => {
+      global.WebSocket.mockClear();
+
+      reduxWebSocket.connect(store, actions.connect('ws://fake.com', { protocols: 'test' }));
+
+      expect(global.WebSocket).toHaveBeenCalledTimes(1);
+      expect(global.WebSocket).toHaveBeenCalledWith(url, 'test');
+    });
+
+    it('does nothing without the correct action', () => {
+      global.WebSocket.mockClear();
+
+      const act = actions.connect('ws://fake.com', { protocols: 'test' });
+
+      // @ts-ignore
+      act.type = 'fake';
+
+      reduxWebSocket.connect(store, act);
+
+      expect(global.WebSocket).not.toHaveBeenCalled();
     });
 
     it('closes any existing connections', () => {
@@ -85,13 +108,21 @@ describe('ReduxWebSocket', () => {
       const rws = new ReduxWebSocket({
         ...options,
         reconnectOnClose: true,
-      }) as any; // cast to avoid compile errors
+      });
+
+      // @ts-ignore
       rws.handleBrokenConnection = jest.fn();
-      rws.handleClose(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
+      // @ts-ignore
+      rws.handleClose(dispatch, { currentTarget: { url: 'test' } } as any);
+      // @ts-ignore
       expect(rws.handleBrokenConnection).not.toHaveBeenCalled();
+      // @ts-ignore
       rws.hasOpened = true;
-      rws.handleClose(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
+      // @ts-ignore
+      rws.handleClose(dispatch, { currentTarget: { url: 'test' } } as any);
+      // @ts-ignore
       expect(rws.handleBrokenConnection).toHaveBeenCalledTimes(1);
+      // @ts-ignore
       expect(rws.handleBrokenConnection).toHaveBeenCalledWith(dispatch);
     });
 
@@ -142,22 +173,16 @@ describe('ReduxWebSocket', () => {
 
         // @ts-ignore
         reduxWebSocket.handleBrokenConnection = jest.fn();
-
         // @ts-ignore
         reduxWebSocket.handleError(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
-
         // @ts-ignore
         expect(reduxWebSocket.handleBrokenConnection).not.toHaveBeenCalled();
-
         // @ts-ignore
         reduxWebSocket.hasOpened = true;
-
         // @ts-ignore
         reduxWebSocket.handleError(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
-
         // @ts-ignore
         expect(reduxWebSocket.handleBrokenConnection).toHaveBeenCalledTimes(1);
-
         // @ts-ignore
         expect(reduxWebSocket.handleBrokenConnection).toHaveBeenCalledWith(dispatch);
       });
@@ -234,34 +259,99 @@ describe('ReduxWebSocket', () => {
 
   describe('disconnect', () => {
     it('should close any open connection', () => {
-      const action = { type: 'SEND', payload: { url } };
+      const action = { type: actionTypes.WEBSOCKET_CONNECT, payload: { url } };
 
       reduxWebSocket.connect(store, action as Action);
-      reduxWebSocket.disconnect();
+      reduxWebSocket.disconnect(store, actions.disconnect());
 
       expect(closeMock).toHaveBeenCalledTimes(1);
     });
 
-    it('should throw an error if no connection exists', () => {
-      expect(() => reduxWebSocket.disconnect())
-        .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
+    it('should dispatch an error if no connection exists', () => {
+      const action = actions.disconnect();
+
+      reduxWebSocket.disconnect(store, action);
+
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: actionTypes.WEBSOCKET_ERROR,
+        payload: expect.any(Error),
+        error: true,
+        meta: {
+          message: 'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
+          name: 'Error',
+          originalAction: action,
+          timestamp: expect.any(Date),
+        },
+      });
     });
   });
 
   describe('send', () => {
-    it('should send a JSON message', () => {
-      const action = { type: 'SEND', payload: { url } };
+    it('does nothing without the correct action', () => {
+      global.WebSocket.mockClear();
 
-      reduxWebSocket.connect(store, action as Action);
-      reduxWebSocket.send(null as any, { payload: { test: 'value' } } as any);
+      const act = actions.send({ test: 'value' });
+
+      // @ts-ignore
+      act.type = 'fake';
+
+      reduxWebSocket.connect(store, actions.connect(url));
+      reduxWebSocket.send(store, act);
+
+      expect(sendMock).not.toHaveBeenCalled();
+    });
+
+    it('should send a JSON message', () => {
+      reduxWebSocket.connect(store, actions.connect(url));
+      reduxWebSocket.send(store, actions.send({ test: 'value' }));
 
       expect(sendMock).toHaveBeenCalledTimes(1);
       expect(sendMock).toHaveBeenCalledWith('{"test":"value"}');
     });
 
-    it('should throw an error if no connection exists', () => {
-      expect(() => reduxWebSocket.send(null as any, { payload: null } as any))
-        .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
+    it('should dispatch an error if the message cant be stringified', () => {
+      const obj = {};
+
+      // @ts-ignore
+      obj.a = { b: obj };
+
+      const act = actions.send({ test: obj });
+
+      reduxWebSocket.connect(store, actions.connect(url));
+      reduxWebSocket.send(store, act);
+
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        error: true,
+        type: actionTypes.WEBSOCKET_ERROR,
+        payload: expect.any(Error),
+        meta: {
+          message: 'Converting circular structure to JSON',
+          name: 'TypeError',
+          timestamp: expect.any(Date),
+          originalAction: act,
+        },
+      });
+    });
+
+    it('should action an error if no connection exists', () => {
+      const action = actions.send({ test: 'value' });
+
+      reduxWebSocket.send(store, action);
+
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: actionTypes.WEBSOCKET_ERROR,
+        payload: expect.any(Error),
+        error: true,
+        meta: {
+          message: 'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
+          name: 'Error',
+          originalAction: action,
+          timestamp: expect.any(Date),
+        },
+      });
     });
   });
 
@@ -283,19 +373,19 @@ describe('ReduxWebSocket', () => {
       // @ts-ignore
       expect(reduxWebSocket.reconnectCount).toEqual(3);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
-        type: 'REDUX_WEBSOCKET::BROKEN',
+        type: actionTypes.WEBSOCKET_BROKEN,
         meta: {
           timestamp: expect.any(Date),
         },
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
-        type: 'REDUX_WEBSOCKET::BEGIN_RECONNECT',
+        type: actionTypes.WEBSOCKET_BEGIN_RECONNECT,
         meta: {
           timestamp: expect.any(Date),
         },
       });
       expect(dispatch).toHaveBeenNthCalledWith(3, {
-        type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
+        type: actionTypes.WEBSOCKET_RECONNECT_ATTEMPT,
         meta: {
           timestamp: expect.any(Date),
         },
@@ -304,7 +394,7 @@ describe('ReduxWebSocket', () => {
         },
       });
       expect(dispatch).toHaveBeenNthCalledWith(4, {
-        type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
+        type: actionTypes.WEBSOCKET_RECONNECT_ATTEMPT,
         meta: {
           timestamp: expect.any(Date),
         },
@@ -313,7 +403,7 @@ describe('ReduxWebSocket', () => {
         },
       });
       expect(dispatch).toHaveBeenNthCalledWith(5, {
-        type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
+        type: actionTypes.WEBSOCKET_RECONNECT_ATTEMPT,
         meta: {
           timestamp: expect.any(Date),
         },
