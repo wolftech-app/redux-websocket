@@ -96,10 +96,12 @@ These actions must be dispatched by you, however we do export action creator fun
 Use this action creator to open up a WebSocket connection.
 
 ```js
+import { connect } from '@giantmachines/redux-websocket';
+
 connect(url: string, options?: { protocols?: string | string[], instanceName?: string });
 ```
 
-###### Returns:
+#### Returns:
 
 ```js
 {
@@ -124,10 +126,12 @@ connect(url: string, options?: { protocols?: string | string[], instanceName?: s
 Use this action to send a message out. Pass any JSON serializable value.
 
 ```js
+import { send } from '@giantmachines/redux-websocket';
+
 send(msg: any, options?: { instanceName?: string });
 ```
 
-###### Returns:
+#### Returns:
 
 ```js
 {
@@ -149,10 +153,12 @@ send(msg: any, options?: { instanceName?: string });
 This action will immediately close your WebSocket connection. You can use `connect` to open it again.
 
 ```js
+import { disconnect } from '@giantmachines/redux-websocket';
+
 disconnect(options?: { instanceName?: string });
 ```
 
-###### Returns:
+#### Returns:
 
 ```js
 {
