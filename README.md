@@ -65,15 +65,17 @@ interface Options {
   // instances of the middleware, and need to handle actions dispatched by
   // each middleware instance separately.
   instanceName?: string,
+
   // Defaults to 2000. Amount of time to wait between reconnection attempts.
   reconnectInterval?: number,
+
   // Defaults to false. If set to true, will attempt to reconnect when conn is closed without error event
   // e.g. when server closes connection
   reconnectOnClose?: boolean,
+
   // Callback when the WebSocket connection is open. Useful for when you
   // need a reference to the WebSocket instance.
   onOpen?: (socket: WebSocket) => void,
-
 }
 ```
 
@@ -106,13 +108,13 @@ connect(url: string, options?: { protocols?: string | string[], instanceName?: s
 ```js
 {
     type: 'REDUX_WEBSOCKET::CONNECT',
-    payload: {
-        url: string,
-        protocols?: string | string[],
-    },
     meta: {
         timestamp: string,
         instanceName?: string,
+    },
+    payload: {
+        url: string,
+        protocols?: string | string[],
     },
 }
 ```
@@ -136,11 +138,11 @@ send(msg: any, options?: { instanceName?: string });
 ```js
 {
     type: 'REDUX_WEBSOCKET::SEND',
-    payload: any,
     meta: {
         timestamp: string,
         instanceName?: string,
     },
+    payload: any,
 }
 ```
 
@@ -166,7 +168,7 @@ disconnect(options?: { instanceName?: string });
     meta: {
         timestamp: string,
         instanceName?: string,
-    }
+    },
 }
 ```
 
