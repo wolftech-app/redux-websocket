@@ -83,6 +83,24 @@ interface Options {
 
 `redux-websocket` will dispatch some actions automatically, based on events emitted by the internal WebSocket instance. Some actions will need to be dispatched by you. `redux-websocket` comes with action creator functions, documented below. You don't _have_ to use these functions, but we recommend it. If you do not want to use the action creator functions, the actions themselves are all documented below as well.
 
+### A note on handling multiple instances
+
+You can handle multiple streaming connections by creating multiple instances of `redux-websocket`, and using the `instanceName` option to give each one a unique name. When you do this, each action that _you_ dispatch (connect, send, disconnect), must include the correct `instanceName` in the options. If you have a single connection and _don't_ set an `instanceName`, you _don't_ have to pass that `instanceName` in the options. For example:
+
+```js
+// Creating two streams.
+const priceStream = reduxWebsocket({ instanceName: 'price_stream' });
+const orderBookStream = reduxWebsocket({ instanceName: 'order_book_stream' });
+
+// Later...
+// This will only send a message to the `priceStream` connection.
+send({ some: 'message' }, { instanceName: 'price_stream' });
+
+// This will _do nothing_, because the only connections that have been created
+// have `instanceName` options set.
+send({ someOther: 'important message' });
+```
+
 ## API
 
 > ⚠️ If you have created your middleware with the `instanceName` option, make sure you pass that name in the options argument to all of these action creators.
