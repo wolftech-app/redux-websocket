@@ -81,7 +81,7 @@ interface Options {
 
 ## Usage
 
-`redux-websocket` will dispatch some actions automatically, based on what the internal WebSocket connection. Some actions will need to be dispatched by you. You can more easily do that by using the action creator functions detailed below. You don't _have_ to use these functions, but we recommend it. If you do not want to use the action creator functions, the actions themselves are all detailed below as well.
+`redux-websocket` will dispatch some actions automatically, based on events emitted by the internal WebSocket instance. Some actions will need to be dispatched by you. `redux-websocket` comes with action creator functions, documented below. You don't _have_ to use these functions, but we recommend it. If you do not want to use the action creator functions, the actions themselves are all documented below as well.
 
 ## API
 
