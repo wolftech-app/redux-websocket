@@ -34,7 +34,7 @@ const reduxWebsocketMiddleware = reduxWebsocket();
 // Create the Redux store.
 const store = createStore(
   reducer,
-  applyMiddleware(websocketMiddleware)
+  applyMiddleware(reduxWebsocketMiddleware)
 );
 ```
 
