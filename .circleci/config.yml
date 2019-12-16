@@ -3,15 +3,16 @@ version: 2
 jobs:
   lint:
     docker:
-      - image: circleci/node:lts
+      - image: circleci/node:dubnium
     steps:
       - checkout
       - run: npm ci
+      - run: cd demo && npm ci && cd -
       - run: npm run lint
 
   typescript:
     docker:
-      - image: circleci/node:lts
+      - image: circleci/node:dubnium
     steps:
       - checkout
       - run: npm ci
@@ -19,7 +20,7 @@ jobs:
 
   test:
     docker:
-      - image: circleci/node:lts
+      - image: circleci/node:dubnium
     steps:
       - checkout
       - run: npm ci
