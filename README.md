@@ -125,12 +125,17 @@ store.dispatch(disconnect());
 ```js
 import { send } from '@giantmachines/redux-websocket';
 
+// Sending JSON serializable data
 store.dispatch(send({ my: 'message' }));
+
+// Sending raw binary data
+store.dispatch(send(new Blob(['my message'])));
+store.dispatch(send(new ArrayBuffer(8)));
 ```
 
 ###### Arguments:
 
-1. `message` *(`any`)*: Any JSON serializable value. This will be stringified and sent over the connection. If the value passed is not serializable, `JSON.stringify` will throw an error.
+1. `message` *(`any`)*: A message can be a blob, array buffer, or any JSON serializable value. If the message is not a blob or array buffer it will be stringified using `JSON.stringify` and sent over the connection.
 2. \[`prefix`\] *(`string`)*: Optional action type prefix.
 
 ---
