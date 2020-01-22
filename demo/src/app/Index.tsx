@@ -1,10 +1,4 @@
-import {
-  AnyAction,
-  MiddlewareAPI,
-  applyMiddleware,
-  compose,
-  createStore,
-} from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -62,39 +56,10 @@ const disconnectSimulatorMiddleware = () => {
   };
 };
 
-const binaryMessageMiddleware = (store: MiddlewareAPI) => (next: any) => (action: AnyAction) => {
-  if (action.type !== `${WEBSOCKET_PREFIX}::MESSAGE`) {
-    next(action);
-    return;
-  }
-
-  const { message } = action.payload;
-
-  if (message instanceof Blob) {
-    const fileReader = new FileReader();
-
-    fileReader.onloadend = () => {
-      const { dispatch } = store;
-      dispatch({
-        type: 'INTERNAL::BINARY_MESSAGE_RECEIVED',
-        payload: {
-          ...action.payload,
-          message: fileReader.result,
-        },
-      });
-    };
-
-    fileReader.readAsText(message, 'application/json');
-  }
-
-  next(action);
-};
-
 const store = createStore(
   reducer,
   compose(
     applyMiddleware(
-      binaryMessageMiddleware,
       disconnectSimulatorMiddleware,
       websocketMiddleware,
     ),

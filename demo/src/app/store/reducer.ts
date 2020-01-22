@@ -38,13 +38,7 @@ const reducer = (state = defaultState, action): State => {
         connected: false,
       };
 
-    case REDUX_WEBSOCKET_MESSAGE: {
-      const { message } = action.payload;
-
-      if (typeof message !== 'string') {
-        return state;
-      }
-
+    case REDUX_WEBSOCKET_MESSAGE:
       return {
         ...state,
         messages: [
@@ -57,7 +51,6 @@ const reducer = (state = defaultState, action): State => {
           },
         ],
       };
-    }
 
     case REDUX_WEBSOCKET_SEND:
       return {

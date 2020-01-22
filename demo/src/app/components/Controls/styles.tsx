@@ -85,7 +85,3 @@ export const DisconnectButton = styled(Button)`
 export const SimulateDisconnectButton = styled(Button)`
   grid-area: e;
 `;
-
-export const CheckBox = styled.input`
-  margin-right: 8px;
-`;
