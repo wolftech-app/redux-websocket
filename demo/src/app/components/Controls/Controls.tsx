@@ -4,8 +4,9 @@ import Button from '../Button';
 import exampleMessages from './exampleMessages';
 
 import {
-  ConnectedStatusIndicator,
+  CheckBox,
   ConnectButton,
+  ConnectedStatusIndicator,
   Container,
   DisconnectButton,
   DisconnectedStatusIndicator,
@@ -13,9 +14,9 @@ import {
   Input,
   InputGroup,
   Label,
-  TextArea,
   SimulateDisconnectButton,
   StatusContents,
+  TextArea,
 } from './styles';
 
 const { NODE_ENV } = process.env;
@@ -28,6 +29,7 @@ interface Props {
 }
 
 interface State {
+  encodeAsBinary: boolean;
   message: string;
   webSocketUrl: string;
 }
@@ -39,6 +41,7 @@ interface State {
 class Controls extends React.Component<Props, State> {
   // State.
   state = {
+    encodeAsBinary: false,
     message: '',
     webSocketUrl: 'wss://websocket-echo-server.herokuapp.com',
   }
@@ -76,10 +79,17 @@ class Controls extends React.Component<Props, State> {
    */
   handleSendMessage = () => {
     const { onSendMessage } = this.props;
-    const { message } = this.state;
+    const { encodeAsBinary, message } = this.state;
 
     try {
-      onSendMessage(JSON.parse(message));
+      const parsedMessage = JSON.parse(message);
+
+      if (encodeAsBinary) {
+        const binaryMessage = new Blob([message], { type: 'application/json' });
+        onSendMessage(binaryMessage);
+      } else {
+        onSendMessage(parsedMessage);
+      }
     } catch {
       // eslint-disable-next-line no-alert
       alert('Please enter valid JSON!');
@@ -119,7 +129,7 @@ class Controls extends React.Component<Props, State> {
    */
   render(): React.ReactNode {
     const { connect, connected, disconnect } = this.props;
-    const { message, webSocketUrl } = this.state;
+    const { encodeAsBinary, message, webSocketUrl } = this.state;
 
     return (
       <Container>
@@ -179,6 +189,17 @@ class Controls extends React.Component<Props, State> {
               options={exampleMessages}
               onChange={this.handleExampleMessageChange}
             />
+          </Label>
+        </InputGroup>
+
+        <InputGroup>
+          <Label>
+            <CheckBox
+              type="checkbox"
+              checked={encodeAsBinary}
+              onChange={e => this.setState({ encodeAsBinary: e.target.checked })}
+            />
+            Encode as binary
           </Label>
         </InputGroup>
 
