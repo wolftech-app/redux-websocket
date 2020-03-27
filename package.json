@@ -54,7 +54,7 @@
     "redux-mock-store": "1.5.3",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.1",
-    "typescript": "3.3.3",
+    "typescript": "3.8.3",
     "webpack-cli": "3.2.3",
     "webpack": "4.29.3"
   }
