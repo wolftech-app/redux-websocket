@@ -24,7 +24,7 @@ type BuiltAction<T> = {
     timestamp: Date,
   },
   payload?: T,
-}
+};
 
 /**
  * Determine if the rest args to `connect` contains protocols or not.

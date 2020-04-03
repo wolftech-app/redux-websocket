@@ -38,7 +38,7 @@ export default (rawOptions?: Options): Middleware => {
   };
 
   // Middleware function.
-  return (store: MiddlewareAPI) => next => (action: Action) => {
+  return (store: MiddlewareAPI) => (next) => (action: Action) => {
     const { dispatch } = store;
     const { type: actionType } = action;
 

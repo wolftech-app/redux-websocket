@@ -5,10 +5,8 @@
     "declaration": true,
     "outDir": "dist",
     "strict": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
-  "include": [
-    "./src",
-    "./test"
-  ]
+  "extends": "eslint-config-airbnb-typescript",
+  "include": ["./src", "./test"]
 }

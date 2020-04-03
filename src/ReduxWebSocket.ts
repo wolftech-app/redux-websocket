@@ -71,13 +71,13 @@ export default class ReduxWebSocket {
       ? new WebSocket(payload.url, payload.protocols)
       : new WebSocket(payload.url);
 
-    this.websocket.addEventListener('close', event => this.handleClose(dispatch, prefix, event));
+    this.websocket.addEventListener('close', (event) => this.handleClose(dispatch, prefix, event));
     this.websocket.addEventListener('error', () => this.handleError(dispatch, prefix));
     this.websocket.addEventListener('open', (event) => {
       this.handleOpen(dispatch, prefix, this.options.onOpen, event);
     });
-    this.websocket.addEventListener('message', event => this.handleMessage(dispatch, prefix, event));
-  }
+    this.websocket.addEventListener('message', (event) => this.handleMessage(dispatch, prefix, event));
+  };
 
   /**
    * WebSocket disconnect event handler.
@@ -92,7 +92,7 @@ export default class ReduxWebSocket {
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
     }
-  }
+  };
 
   /**
    * WebSocket send event handler.
@@ -110,7 +110,7 @@ export default class ReduxWebSocket {
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
     }
-  }
+  };
 
   /**
    * Handle a close event.
@@ -127,7 +127,7 @@ export default class ReduxWebSocket {
     if (reconnectOnClose && this.canAttemptReconnect()) {
       this.handleBrokenConnection(dispatch);
     }
-  }
+  };
 
   /**
    * Handle an error event.
@@ -141,7 +141,7 @@ export default class ReduxWebSocket {
     if (this.canAttemptReconnect()) {
       this.handleBrokenConnection(dispatch);
     }
-  }
+  };
 
   /**
    * Handle an open event.
@@ -179,7 +179,7 @@ export default class ReduxWebSocket {
     // for error handling later, ensuring we don't try to reconnect when a
     // connection was never able to open in the first place.
     this.hasOpened = true;
-  }
+  };
 
   /**
    * Handle a message event.
@@ -190,7 +190,7 @@ export default class ReduxWebSocket {
    */
   private handleMessage = (dispatch: Dispatch, prefix: string, event: MessageEvent) => {
     dispatch(message(event, prefix));
-  }
+  };
 
   /**
    * Close the WebSocket connection.
@@ -206,7 +206,7 @@ export default class ReduxWebSocket {
       this.websocket = null;
       this.hasOpened = false;
     }
-  }
+  };
 
   /**
    * Handle a broken socket connection.
@@ -246,7 +246,7 @@ export default class ReduxWebSocket {
         { payload: { url: this.lastSocketUrl } } as Action,
       );
     }, reconnectInterval);
-  }
+  };
 
   // Only attempt to reconnect if the connection has ever successfully opened,
   // and we're not currently trying to reconnect.
