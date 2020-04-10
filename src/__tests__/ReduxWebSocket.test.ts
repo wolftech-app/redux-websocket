@@ -16,7 +16,7 @@ describe('ReduxWebSocket', () => {
     prefix: 'REDUX_WEBSOCKET',
     reconnectInterval: 2000,
     reconnectOnClose: false,
-    serializer: JSON.stringify
+    serializer: JSON.stringify,
   };
   const closeMock = jest.fn();
   const sendMock = jest.fn();
@@ -262,22 +262,22 @@ describe('ReduxWebSocket', () => {
 
     it('should send a custom message', () => {
       const action = { type: 'SEND', payload: { url } };
-      const payload = { test: 'value', another: 'prop' };
-      const customSerializer = (payload: any) => {
-        // Very basic test custom serializer; only works with objects
-        // key1.value1|key2.value2|...|keyN.valueN
-        return Object.entries(payload).reduce((acc: string, cv: any) => (
+      const pld = { test: 'value', another: 'prop' };
+      // Very basic test custom serializer; only works with objects
+      // key1.value1|key2.value2|...|keyN.valueN
+      const customSerializer = (payload: any) => (
+        Object.entries(payload).reduce((acc: string, cv: any) => (
           `${acc}${acc.length ? '|' : ''}${cv[0]}.${cv[1]}`
-        ), '');
-      }
+        ), '')
+      );
 
       // Pass in a custom serializer
-      reduxWebSocket = new ReduxWebSocket({...options, serializer: customSerializer});
+      reduxWebSocket = new ReduxWebSocket({ ...options, serializer: customSerializer });
       reduxWebSocket.connect(store, action as Action);
-      reduxWebSocket.send(null as any, {payload} as any);
+      reduxWebSocket.send(null as any, { pld } as any);
 
       expect(sendMock).toHaveBeenCalledTimes(1);
-      expect(sendMock).toHaveBeenCalledWith(customSerializer(payload));
+      expect(sendMock).toHaveBeenCalledWith(customSerializer(pld));
     });
 
     it('should throw an error if no connection exists', () => {
@@ -286,7 +286,7 @@ describe('ReduxWebSocket', () => {
     });
 
     it('should throw an error if no serializer exists', () => {
-      const optionsClone = {...options};
+      const optionsClone = { ...options };
       const action = { type: 'SEND', payload: { url } };
 
       delete optionsClone.serializer;

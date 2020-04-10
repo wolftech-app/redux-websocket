@@ -64,7 +64,7 @@ describe('middleware', () => {
       prefix: 'REDUX_WEBSOCKET',
       reconnectInterval: 2000,
       reconnectOnClose: false,
-      serializer: JSON.stringify
+      serializer: JSON.stringify,
     });
   });
 
@@ -75,7 +75,7 @@ describe('middleware', () => {
       prefix: 'CUSTOM',
       reconnectInterval: 2000,
       reconnectOnClose: false,
-      serializer: JSON.stringify
+      serializer: JSON.stringify,
     });
   });
 
@@ -88,13 +88,13 @@ describe('middleware', () => {
       prefix: 'ONE',
       reconnectInterval: 2000,
       reconnectOnClose: false,
-      serializer: JSON.stringify
+      serializer: JSON.stringify,
     });
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'TWO',
       reconnectInterval: 2000,
       reconnectOnClose: true,
-      serializer: JSON.stringify
+      serializer: JSON.stringify,
     });
   });
 

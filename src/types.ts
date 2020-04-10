@@ -30,7 +30,7 @@ type Options = {
   reconnectInterval?: number
   reconnectOnClose?: boolean
   onOpen?: (s: WebSocket) => void,
-  serializer?: Serializer
+  serializer?: Serializer,
 }
 
 // Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877
@@ -39,6 +39,6 @@ export {
   Action,
   ActionType,
   Options,
-  Serializer
+  Serializer,
 };
 /* eslint-enable no-undef */
