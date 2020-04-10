@@ -260,6 +260,27 @@ describe('ReduxWebSocket', () => {
       expect(sendMock).toHaveBeenCalledWith('{"test":"value"}');
     });
 
+    it('should send a custom message', () => {
+      const customSerializer = (payload: any) => {
+        // Very basic test custom serializer only works with objects
+        // key1.value1|key2.value2|...|keyN.valueN
+        // console.log(payload)
+        return Object.entries(payload).reduce((acc: string, cv: any) => (
+          `${acc}${acc.length ? '|' : ''}${cv[0]}.${cv[1]}`
+        ), '');
+      }
+      const payload = { test: 'value', another: 'prop' };
+      const action = { type: 'SEND', payload };
+
+      // Pass in a custom serializer
+      reduxWebSocket = new ReduxWebSocket({...options, serializer: customSerializer});
+      reduxWebSocket.connect(store, action as Action);
+      reduxWebSocket.send(null as any, { payload } as any);
+
+      expect(sendMock).toHaveBeenCalledTimes(1);
+      expect(sendMock).toHaveBeenCalledWith(customSerializer(payload));
+    });
+
     it('should throw an error if no connection exists', () => {
       expect(() => reduxWebSocket.send(null as any, { payload: null } as any))
         .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');

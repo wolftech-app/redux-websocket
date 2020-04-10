@@ -104,8 +104,14 @@ export default class ReduxWebSocket {
    * @throws {Error} Socket connection must exist.
    */
   send = (_store: MiddlewareAPI, { payload }: Action) => {
-    if (this.websocket && this.options.serializer) {
-      this.websocket.send(this.options.serializer(payload));
+    if (this.websocket) {
+      if (this.options.serializer) {
+        this.websocket.send(this.options.serializer(payload));
+      } else {
+        throw new Error(
+          'Serializer not provided',
+        );
+      }
     } else {
       throw new Error(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
