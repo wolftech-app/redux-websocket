@@ -1,4 +1,4 @@
-# redux-websocket demo application
+# Demo Application
 
 This folder includes the demo react application for redux-websocket. It can be used as a reference for how to implement redux-websocket in your own app and for testing new feature development.
 
