@@ -262,9 +262,8 @@ describe('ReduxWebSocket', () => {
 
     it('should send a custom message', () => {
       const customSerializer = (payload: any) => {
-        // Very basic test custom serializer only works with objects
+        // Very basic test custom serializer; only works with objects
         // key1.value1|key2.value2|...|keyN.valueN
-        // console.log(payload)
         return Object.entries(payload).reduce((acc: string, cv: any) => (
           `${acc}${acc.length ? '|' : ''}${cv[0]}.${cv[1]}`
         ), '');
