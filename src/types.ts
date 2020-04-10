@@ -7,6 +7,8 @@ import {
   WEBSOCKET_SEND,
 } from './actionTypes';
 
+type Serializer = (payload: any) => string | ArrayBuffer | ArrayBufferView | Blob
+
 type ActionType =
   | typeof WEBSOCKET_CLOSED
   | typeof WEBSOCKET_CONNECT
@@ -27,7 +29,8 @@ type Options = {
   prefix?: string
   reconnectInterval?: number
   reconnectOnClose?: boolean
-  onOpen?: (s: WebSocket) => void
+  onOpen?: (s: WebSocket) => void,
+  serializer?: Serializer
 }
 
 // Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877
@@ -36,5 +39,6 @@ export {
   Action,
   ActionType,
   Options,
+  Serializer
 };
 /* eslint-enable no-undef */

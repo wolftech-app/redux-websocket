@@ -13,6 +13,7 @@ const defaultOptions = {
   reconnectInterval: 2000,
   reconnectOnClose: false,
   prefix: actionTypes.DEFAULT_PREFIX,
+  serializer: JSON.stringify
 };
 
 /**

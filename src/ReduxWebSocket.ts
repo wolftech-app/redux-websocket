@@ -10,13 +10,14 @@ import {
   reconnectAttempt,
   reconnected,
 } from './actions';
-import { Action } from './types';
+import { Action, Serializer } from './types';
 
 interface ReduxWebSocketOptions {
   prefix: string
   reconnectInterval: number
   reconnectOnClose: boolean
   onOpen?: (s: WebSocket) => void
+  serializer?: Serializer
 }
 
 /**
@@ -103,8 +104,8 @@ export default class ReduxWebSocket {
    * @throws {Error} Socket connection must exist.
    */
   send = (_store: MiddlewareAPI, { payload }: Action) => {
-    if (this.websocket) {
-      this.websocket.send(JSON.stringify(payload));
+    if (this.websocket && this.options.serializer) {
+      this.websocket.send(this.options.serializer(payload));
     } else {
       throw new Error(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
