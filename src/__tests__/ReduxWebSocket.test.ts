@@ -263,8 +263,8 @@ describe('ReduxWebSocket', () => {
     it('should send a custom message', () => {
       const action = { type: 'SEND', payload: { url } };
       const pld = { test: 'value', another: 'prop' };
-      // Very basic test custom serializer; only works with objects
-      // key1.value1|key2.value2|...|keyN.valueN
+      // Very basic test custom serializer; only works with objects.
+      // Converts object to string: "key1.value1|key2.value2|...|keyN.valueN"
       const customSerializer = (payload: any) => (
         Object.entries(payload).reduce((acc: string, cv: any) => (
           `${acc}${acc.length ? '|' : ''}${cv[0]}.${cv[1]}`
@@ -274,7 +274,7 @@ describe('ReduxWebSocket', () => {
       // Pass in a custom serializer
       reduxWebSocket = new ReduxWebSocket({ ...options, serializer: customSerializer });
       reduxWebSocket.connect(store, action as Action);
-      reduxWebSocket.send(null as any, { pld } as any);
+      reduxWebSocket.send(null as any, { type: 'SEND', payload: pld } as Action);
 
       expect(sendMock).toHaveBeenCalledTimes(1);
       expect(sendMock).toHaveBeenCalledWith(customSerializer(pld));
