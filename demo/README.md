@@ -8,17 +8,15 @@ This folder includes the demo react application for redux-websocket. It can be u
 |--|--|
 |`npm run build`|Build production app|
 |`npm start`|Start webpack dev server for local development|
+|`npm run link`|Link local build of redux websocket to app|
+|`npm run unlink`|Unlink local build of redux websocket to app|
 
 ## Local Development Setup
 
-- In the root folder run `npm link` to build redux-websocket and create a symlink to the local build.
+- From the demo folder run `npm run link` to install demo app dependencies and link local build of redux-websocket.
 
-- Run `npm run build:watch` to start watching src files to trigger a rebuild automatically.
+- From project root folder run `npm run build:watch` to start watching library source code for changes.
 
-- In another terminal go to the demo folder and run `npm install` to install demo app dependencies.
-
-- Link the local build of redux-websocket by running `npm link @giantmachines/redux-websocket`.
-
-- Start the demo app with `npm start`
+- In another terminal from the demo folder run `npm start` to start the demo app.
 
 - The demo app will now be running with your local build of redux-websocket. As you make changes to the library source code it will automatically be rebuilt and cause a refresh of the demo app.
