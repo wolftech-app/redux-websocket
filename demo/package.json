@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --mode=production",
     "start": "webpack-dev-server --open --hot",
+    "start:server": "node ./server/index.js",
     "link": "cd .. && npm link && cd ./demo && npm i && npm link @giantmachines/redux-websocket",
     "unlink": "npm unlink --no-save @giantmachines/redux-websocket && npm i && cd .. && npm unlink"
   },
@@ -43,6 +44,7 @@
     "typescript": "3.3.3",
     "webpack": "4.42.1",
     "webpack-cli": "3.2.3",
-    "webpack-dev-server": "3.2.1"
+    "webpack-dev-server": "3.2.1",
+    "ws": "7.2.3"
   }
 }

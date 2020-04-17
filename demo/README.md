@@ -8,6 +8,7 @@ This folder includes the demo react application for redux-websocket. It can be u
 |--|--|
 |`npm run build`|Build production app|
 |`npm start`|Start webpack dev server for local development|
+|`npm run start:server`|Start a websocket echo server|
 |`npm run link`|Link local build of redux websocket to app|
 |`npm run unlink`|Unlink local build of redux websocket to app|
 
@@ -20,3 +21,5 @@ This folder includes the demo react application for redux-websocket. It can be u
 - In another terminal from the demo folder run `npm start` to start the demo app.
 
 - The demo app will now be running with your local build of redux-websocket. As you make changes to the library source code it will automatically be rebuilt and cause a refresh of the demo app.
+
+- The demo app also includes a websocket echo server that you can start by running `npm run start:server`.
