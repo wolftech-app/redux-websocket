@@ -156,33 +156,31 @@ describe('actions', () => {
 
     describe('closed', () => {
       it('should return the correct action', () => {
-        const act = actions.closed({ test: 'value' } as any, PREFIX);
+        const event = new Event('');
+        const act = actions.closed(event, PREFIX);
 
         expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_CLOSED}`,
           meta: { timestamp: expect.any(Date) },
-          payload: {
-            test: 'value',
-          },
+          payload: event,
         });
       });
     });
 
     describe('message', () => {
       it('should return the correct action', () => {
-        const act = actions.message({ test: 'value' } as any, PREFIX);
+        const event = new MessageEvent('');
+        const act = actions.message(event, PREFIX);
 
         expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_MESSAGE}`,
           meta: { timestamp: expect.any(Date) },
           payload: {
-            event: {
-              test: 'value',
-            },
-            message: undefined,
-            origin: undefined,
+            event,
+            message: null,
+            origin: event.origin,
           },
         });
       });
@@ -190,15 +188,14 @@ describe('actions', () => {
 
     describe('open', () => {
       it('should return the correct action', () => {
-        const act = actions.open({ test: 'value' } as any, PREFIX);
+        const event = new Event('');
+        const act = actions.open(event, PREFIX);
 
         expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
           type: `${PREFIX}::${actionTypes.WEBSOCKET_OPEN}`,
           meta: { timestamp: expect.any(Date) },
-          payload: {
-            test: 'value',
-          },
+          payload: event,
         });
       });
     });
@@ -218,7 +215,8 @@ describe('actions', () => {
     describe('error', () => {
       it('should return the correct action with a test action', () => {
         const err = new Error('test');
-        const act = actions.error({ type: 'TEST' } as any, err, PREFIX);
+        const originalAction = { type: 'SEND' as 'SEND', payload: null };
+        const act = actions.error(originalAction, err, PREFIX);
 
         expect(isFSA(act)).toBe(true);
         expect(isError(act)).toBe(true);
@@ -229,9 +227,7 @@ describe('actions', () => {
             timestamp: expect.any(Date),
             message: 'test',
             name: 'Error',
-            originalAction: {
-              type: 'TEST',
-            },
+            originalAction,
           },
           payload: err,
         });
