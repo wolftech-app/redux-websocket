@@ -1,5 +1,4 @@
 import ReduxWebSocket from '../ReduxWebSocket';
-import { Action } from '../types';
 
 declare global {
   namespace NodeJS {
@@ -9,8 +8,11 @@ declare global {
   }
 }
 
+const CONNECT = 'CONNECT' as 'CONNECT';
+const SEND = 'SEND' as 'SEND';
+
 describe('ReduxWebSocket', () => {
-  const store = { dispatch: jest.fn((i: any) => i), getState: () => {} };
+  const store = { dispatch: jest.fn((i: any) => i), getState: () => { } };
   const url = 'ws://fake.com';
   const options = {
     prefix: 'REDUX_WEBSOCKET',
@@ -40,10 +42,10 @@ describe('ReduxWebSocket', () => {
   });
 
   describe('connect', () => {
-    const action = { type: 'SEND', payload: { url } };
+    const action = { type: SEND, payload: { url } };
 
     beforeEach(() => {
-      reduxWebSocket.connect(store, action as Action);
+      reduxWebSocket.connect(store, action);
     });
 
     it('creates a new WebSocket instance', () => {
@@ -52,7 +54,7 @@ describe('ReduxWebSocket', () => {
     });
 
     it('closes any existing connections', () => {
-      reduxWebSocket.connect(store, action as Action);
+      reduxWebSocket.connect(store, action);
 
       expect(closeMock).toHaveBeenCalledTimes(1);
       expect(closeMock).toHaveBeenCalledWith(1000, 'WebSocket connection closed by redux-websocket.');
@@ -86,14 +88,18 @@ describe('ReduxWebSocket', () => {
       const rws = new ReduxWebSocket({
         ...options,
         reconnectOnClose: true,
-      }) as any; // cast to avoid compile errors
-      rws.handleBrokenConnection = jest.fn();
-      rws.handleClose(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
-      expect(rws.handleBrokenConnection).not.toHaveBeenCalled();
-      rws.hasOpened = true;
-      rws.handleClose(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
-      expect(rws.handleBrokenConnection).toHaveBeenCalledTimes(1);
-      expect(rws.handleBrokenConnection).toHaveBeenCalledWith(dispatch);
+      });
+      const event = new Event('');
+
+      /* eslint-disable dot-notation */
+      rws['handleBrokenConnection'] = jest.fn();
+      rws['handleClose'](dispatch, 'prefix', event);
+      expect(rws['handleBrokenConnection']).not.toHaveBeenCalled();
+      rws['hasOpened'] = true;
+      rws['handleClose'](dispatch, 'prefix', event);
+      expect(rws['handleBrokenConnection']).toHaveBeenCalledTimes(1);
+      expect(rws['handleBrokenConnection']).toHaveBeenCalledWith(dispatch);
+      /* eslint-enable dot-notation */
     });
 
     it('handles a message event', () => {
@@ -141,26 +147,16 @@ describe('ReduxWebSocket', () => {
       it('calls handleBrokenConnection', () => {
         const dispatch = jest.fn();
 
-        // @ts-ignore
-        reduxWebSocket.handleBrokenConnection = jest.fn();
+        /* eslint-disable dot-notation */
+        reduxWebSocket['handleBrokenConnection'] = jest.fn();
+        reduxWebSocket['handleError'](dispatch, 'prefix');
+        expect(reduxWebSocket['handleBrokenConnection']).not.toHaveBeenCalled();
 
-        // @ts-ignore
-        reduxWebSocket.handleError(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
-
-        // @ts-ignore
-        expect(reduxWebSocket.handleBrokenConnection).not.toHaveBeenCalled();
-
-        // @ts-ignore
-        reduxWebSocket.hasOpened = true;
-
-        // @ts-ignore
-        reduxWebSocket.handleError(dispatch, 'prefix', { currentTarget: { url: 'test' } } as any);
-
-        // @ts-ignore
-        expect(reduxWebSocket.handleBrokenConnection).toHaveBeenCalledTimes(1);
-
-        // @ts-ignore
-        expect(reduxWebSocket.handleBrokenConnection).toHaveBeenCalledWith(dispatch);
+        reduxWebSocket['hasOpened'] = true;
+        reduxWebSocket['handleError'](dispatch, 'prefix');
+        expect(reduxWebSocket['handleBrokenConnection']).toHaveBeenCalledTimes(1);
+        expect(reduxWebSocket['handleBrokenConnection']).toHaveBeenCalledWith(dispatch);
+        /* eslint-enable dot-notation */
       });
     });
 
@@ -170,6 +166,7 @@ describe('ReduxWebSocket', () => {
 
         event[1]();
 
+        /* eslint-disable dot-notation */
         expect(store.dispatch).toHaveBeenCalledTimes(1);
         expect(store.dispatch).toHaveBeenCalledWith({
           type: 'REDUX_WEBSOCKET::OPEN',
@@ -177,42 +174,39 @@ describe('ReduxWebSocket', () => {
             timestamp: expect.any(Date),
           },
         });
-        // @ts-ignore
-        expect(reduxWebSocket.hasOpened).toEqual(true);
+        expect(reduxWebSocket['hasOpened']).toEqual(true);
+        /* eslint-enable dot-notation */
       });
 
       it('calls an onOpen function with a reference to the opened socket', () => {
         const onOpen = jest.fn();
 
-        // @ts-ignore
-        reduxWebSocket.options.onOpen = onOpen;
-        reduxWebSocket.connect(store, action as Action);
+        /* eslint-disable dot-notation */
+        reduxWebSocket['options'].onOpen = onOpen;
+        reduxWebSocket.connect(store, action);
 
         const event = addEventListenerMock.mock.calls.find(call => call[0] === 'open');
 
         event[1]('test event');
 
         expect(onOpen).toHaveBeenCalledTimes(1);
-        // @ts-ignore
-        expect(onOpen).toHaveBeenCalledWith(reduxWebSocket.websocket);
+        expect(onOpen).toHaveBeenCalledWith(reduxWebSocket['websocket']);
+        /* eslint-enable dot-notation */
       });
 
       it('handles successful reconnection', () => {
         const event = addEventListenerMock.mock.calls.find(call => call[0] === 'open');
 
-        // @ts-ignore
-        reduxWebSocket.reconnectionInterval = 'truthy';
-        // @ts-ignore
-        reduxWebSocket.reconnectCount = 9999;
+        /* eslint-disable dot-notation */
+        reduxWebSocket['reconnectionInterval'] = 1000 as any;
+        reduxWebSocket['reconnectCount'] = 9999;
 
         global.clearInterval = jest.fn();
 
         event[1]('test event');
 
-        // @ts-ignore
-        expect(reduxWebSocket.reconnectionInterval).toBeNull();
-        // @ts-ignore
-        expect(reduxWebSocket.reconnectCount).toEqual(0);
+        expect(reduxWebSocket['reconnectionInterval']).toBeNull();
+        expect(reduxWebSocket['reconnectCount']).toEqual(0);
 
         // Once for the reconnected action, once for the open action.
         expect(store.dispatch).toHaveBeenCalledTimes(2);
@@ -229,15 +223,16 @@ describe('ReduxWebSocket', () => {
           },
           payload: 'test event',
         });
+        /* eslint-enable dot-notation */
       });
     });
   });
 
   describe('disconnect', () => {
     it('should close any open connection', () => {
-      const action = { type: 'SEND', payload: { url } };
+      const action = { type: SEND, payload: { url } };
 
-      reduxWebSocket.connect(store, action as Action);
+      reduxWebSocket.connect(store, action);
       reduxWebSocket.disconnect();
 
       expect(closeMock).toHaveBeenCalledTimes(1);
@@ -250,11 +245,17 @@ describe('ReduxWebSocket', () => {
   });
 
   describe('send', () => {
-    it('should send a JSON message', () => {
-      const action = { type: 'SEND', payload: { url } };
+    const sendAction = { type: SEND, payload: { test: 'value' } };
+    const middlewareApi = {
+      dispatch: jest.fn(),
+      getState: jest.fn(),
+    };
 
-      reduxWebSocket.connect(store, action as Action);
-      reduxWebSocket.send(null as any, { payload: { test: 'value' } } as any);
+    it('should send a JSON message', () => {
+      const connectAction = { type: CONNECT, payload: { url } };
+
+      reduxWebSocket.connect(store, connectAction);
+      reduxWebSocket.send(middlewareApi, sendAction);
 
       expect(sendMock).toHaveBeenCalledTimes(1);
       expect(sendMock).toHaveBeenCalledWith('{"test":"value"}');
@@ -281,7 +282,7 @@ describe('ReduxWebSocket', () => {
     });
 
     it('should throw an error if no connection exists', () => {
-      expect(() => reduxWebSocket.send(null as any, { payload: null } as any))
+      expect(() => reduxWebSocket.send(middlewareApi, sendAction))
         .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
     });
 
@@ -304,8 +305,8 @@ describe('ReduxWebSocket', () => {
     it('should reconnect on an interval', () => {
       const dispatch = jest.fn();
 
-      // @ts-ignore
-      reduxWebSocket.handleBrokenConnection(dispatch);
+      /* eslint-disable dot-notation */
+      reduxWebSocket['handleBrokenConnection'](dispatch);
 
       jest.advanceTimersByTime(5000);
 
@@ -313,8 +314,7 @@ describe('ReduxWebSocket', () => {
       expect.assertions(7);
 
       expect(dispatch).toHaveBeenCalledTimes(5);
-      // @ts-ignore
-      expect(reduxWebSocket.reconnectCount).toEqual(3);
+      expect(reduxWebSocket['reconnectCount']).toEqual(3);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
         type: 'REDUX_WEBSOCKET::BROKEN',
         meta: {
@@ -354,6 +354,7 @@ describe('ReduxWebSocket', () => {
           count: 3,
         },
       });
+      /* eslint-enable dot-notation */
     });
   });
 });
