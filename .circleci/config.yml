@@ -18,6 +18,14 @@ jobs:
       - run: npm ci
       - run: npm run check-types
 
+  format:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run check-format
+
   test:
     docker:
       - image: circleci/node:lts
@@ -25,7 +33,8 @@ jobs:
       - checkout
       - run: npm ci
       - run: npm test -- --coverage
-      - run: bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage-final.json
+      - run: bash <(curl -s https://codecov.io/bash) -f
+          ./coverage/coverage-final.json
 
 workflows:
   version: 2
@@ -33,4 +42,5 @@ workflows:
     jobs:
       - lint
       - typescript
+      - format
       - test
