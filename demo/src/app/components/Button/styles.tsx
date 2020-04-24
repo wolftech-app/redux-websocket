@@ -52,6 +52,6 @@ export default styled.button<Props>`
     color: ${Colors.JULIET};
   }
 
-  ${props => (props.outlined ? outlinedStyle : null)};
-  ${props => (props.small ? smallStyle : null)};
+  ${(props) => (props.outlined ? outlinedStyle : null)};
+  ${(props) => (props.small ? smallStyle : null)};
 `;

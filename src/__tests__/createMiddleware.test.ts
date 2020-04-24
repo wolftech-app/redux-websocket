@@ -8,17 +8,17 @@ const ReduxWebSocketMock = ReduxWebSocket as jest.Mock<ReduxWebSocket>;
 const connectMock = jest.fn();
 const disconnectMock = jest.fn();
 const sendMock = jest.fn();
-const dispatchMock = jest.fn(i => i);
+const dispatchMock = jest.fn((i) => i);
 const mockStore = () => {
   const store = { getState: () => {}, dispatch: dispatchMock };
   const wrapper = middleware()(store);
-  const dispatch = wrapper(i => i);
+  const dispatch = wrapper((i) => i);
 
   return { store, wrapper, dispatch };
 };
 
 // @ts-ignore
-ReduxWebSocketMock.mockImplementation(options => {
+ReduxWebSocketMock.mockImplementation((options) => {
   /* eslint-disable lines-between-class-members */
   class Fake {
     close = () => {};
@@ -150,9 +150,7 @@ describe('middleware', () => {
     const { dispatch } = mockStore();
 
     dispatch({
-      type: `REDUX_WEBSOCKET::${Math.random()
-        .toString(36)
-        .substring(2, 15)}`,
+      type: `REDUX_WEBSOCKET::${Math.random().toString(36).substring(2, 15)}`,
     });
     dispatch({ type: 'something-else-entirely' });
 

@@ -21,7 +21,7 @@ export default [
         },
       ],
       null,
-      2,
+      2
     ),
   },
   {
@@ -38,15 +38,11 @@ export default [
         date: new Date(),
       },
       null,
-      2,
+      2
     ),
   },
   {
     name: 'String',
-    value: JSON.stringify(
-      Math.random()
-        .toString(36)
-        .substring(2),
-    ),
+    value: JSON.stringify(Math.random().toString(36).substring(2)),
   },
 ];

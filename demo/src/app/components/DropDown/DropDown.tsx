@@ -12,7 +12,7 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
 
 const DropDown = ({ onChange, options, placeholder, ...restProps }: Props) => (
   <Select onChange={onChange} placeholder={placeholder} {...restProps}>
-    {options.map(option => (
+    {options.map((option) => (
       <Option value={option.value} key={JSON.stringify(option)}>
         {option.name}
       </Option>

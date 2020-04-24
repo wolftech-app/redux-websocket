@@ -51,7 +51,7 @@ export const StatusBubble = styled.div<StatusStyleProps>`
   margin: 4px;
   position: relative;
   width: 15px;
-  ${props =>
+  ${(props) =>
     props.active ? animateBackground(getColorActiveType(props)) : null};
 `;
 
@@ -62,5 +62,5 @@ export const StatusText = styled.span<StatusStyleProps>`
   font-size: 16px;
   font-style: ${({ type }) => (type === 'WARN' ? 'italic' : 'normal')};
   font-weight: ${({ type }) => (type === 'WARN' ? '500' : '400')};
-  ${props => (props.active ? animateColor(getColorActiveType(props)) : null)}
+  ${(props) => (props.active ? animateColor(getColorActiveType(props)) : null)}
 `;

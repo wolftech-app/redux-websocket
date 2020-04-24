@@ -72,17 +72,17 @@ export default class ReduxWebSocket {
       ? new WebSocket(payload.url, payload.protocols)
       : new WebSocket(payload.url);
 
-    this.websocket.addEventListener('close', event =>
-      this.handleClose(dispatch, prefix, event),
+    this.websocket.addEventListener('close', (event) =>
+      this.handleClose(dispatch, prefix, event)
     );
     this.websocket.addEventListener('error', () =>
-      this.handleError(dispatch, prefix),
+      this.handleError(dispatch, prefix)
     );
-    this.websocket.addEventListener('open', event => {
+    this.websocket.addEventListener('open', (event) => {
       this.handleOpen(dispatch, prefix, this.options.onOpen, event);
     });
-    this.websocket.addEventListener('message', event =>
-      this.handleMessage(dispatch, prefix, event),
+    this.websocket.addEventListener('message', (event) =>
+      this.handleMessage(dispatch, prefix, event)
     );
   };
 
@@ -96,7 +96,7 @@ export default class ReduxWebSocket {
       this.close();
     } else {
       throw new Error(
-        'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
+        'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first'
       );
     }
   };
@@ -118,7 +118,7 @@ export default class ReduxWebSocket {
       }
     } else {
       throw new Error(
-        'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
+        'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first'
       );
     }
   };
@@ -166,7 +166,7 @@ export default class ReduxWebSocket {
     dispatch: Dispatch,
     prefix: string,
     onOpen: ((s: WebSocket) => void) | undefined,
-    event: Event,
+    event: Event
   ) => {
     // Clean up any outstanding reconnection attempts.
     if (this.reconnectionInterval) {
@@ -202,7 +202,7 @@ export default class ReduxWebSocket {
   private handleMessage = (
     dispatch: Dispatch,
     prefix: string,
-    event: MessageEvent,
+    event: MessageEvent
   ) => {
     dispatch(message(event, prefix));
   };
@@ -218,7 +218,7 @@ export default class ReduxWebSocket {
     if (this.websocket) {
       this.websocket.close(
         code || 1000,
-        reason || 'WebSocket connection closed by redux-websocket.',
+        reason || 'WebSocket connection closed by redux-websocket.'
       );
 
       this.websocket = null;
@@ -249,7 +249,7 @@ export default class ReduxWebSocket {
     // that the arguments conform to the types we expect.
     this.connect(
       { dispatch } as MiddlewareAPI,
-      { payload: { url: this.lastSocketUrl } } as Action,
+      { payload: { url: this.lastSocketUrl } } as Action
     );
 
     // Attempt reconnecting on an interval.
@@ -261,7 +261,7 @@ export default class ReduxWebSocket {
       // Call connect again, same way.
       this.connect(
         { dispatch } as MiddlewareAPI,
-        { payload: { url: this.lastSocketUrl } } as Action,
+        { payload: { url: this.lastSocketUrl } } as Action
       );
     }, reconnectInterval);
   };

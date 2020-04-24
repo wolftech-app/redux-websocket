@@ -8,7 +8,7 @@ import {
 } from './actionTypes';
 
 type Serializer = (
-  payload: any,
+  payload: any
 ) => string | ArrayBuffer | ArrayBufferView | Blob;
 
 type ActionType =

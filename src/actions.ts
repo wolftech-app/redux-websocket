@@ -44,7 +44,7 @@ const isProtocols = (args: ConnectRestArgs): args is WithProtocols =>
 function buildAction<T>(
   actionType: string,
   payload?: T,
-  meta?: any,
+  meta?: any
 ): BuiltAction<T> {
   const base = {
     type: actionType,
@@ -109,7 +109,7 @@ export const message = (event: MessageEvent, prefix: string) =>
 export const error = (
   originalAction: Action | null,
   err: Error,
-  prefix: string,
+  prefix: string
 ) =>
   buildAction(`${prefix}::${WEBSOCKET_ERROR}`, err, {
     message: err.message,

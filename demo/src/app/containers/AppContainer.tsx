@@ -9,7 +9,4 @@ const mapDispatch = {
   clear: () => ({ type: 'INTERNAL::CLEAR_MESSAGE_LOG' }),
 };
 
-export default connect(
-  null,
-  mapDispatch,
-)(App);
+export default connect(null, mapDispatch)(App);

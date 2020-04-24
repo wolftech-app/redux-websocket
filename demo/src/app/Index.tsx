@@ -60,8 +60,8 @@ const store = createStore(
   reducer,
   compose(
     applyMiddleware(disconnectSimulatorMiddleware, websocketMiddleware),
-    instrument(),
-  ),
+    instrument()
+  )
 );
 
 // Check for a localStorage value to see if we've seen this user before.
@@ -81,5 +81,5 @@ ReactDOM.render(
   <Provider store={store}>
     <AppContainer />
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );

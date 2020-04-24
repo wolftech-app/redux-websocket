@@ -13,9 +13,7 @@ describe('actions', () => {
 
         expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
-          type: `${actionTypes.DEFAULT_PREFIX}::${
-            actionTypes.WEBSOCKET_CONNECT
-          }`,
+          type: `${actionTypes.DEFAULT_PREFIX}::${actionTypes.WEBSOCKET_CONNECT}`,
           meta: { timestamp: expect.any(Date) },
           payload: {
             url: 'fake url',
@@ -24,10 +22,7 @@ describe('actions', () => {
       });
 
       it('should return the correct action with user prefix', () => {
-        const act = actions.connect(
-          'fake url',
-          PREFIX,
-        );
+        const act = actions.connect('fake url', PREFIX);
 
         expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
@@ -40,16 +35,11 @@ describe('actions', () => {
       });
 
       it('should return the correct action with protocols', () => {
-        const act = actions.connect(
-          'fake url',
-          ['protocol'],
-        );
+        const act = actions.connect('fake url', ['protocol']);
 
         expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
-          type: `${actionTypes.DEFAULT_PREFIX}::${
-            actionTypes.WEBSOCKET_CONNECT
-          }`,
+          type: `${actionTypes.DEFAULT_PREFIX}::${actionTypes.WEBSOCKET_CONNECT}`,
           meta: { timestamp: expect.any(Date) },
           payload: {
             url: 'fake url',
@@ -59,11 +49,7 @@ describe('actions', () => {
       });
 
       it('should return the correct action with protocols and a user prefix', () => {
-        const act = actions.connect(
-          'fake url',
-          ['protocol'],
-          PREFIX,
-        );
+        const act = actions.connect('fake url', ['protocol'], PREFIX);
 
         expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
@@ -83,9 +69,7 @@ describe('actions', () => {
 
         expect(isFSA(act)).toBe(true);
         expect(act).toEqual({
-          type: `${actionTypes.DEFAULT_PREFIX}::${
-            actionTypes.WEBSOCKET_DISCONNECT
-          }`,
+          type: `${actionTypes.DEFAULT_PREFIX}::${actionTypes.WEBSOCKET_DISCONNECT}`,
           meta: { timestamp: expect.any(Date) },
         });
       });

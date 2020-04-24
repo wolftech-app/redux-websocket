@@ -84,7 +84,7 @@ export default class MessageLog extends React.Component<Props, State> {
   componentDidUpdate(
     prevProps: Props,
     _prevState: State,
-    snapshot: State,
+    snapshot: State
   ): void {
     const { messages: prevMessages } = prevProps;
     const { messages } = this.props;
@@ -132,7 +132,7 @@ export default class MessageLog extends React.Component<Props, State> {
    * @returns {React.ReactNode}
    */
   renderMessages = (messages: MessageState[]): React.ReactNode =>
-    messages.map(message => {
+    messages.map((message) => {
       const { data, origin, timestamp, type } = message;
 
       return (

@@ -57,7 +57,7 @@ class Controls extends React.Component<Props, State> {
    * Handle the example message changing.
    */
   handleExampleMessageChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
+    event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { value: message } = event.target;
 
