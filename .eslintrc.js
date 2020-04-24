@@ -14,6 +14,7 @@ module.exports = {
     'plugin:eslint-comments/recommended',
     'plugin:jest/recommended',
     'plugin:promise/recommended',
+    'eslint-config-prettier',
   ],
   rules: {
     'indent': ['error', 2, {
