@@ -12,7 +12,7 @@
     "build:watch": "npm run clean && npm run build:types && webpack --watch",
     "clean": "rimraf dist",
     "check-types": "tsc --noEmit",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|tsx|json)\"",
     "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty --ignore-path .gitignore ./src ./demo",
     "prepare": "npm run build",
     "test": "jest --coverage"
