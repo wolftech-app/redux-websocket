@@ -46,7 +46,10 @@ describe('ReduxWebSocket', () => {
     const action = { type: SEND, payload: { url } };
 
     beforeEach(() => {
-      reduxWebSocket.connect(store, action);
+      reduxWebSocket.connect(
+        store,
+        action,
+      );
     });
 
     it('creates a new WebSocket instance', () => {
@@ -55,7 +58,10 @@ describe('ReduxWebSocket', () => {
     });
 
     it('closes any existing connections', () => {
-      reduxWebSocket.connect(store, action);
+      reduxWebSocket.connect(
+        store,
+        action,
+      );
 
       expect(closeMock).toHaveBeenCalledTimes(1);
       expect(closeMock).toHaveBeenCalledWith(
@@ -211,7 +217,10 @@ describe('ReduxWebSocket', () => {
 
         /* eslint-disable dot-notation */
         reduxWebSocket['options'].onOpen = onOpen;
-        reduxWebSocket.connect(store, action);
+        reduxWebSocket.connect(
+          store,
+          action,
+        );
 
         const event = addEventListenerMock.mock.calls.find(
           call => call[0] === 'open',
@@ -264,7 +273,10 @@ describe('ReduxWebSocket', () => {
     it('should close any open connection', () => {
       const action = { type: SEND, payload: { url } };
 
-      reduxWebSocket.connect(store, action);
+      reduxWebSocket.connect(
+        store,
+        action,
+      );
       reduxWebSocket.disconnect();
 
       expect(closeMock).toHaveBeenCalledTimes(1);
@@ -287,7 +299,10 @@ describe('ReduxWebSocket', () => {
     it('should send a JSON message', () => {
       const connectAction = { type: CONNECT, payload: { url } };
 
-      reduxWebSocket.connect(store, connectAction);
+      reduxWebSocket.connect(
+        store,
+        connectAction,
+      );
       reduxWebSocket.send(middlewareApi, sendAction);
 
       expect(sendMock).toHaveBeenCalledTimes(1);
@@ -299,16 +314,26 @@ describe('ReduxWebSocket', () => {
       const pld = { test: 'value', another: 'prop' };
       // Very basic test custom serializer; only works with objects.
       // Converts object to string: "key1.value1|key2.value2|...|keyN.valueN"
-      const customSerializer = (payload: any) => (
-        Object.entries(payload).reduce((acc: string, cv: any) => (
-          `${acc}${acc.length ? '|' : ''}${cv[0]}.${cv[1]}`
-        ), '')
-      );
+      const customSerializer = (payload: any) =>
+        Object.entries(payload).reduce(
+          (acc: string, cv: any) =>
+            `${acc}${acc.length ? '|' : ''}${cv[0]}.${cv[1]}`,
+          '',
+        );
 
       // Pass in a custom serializer
-      reduxWebSocket = new ReduxWebSocket({ ...options, serializer: customSerializer });
-      reduxWebSocket.connect(store, action as Action);
-      reduxWebSocket.send(null as any, { type: 'SEND', payload: pld } as Action);
+      reduxWebSocket = new ReduxWebSocket({
+        ...options,
+        serializer: customSerializer,
+      });
+      reduxWebSocket.connect(
+        store,
+        action as Action,
+      );
+      reduxWebSocket.send(
+        null as any,
+        { type: 'SEND', payload: pld } as Action,
+      );
 
       expect(sendMock).toHaveBeenCalledTimes(1);
       expect(sendMock).toHaveBeenCalledWith(customSerializer(pld));
@@ -326,10 +351,14 @@ describe('ReduxWebSocket', () => {
 
       delete optionsClone.serializer;
       reduxWebSocket = new ReduxWebSocket(optionsClone);
-      reduxWebSocket.connect(store, action as Action);
+      reduxWebSocket.connect(
+        store,
+        action as Action,
+      );
 
-      expect(() => reduxWebSocket.send(null as any, { payload: null } as any))
-        .toThrow('Serializer not provided');
+      expect(() =>
+        reduxWebSocket.send(null as any, { payload: null } as any),
+      ).toThrow('Serializer not provided');
     });
   });
 

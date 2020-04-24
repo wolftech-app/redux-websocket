@@ -43,6 +43,10 @@ export default [
   },
   {
     name: 'String',
-    value: JSON.stringify(Math.random().toString(36).substring(2)),
+    value: JSON.stringify(
+      Math.random()
+        .toString(36)
+        .substring(2),
+    ),
   },
 ];

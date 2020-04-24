@@ -52,7 +52,7 @@ export const StatusBubble = styled.div<StatusStyleProps>`
   position: relative;
   width: 15px;
   ${props =>
-    props.active ? animateBackground(getColorActiveType(props)) : null}
+    props.active ? animateBackground(getColorActiveType(props)) : null};
 `;
 
 export const StatusText = styled.span<StatusStyleProps>`

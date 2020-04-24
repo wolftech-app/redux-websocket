@@ -25,8 +25,7 @@ const outlinedStyle = css`
 `;
 
 const smallStyle = css`
-  ${Typography.TypeStyleCassiopeia}
-  padding: 5px 10px;
+  ${Typography.TypeStyleCassiopeia} padding: 5px 10px;
 `;
 
 export default styled.button<Props>`

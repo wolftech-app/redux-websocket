@@ -150,7 +150,9 @@ describe('middleware', () => {
     const { dispatch } = mockStore();
 
     dispatch({
-      type: `REDUX_WEBSOCKET::${Math.random().toString(36).substring(2, 15)}`,
+      type: `REDUX_WEBSOCKET::${Math.random()
+        .toString(36)
+        .substring(2, 15)}`,
     });
     dispatch({ type: 'something-else-entirely' });
 

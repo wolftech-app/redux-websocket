@@ -19,4 +19,7 @@ const mapDispatchToProps = dispatch => ({
   onSendMessage: (message: string) => dispatch(send(message, WEBSOCKET_PREFIX)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Controls);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Controls);

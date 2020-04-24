@@ -10,9 +10,7 @@ export default styled.div`
 
   ${media.desktop`
     display: flex;
-  `}
-
-  & > div {
+  `} & > div {
     background-color: transparent;
   }
 
