@@ -56,7 +56,9 @@ interface Options {
   // Callback when the WebSocket connection is open. Useful for when you
   // need a reference to the WebSocket instance.
   onOpen?: (socket: WebSocket) => void,
-
+  // Custom function to serialize your payload before sending. Defaults to JSON.stringify
+  // but you could use this function to send any format you like, including binary
+  serializer?: (payload: any) => string | ArrayBuffer | ArrayBufferView | Blob
 }
 ```
 

@@ -25,7 +25,14 @@
     "url": "git+https://github.com/giantmachines/redux-websocket.git"
   },
   "keywords": [
-    "redux"
+    "redux",
+    "middleware",
+    "websocket",
+    "socket",
+    "streaming",
+    "realtime",
+    "fsa",
+    "flux"
   ],
   "author": "Giant Machines <contact@giantmachines.com> (https://giantmachines.com)",
   "license": "MIT",

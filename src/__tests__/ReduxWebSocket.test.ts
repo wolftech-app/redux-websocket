@@ -1,4 +1,5 @@
 import ReduxWebSocket from '../ReduxWebSocket';
+import { Action } from '../types';
 
 declare global {
   namespace NodeJS {
@@ -18,6 +19,7 @@ describe('ReduxWebSocket', () => {
     prefix: 'REDUX_WEBSOCKET',
     reconnectInterval: 2000,
     reconnectOnClose: false,
+    serializer: JSON.stringify,
   };
   const closeMock = jest.fn();
   const sendMock = jest.fn();
@@ -292,10 +294,42 @@ describe('ReduxWebSocket', () => {
       expect(sendMock).toHaveBeenCalledWith('{"test":"value"}');
     });
 
+    it('should send a custom message', () => {
+      const action = { type: 'SEND', payload: { url } };
+      const pld = { test: 'value', another: 'prop' };
+      // Very basic test custom serializer; only works with objects.
+      // Converts object to string: "key1.value1|key2.value2|...|keyN.valueN"
+      const customSerializer = (payload: any) => (
+        Object.entries(payload).reduce((acc: string, cv: any) => (
+          `${acc}${acc.length ? '|' : ''}${cv[0]}.${cv[1]}`
+        ), '')
+      );
+
+      // Pass in a custom serializer
+      reduxWebSocket = new ReduxWebSocket({ ...options, serializer: customSerializer });
+      reduxWebSocket.connect(store, action as Action);
+      reduxWebSocket.send(null as any, { type: 'SEND', payload: pld } as Action);
+
+      expect(sendMock).toHaveBeenCalledTimes(1);
+      expect(sendMock).toHaveBeenCalledWith(customSerializer(pld));
+    });
+
     it('should throw an error if no connection exists', () => {
       expect(() => reduxWebSocket.send(middlewareApi, sendAction)).toThrow(
         'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
       );
+    });
+
+    it('should throw an error if no serializer exists', () => {
+      const optionsClone = { ...options };
+      const action = { type: 'SEND', payload: { url } };
+
+      delete optionsClone.serializer;
+      reduxWebSocket = new ReduxWebSocket(optionsClone);
+      reduxWebSocket.connect(store, action as Action);
+
+      expect(() => reduxWebSocket.send(null as any, { payload: null } as any))
+        .toThrow('Serializer not provided');
     });
   });
 
