@@ -13,10 +13,11 @@
     "clean": "rimraf dist",
     "check-types": "tsc --noEmit",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|tsx|json)\"",
+    "check-format": "prettier --ignore-path .gitignore --list-different \"**/*.+(js|ts|tsx|json)\"",
     "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore ./src ./demo",
     "prepare": "npm run build",
     "test": "jest --coverage",
-    "validate": "npm run lint && npm run build"
+    "validate": "npm run check-format && npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
