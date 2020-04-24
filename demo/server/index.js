@@ -16,24 +16,28 @@ wss.on('close', () => {
   console.log('--> Closed connection');
 });
 
-wss.on('error', (err) => {
+wss.on('error', err => {
   console.log('--> Error');
 
   console.error(err);
 });
 
 // When a client connects, echo messages back.
-wss.on('connection', (ws) => {
+wss.on('connection', ws => {
   const id = crypto.randomBytes(16).toString('hex');
 
-  console.log('--> Connection received. ID:', id, `There are ${wss.clients.size} clients connected.`);
+  console.log(
+    '--> Connection received. ID:',
+    id,
+    `There are ${wss.clients.size} clients connected.`,
+  );
 
   // Listen for pongs.
   ws.on('pong', () => {
     console.log(`${id}: Pong!`);
   });
 
-  ws.on('message', (msg) => {
+  ws.on('message', msg => {
     ws.send(msg);
   });
 });
@@ -41,7 +45,7 @@ wss.on('connection', (ws) => {
 setInterval(() => {
   console.log(`--> Sending pings to ${wss.clients.size} clients`);
 
-  wss.clients.forEach((w) => {
+  wss.clients.forEach(w => {
     w.ping();
   });
 }, 10000);

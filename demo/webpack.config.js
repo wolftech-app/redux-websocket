@@ -2,7 +2,9 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-const { version: REDUX_WEBSOCKET_VERSION } = require('@giantmachines/redux-websocket/package.json');
+const {
+  version: REDUX_WEBSOCKET_VERSION,
+} = require('@giantmachines/redux-websocket/package.json');
 
 const { NODE_ENV: env = 'development' } = process.env;
 
@@ -13,7 +15,10 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: env === 'development' ? 'js/[name].bundle.js' : 'js/[name]-[contenthash].bundle.js',
+    filename:
+      env === 'development'
+        ? 'js/[name].bundle.js'
+        : 'js/[name]-[contenthash].bundle.js',
   },
   devtool: 'source-map',
   resolve: {
@@ -37,11 +42,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },

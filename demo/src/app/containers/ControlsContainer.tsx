@@ -1,5 +1,9 @@
 import { connect } from 'react-redux';
-import { connect as websocketConnect, disconnect, send } from '@giantmachines/redux-websocket';
+import {
+  connect as websocketConnect,
+  disconnect,
+  send,
+} from '@giantmachines/redux-websocket';
 
 import Controls from '../components/Controls';
 import { getConnected } from '../store/reducer';

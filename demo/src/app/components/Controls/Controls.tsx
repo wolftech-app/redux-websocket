@@ -41,7 +41,7 @@ class Controls extends React.Component<Props, State> {
   state = {
     message: '',
     webSocketUrl: 'wss://websocket-echo-server.herokuapp.com',
-  }
+  };
 
   /**
    * Component did mount.
@@ -56,11 +56,13 @@ class Controls extends React.Component<Props, State> {
   /**
    * Handle the example message changing.
    */
-  handleExampleMessageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  handleExampleMessageChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const { value: message } = event.target;
 
     this.setState({ message });
-  }
+  };
 
   /**
    * Handle the message field chaning.
@@ -69,7 +71,7 @@ class Controls extends React.Component<Props, State> {
     const { value: message } = event.target;
 
     this.setState({ message });
-  }
+  };
 
   /**
    * Handle sending a message.
@@ -88,12 +90,16 @@ class Controls extends React.Component<Props, State> {
     // eslint-disable-next-line no-underscore-dangle
     if (NODE_ENV === 'production' && window._StatHat) {
       // eslint-disable-next-line no-underscore-dangle
-      window._StatHat.push(['_trackCount', 'OFVGkOrEGgqsRvILIx99ZiA2VTFD', 1.0]);
+      window._StatHat.push([
+        '_trackCount',
+        'OFVGkOrEGgqsRvILIx99ZiA2VTFD',
+        1.0,
+      ]);
     } else {
       // eslint-disable-next-line no-console
       console.warn('Not sending count to StatHat. NODE_ENV =', NODE_ENV);
     }
-  }
+  };
 
   /**
    * Handle the URL field changing.
@@ -102,7 +108,7 @@ class Controls extends React.Component<Props, State> {
     const { value: webSocketUrl } = event.target;
 
     this.setState({ webSocketUrl });
-  }
+  };
 
   /**
    * Simulate a disconnection.
@@ -110,7 +116,7 @@ class Controls extends React.Component<Props, State> {
   simulateDisconnect = () => {
     // eslint-disable-next-line no-underscore-dangle
     (window as any).__socket.dispatchEvent(new Event('error'));
-  }
+  };
 
   /**
    * Render.
@@ -126,7 +132,6 @@ class Controls extends React.Component<Props, State> {
         <InputGroup>
           <Label>
             Server
-
             <Input
               type="text"
               placeholder="Input server URL here…"
@@ -140,10 +145,7 @@ class Controls extends React.Component<Props, State> {
           <Label>Status</Label>
 
           <StatusContents>
-            <ConnectedStatusIndicator
-              active={connected}
-              text="Connected"
-            />
+            <ConnectedStatusIndicator active={connected} text="Connected" />
 
             <DisconnectedStatusIndicator
               active={!connected}
@@ -158,10 +160,7 @@ class Controls extends React.Component<Props, State> {
               Connect
             </ConnectButton>
 
-            <DisconnectButton
-              disabled={!connected}
-              onClick={disconnect}
-            >
+            <DisconnectButton disabled={!connected} onClick={disconnect}>
               Disconnect
             </DisconnectButton>
 
@@ -174,7 +173,6 @@ class Controls extends React.Component<Props, State> {
         <InputGroup>
           <Label>
             Example Messages
-
             <ExampleMessageDropDown
               options={exampleMessages}
               onChange={this.handleExampleMessageChange}
@@ -190,9 +188,7 @@ class Controls extends React.Component<Props, State> {
             rows={10}
           />
 
-          <Button onClick={this.handleSendMessage}>
-            Send message
-          </Button>
+          <Button onClick={this.handleSendMessage}>Send message</Button>
         </InputGroup>
       </Container>
     );

@@ -12,7 +12,7 @@ const CONNECT = 'CONNECT' as 'CONNECT';
 const SEND = 'SEND' as 'SEND';
 
 describe('ReduxWebSocket', () => {
-  const store = { dispatch: jest.fn((i: any) => i), getState: () => { } };
+  const store = { dispatch: jest.fn((i: any) => i), getState: () => {} };
   const url = 'ws://fake.com';
   const options = {
     prefix: 'REDUX_WEBSOCKET',
@@ -56,19 +56,36 @@ describe('ReduxWebSocket', () => {
       reduxWebSocket.connect(store, action);
 
       expect(closeMock).toHaveBeenCalledTimes(1);
-      expect(closeMock).toHaveBeenCalledWith(1000, 'WebSocket connection closed by redux-websocket.');
+      expect(closeMock).toHaveBeenCalledWith(
+        1000,
+        'WebSocket connection closed by redux-websocket.',
+      );
     });
 
     it('binds all event listeners', () => {
       expect(addEventListenerMock).toHaveBeenCalledTimes(4);
-      expect(addEventListenerMock).toHaveBeenCalledWith('close', expect.any(Function));
-      expect(addEventListenerMock).toHaveBeenCalledWith('error', expect.any(Function));
-      expect(addEventListenerMock).toHaveBeenCalledWith('open', expect.any(Function));
-      expect(addEventListenerMock).toHaveBeenCalledWith('message', expect.any(Function));
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'close',
+        expect.any(Function),
+      );
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'error',
+        expect.any(Function),
+      );
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'open',
+        expect.any(Function),
+      );
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'message',
+        expect.any(Function),
+      );
     });
 
     it('handles a close event', () => {
-      const event = addEventListenerMock.mock.calls.find(call => call[0] === 'close');
+      const event = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'close',
+      );
 
       event[1]('test event');
 
@@ -102,7 +119,9 @@ describe('ReduxWebSocket', () => {
     });
 
     it('handles a message event', () => {
-      const event = addEventListenerMock.mock.calls.find(call => call[0] === 'message');
+      const event = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'message',
+      );
       const data = '{ "test": "message" }';
       const testEvent = { data, origin: 'test origin' };
 
@@ -124,7 +143,9 @@ describe('ReduxWebSocket', () => {
 
     describe('error event', () => {
       it('handles an error event', () => {
-        const event = addEventListenerMock.mock.calls.find(call => call[0] === 'error');
+        const event = addEventListenerMock.mock.calls.find(
+          call => call[0] === 'error',
+        );
         const testEvent = { currentTarget: { url: 'test url' } };
 
         event[1](testEvent);
@@ -153,15 +174,21 @@ describe('ReduxWebSocket', () => {
 
         reduxWebSocket['hasOpened'] = true;
         reduxWebSocket['handleError'](dispatch, 'prefix');
-        expect(reduxWebSocket['handleBrokenConnection']).toHaveBeenCalledTimes(1);
-        expect(reduxWebSocket['handleBrokenConnection']).toHaveBeenCalledWith(dispatch);
+        expect(reduxWebSocket['handleBrokenConnection']).toHaveBeenCalledTimes(
+          1,
+        );
+        expect(reduxWebSocket['handleBrokenConnection']).toHaveBeenCalledWith(
+          dispatch,
+        );
         /* eslint-enable dot-notation */
       });
     });
 
     describe('open event', () => {
       it('dispatches an open action and sets the hasOpened flag', () => {
-        const event = addEventListenerMock.mock.calls.find(call => call[0] === 'open');
+        const event = addEventListenerMock.mock.calls.find(
+          call => call[0] === 'open',
+        );
 
         event[1]();
 
@@ -184,7 +211,9 @@ describe('ReduxWebSocket', () => {
         reduxWebSocket['options'].onOpen = onOpen;
         reduxWebSocket.connect(store, action);
 
-        const event = addEventListenerMock.mock.calls.find(call => call[0] === 'open');
+        const event = addEventListenerMock.mock.calls.find(
+          call => call[0] === 'open',
+        );
 
         event[1]('test event');
 
@@ -194,7 +223,9 @@ describe('ReduxWebSocket', () => {
       });
 
       it('handles successful reconnection', () => {
-        const event = addEventListenerMock.mock.calls.find(call => call[0] === 'open');
+        const event = addEventListenerMock.mock.calls.find(
+          call => call[0] === 'open',
+        );
 
         /* eslint-disable dot-notation */
         reduxWebSocket['reconnectionInterval'] = 1000 as any;
@@ -238,8 +269,9 @@ describe('ReduxWebSocket', () => {
     });
 
     it('should throw an error if no connection exists', () => {
-      expect(() => reduxWebSocket.disconnect())
-        .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
+      expect(() => reduxWebSocket.disconnect()).toThrow(
+        'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
+      );
     });
   });
 
@@ -261,8 +293,9 @@ describe('ReduxWebSocket', () => {
     });
 
     it('should throw an error if no connection exists', () => {
-      expect(() => reduxWebSocket.send(middlewareApi, sendAction))
-        .toThrow('Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first');
+      expect(() => reduxWebSocket.send(middlewareApi, sendAction)).toThrow(
+        'Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first',
+      );
     });
   });
 

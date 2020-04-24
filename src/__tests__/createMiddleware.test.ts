@@ -18,25 +18,25 @@ const mockStore = () => {
 };
 
 // @ts-ignore
-ReduxWebSocketMock.mockImplementation((options) => {
+ReduxWebSocketMock.mockImplementation(options => {
   /* eslint-disable lines-between-class-members */
   class Fake {
-    close = () => {}
-    connect = connectMock
-    disconnect = disconnectMock
-    handleBrokenConnection = () => {}
-    hasOpened = false
-    lastSocketUrl = ''
-    private options = options
-    reconnectCount = 0
-    reconnectionInterval = null
-    reconnectOnClose = false
-    send = sendMock
-    websocket = null
-    handleClose = () => {}
-    handleError = () => {}
-    handleOpen = () => {}
-    handleMessage = () => {}
+    close = () => {};
+    connect = connectMock;
+    disconnect = disconnectMock;
+    handleBrokenConnection = () => {};
+    hasOpened = false;
+    lastSocketUrl = '';
+    private options = options;
+    reconnectCount = 0;
+    reconnectionInterval = null;
+    reconnectOnClose = false;
+    send = sendMock;
+    websocket = null;
+    handleClose = () => {};
+    handleError = () => {};
+    handleOpen = () => {};
+    handleMessage = () => {};
   }
   /* eslint-enable lines-between-class-members */
 
@@ -111,7 +111,6 @@ describe('middleware', () => {
     expect(connectMock).toHaveBeenCalledWith(store, dispatchedAction);
   });
 
-
   it('should handle a REDUX_WEBSOCKET::DISCONNECT action', () => {
     const { store, dispatch } = mockStore();
     const dispatchedAction = {
@@ -146,7 +145,9 @@ describe('middleware', () => {
   it('should not break on random actions', () => {
     const { dispatch } = mockStore();
 
-    dispatch({ type: `REDUX_WEBSOCKET::${Math.random().toString(36).substring(2, 15)}` });
+    dispatch({
+      type: `REDUX_WEBSOCKET::${Math.random().toString(36).substring(2, 15)}`,
+    });
     dispatch({ type: 'something-else-entirely' });
 
     expect(connectMock).not.toHaveBeenCalled();
@@ -157,7 +158,9 @@ describe('middleware', () => {
   it('shoud dispatch an error action if a handler throws an error', () => {
     const err = new Error('whoops');
 
-    sendMock.mockImplementation(() => { throw err; });
+    sendMock.mockImplementation(() => {
+      throw err;
+    });
 
     const { dispatch } = mockStore();
     const result = dispatch(actions.send({ test: 'message' }));

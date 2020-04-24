@@ -36,9 +36,9 @@ const disconnectSimulatorMiddleware = () => {
     // class with a fake class.
     if (type === `${WEBSOCKET_PREFIX}::BROKEN`) {
       (window as any).WebSocket = class FakeWebSocket {
-        close = () => {}
+        close = () => {};
 
-        addEventListener = () => {}
+        addEventListener = () => {};
       };
     }
 
@@ -59,10 +59,7 @@ const disconnectSimulatorMiddleware = () => {
 const store = createStore(
   reducer,
   compose(
-    applyMiddleware(
-      disconnectSimulatorMiddleware,
-      websocketMiddleware,
-    ),
+    applyMiddleware(disconnectSimulatorMiddleware, websocketMiddleware),
     instrument(),
   ),
 );

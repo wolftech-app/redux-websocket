@@ -23,7 +23,7 @@ interface Props {
 
 interface State {
   autoScroll: boolean;
-  isHovered: boolean
+  isHovered: boolean;
 }
 
 /**
@@ -81,7 +81,11 @@ export default class MessageLog extends React.Component<Props, State> {
    * @param {State} _prevState
    * @param {State} snapshot
    */
-  componentDidUpdate(prevProps: Props, _prevState: State, snapshot: State): void {
+  componentDidUpdate(
+    prevProps: Props,
+    _prevState: State,
+    snapshot: State,
+  ): void {
     const { messages: prevMessages } = prevProps;
     const { messages } = this.props;
     const container = this.containerRef.current;
@@ -118,7 +122,7 @@ export default class MessageLog extends React.Component<Props, State> {
     this.setState({
       autoScroll: isScrolledToBottom,
     });
-  }
+  };
 
   /**
    * Render messages.
@@ -127,14 +131,9 @@ export default class MessageLog extends React.Component<Props, State> {
    *
    * @returns {React.ReactNode}
    */
-  renderMessages = (messages: MessageState[]): React.ReactNode => (
-    messages.map((message) => {
-      const {
-        data,
-        origin,
-        timestamp,
-        type,
-      } = message;
+  renderMessages = (messages: MessageState[]): React.ReactNode =>
+    messages.map(message => {
+      const { data, origin, timestamp, type } = message;
 
       return (
         <Message key={timestamp.getTime()}>
@@ -153,8 +152,7 @@ export default class MessageLog extends React.Component<Props, State> {
           </MessageContainer>
         </Message>
       );
-    })
-  )
+    });
 
   /**
    * Render

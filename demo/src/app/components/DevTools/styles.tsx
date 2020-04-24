@@ -16,31 +16,31 @@ export default styled.div`
     background-color: transparent;
   }
 
-  [class|="actionList"] {
+  [class|='actionList'] {
     background-color: transparent;
     border: 0;
     margin: 0;
     flex: 1 1 0;
   }
 
-  [class|="actionListHeader"] {
+  [class|='actionListHeader'] {
     border: 0;
     background-color: ${Colors.MOON};
     margin-bottom: 10px;
   }
 
-  [class|="actionListHeaderSearch"] {
+  [class|='actionListHeaderSearch'] {
     background-color: transparent;
     color: ${Colors.SUN};
     padding-left: 20px;
     padding-right: 20px;
   }
 
-  [class|="actionListHeaderSelector"] {
+  [class|='actionListHeaderSelector'] {
     display: none;
   }
 
-  [class|="actionListItem"] {
+  [class|='actionListItem'] {
     ${Typography.TypeStyleProcyon};
     border: 0;
     color: ${Colors.MERCURY};
@@ -48,7 +48,7 @@ export default styled.div`
     padding-right: 20px;
   }
 
-  [class|="actionListItemButtons"] {
+  [class|='actionListItemButtons'] {
     & > div {
       transition: none;
       transform: none !important;
@@ -65,19 +65,19 @@ export default styled.div`
     }
   }
 
-  [class|="actionPreview"] {
+  [class|='actionPreview'] {
     background-color: transparent;
     flex: 1 1 0;
   }
 
-  [class|="actionPreviewContent"] {
+  [class|='actionPreviewContent'] {
     & > ul {
       // For some reason this style is defined inline... weird.
       background-color: transparent !important;
     }
   }
 
-  [class|="previewHeader"] {
+  [class|='previewHeader'] {
     align-items: center;
     background-color: ${rgba(Colors.SUN, 0.05)};
     border: 0;
@@ -87,17 +87,17 @@ export default styled.div`
     padding: 6px 20px;
   }
 
-  [class|="inspectedPath"] {
+  [class|='inspectedPath'] {
     ${Typography.TypeStyleCanopus};
     order: 0;
     padding: 0;
   }
 
-  [class|="tabSelector"] {
+  [class|='tabSelector'] {
     order: 1;
   }
 
-  [class|="selectorButton"] {
+  [class|='selectorButton'] {
     ${Typography.TypeStyleArcturus};
     background-color: ${Colors.VENUS};
     border: 0;
@@ -116,7 +116,7 @@ export default styled.div`
     }
   }
 
-  [class*="selectorButtonSelected"] {
+  [class*='selectorButtonSelected'] {
     color: ${Colors.SUN};
     background-color: ${Colors.MARS};
 
@@ -128,7 +128,7 @@ export default styled.div`
   // Lots of the styles for DOM elements inside this selector are inline.
   // No idea why somebody would do something like that... lazyness?
   // Why is it different than the rest of the DOM nodes?
-  [class|="actionPreviewContent"] {
+  [class|='actionPreviewContent'] {
     label {
       color: ${Colors.ASTEROID_BELT} !important;
 
@@ -158,16 +158,16 @@ export default styled.div`
     }
   }
 
-  [class|="treeItemPin"] {
+  [class|='treeItemPin'] {
     color: ${Colors.JUPITER};
   }
 
-  [class*="diffUpdateFrom"] {
+  [class*='diffUpdateFrom'] {
     color: ${Colors.SUN};
     background-color: ${Colors.COMET};
   }
 
-  [class*="diffUpdateTo"] {
+  [class*='diffUpdateTo'] {
     color: ${Colors.SUN};
     background-color: ${Colors.OORT_CLOUD};
   }

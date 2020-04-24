@@ -45,13 +45,14 @@ export const Container = styled.div`
 export const StatusBubble = styled.div<StatusStyleProps>`
   background-color: ${getColorActiveType};
   border-radius: 50%;
-  box-shadow: 0 0 0 4px #505F6D, 0 0 0 6px #2F3F4F;
+  box-shadow: 0 0 0 4px #505f6d, 0 0 0 6px #2f3f4f;
   flex-shrink: 0;
   height: 15px;
   margin: 4px;
   position: relative;
   width: 15px;
-  ${props => (props.active ? animateBackground(getColorActiveType(props)) : null)}
+  ${props =>
+    props.active ? animateBackground(getColorActiveType(props)) : null}
 `;
 
 export const StatusText = styled.span<StatusStyleProps>`

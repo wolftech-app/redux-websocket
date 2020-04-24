@@ -7,8 +7,8 @@ import Colors from '../../styles/js/colors';
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  small: boolean,
-  outlined: boolean,
+  small: boolean;
+  outlined: boolean;
 }
 
 const outlinedStyle = css`
