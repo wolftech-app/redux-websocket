@@ -5,7 +5,7 @@ import Inspector from 'redux-devtools-inspector';
 import DevToolsWrapper from './styles';
 
 const DevTools = createDevTools(
-  <Inspector theme="ocean" invertTheme={false} />,
+  <Inspector theme="ocean" invertTheme={false} />
 );
 
 const DevToolsComponent = () => (

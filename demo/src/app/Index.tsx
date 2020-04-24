@@ -36,9 +36,9 @@ const disconnectSimulatorMiddleware = () => {
     // class with a fake class.
     if (type === `${WEBSOCKET_PREFIX}::BROKEN`) {
       (window as any).WebSocket = class FakeWebSocket {
-        close = () => {}
+        close = () => {};
 
-        addEventListener = () => {}
+        addEventListener = () => {};
       };
     }
 
@@ -59,12 +59,9 @@ const disconnectSimulatorMiddleware = () => {
 const store = createStore(
   reducer,
   compose(
-    applyMiddleware(
-      disconnectSimulatorMiddleware,
-      websocketMiddleware,
-    ),
-    instrument(),
-  ),
+    applyMiddleware(disconnectSimulatorMiddleware, websocketMiddleware),
+    instrument()
+  )
 );
 
 // Check for a localStorage value to see if we've seen this user before.
@@ -84,5 +81,5 @@ ReactDOM.render(
   <Provider store={store}>
     <AppContainer />
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );

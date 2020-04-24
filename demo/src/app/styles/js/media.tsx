@@ -10,7 +10,7 @@ const sizes = {
 const media = Object.keys(sizes).reduce((acc, label) => {
   acc[label] = (literals: TemplateStringsArray, ...args: any[]) => css`
     @media (max-width: ${sizes[label]}px) {
-      ${css(literals, ...args)}
+      ${css(literals, ...args)};
     }
   `;
 

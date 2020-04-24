@@ -44,7 +44,7 @@ export const Header = styled.header`
 
   ${media.desktop`
     padding: 20px;
-  `}
+  `};
 `;
 
 export const Link = styled.a`
@@ -79,7 +79,7 @@ export const PanelContainer = styled.div`
 
   ${media.desktop`
     flex-direction: column;
-  `}
+  `};
 `;
 
 export const PanelGroup = styled.div`
@@ -89,7 +89,7 @@ export const PanelGroup = styled.div`
 
   ${media.desktop`
     flex-basis: 60%;
-  `}
+  `};
 `;
 
 export const Panel = styled.div`
@@ -99,7 +99,7 @@ export const Panel = styled.div`
 
   ${media.desktop`
     padding: 0;
-  `}
+  `};
 `;
 
 export const PanelHeader = styled.p`
@@ -146,5 +146,5 @@ export const DevToolsPanel = styled(Panel)`
   ${media.desktop`
     flex-basis: 40%;
     max-width: 100%;
-  `}
+  `};
 `;

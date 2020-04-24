@@ -30,16 +30,14 @@ export const ExampleMessageDropDown = styled(DropDown)`
 `;
 
 export const TextArea = styled.textarea`
-  ${sharedInputStyles}
-  margin-bottom: 10px;
+  ${sharedInputStyles} margin-bottom: 10px;
   padding: 10px;
   resize: vertical;
   width: 100%;
 `;
 
 export const Input = styled.input`
-  ${sharedInputStyles}
-  display: block;
+  ${sharedInputStyles} display: block;
   margin-top: 5px;
   padding: 5px 10px;
   width: 100%;

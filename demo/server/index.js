@@ -26,7 +26,11 @@ wss.on('error', (err) => {
 wss.on('connection', (ws) => {
   const id = crypto.randomBytes(16).toString('hex');
 
-  console.log('--> Connection received. ID:', id, `There are ${wss.clients.size} clients connected.`);
+  console.log(
+    '--> Connection received. ID:',
+    id,
+    `There are ${wss.clients.size} clients connected.`
+  );
 
   // Listen for pongs.
   ws.on('pong', () => {

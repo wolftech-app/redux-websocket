@@ -1,4 +1,3 @@
-
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
@@ -14,7 +13,5 @@
       "styled-components"
     ]
   },
-  "include": [
-    "./src/**/**/*"
-  ]
+  "include": ["./src/**/**/*"]
 }

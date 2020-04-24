@@ -60,7 +60,7 @@ export const MetaContainer = styled.div<MessageLogContainerProps>`
       text-align: right;
       border-right: 2px solid #f194ff;
     `;
-  }}
+  }};
 `;
 
 export const MetaData = styled.div`
@@ -85,7 +85,7 @@ export const MessageContainer = styled.div<MessageLogContainerProps>`
     return `
       border-right: 2px solid #de00ff;
     `;
-  }}
+  }};
 `;
 
 export const MessageContents = styled.pre<MessageLogContainerProps>`
@@ -128,5 +128,5 @@ export const MessageContents = styled.pre<MessageLogContainerProps>`
     }
 
     return null;
-  }}
+  }};
 `;

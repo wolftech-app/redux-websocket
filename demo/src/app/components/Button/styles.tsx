@@ -7,8 +7,8 @@ import Colors from '../../styles/js/colors';
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  small: boolean,
-  outlined: boolean,
+  small: boolean;
+  outlined: boolean;
 }
 
 const outlinedStyle = css`
@@ -25,8 +25,7 @@ const outlinedStyle = css`
 `;
 
 const smallStyle = css`
-  ${Typography.TypeStyleCassiopeia}
-  padding: 5px 10px;
+  ${Typography.TypeStyleCassiopeia} padding: 5px 10px;
 `;
 
 export default styled.button<Props>`
@@ -53,6 +52,6 @@ export default styled.button<Props>`
     color: ${Colors.JULIET};
   }
 
-  ${props => (props.outlined ? outlinedStyle : null)};
-  ${props => (props.small ? smallStyle : null)};
+  ${(props) => (props.outlined ? outlinedStyle : null)};
+  ${(props) => (props.small ? smallStyle : null)};
 `;

@@ -9,12 +9,7 @@ interface Props {
   type?: 'INFO' | 'WARN';
 }
 
-const StatusIndicator = ({
-  active,
-  className,
-  text,
-  type = 'INFO',
-}: Props) => (
+const StatusIndicator = ({ active, className, text, type = 'INFO' }: Props) => (
   <Container className={className}>
     <StatusBubble active={active} type={type} />
 

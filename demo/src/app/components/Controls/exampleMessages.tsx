@@ -5,20 +5,24 @@ export default [
   },
   {
     name: 'Array',
-    value: JSON.stringify([
-      {
-        ins: 'AAPL',
-        amt: 550,
-        side: 'buy',
-        date: new Date(),
-      },
-      {
-        ins: 'GOOG',
-        amt: 200,
-        side: 'sell',
-        created: new Date(),
-      },
-    ], null, 2),
+    value: JSON.stringify(
+      [
+        {
+          ins: 'AAPL',
+          amt: 550,
+          side: 'buy',
+          date: new Date(),
+        },
+        {
+          ins: 'GOOG',
+          amt: 200,
+          side: 'sell',
+          created: new Date(),
+        },
+      ],
+      null,
+      2
+    ),
   },
   {
     name: 'Date',
@@ -26,12 +30,16 @@ export default [
   },
   {
     name: 'Object',
-    value: JSON.stringify({
-      ins: 'AAPL',
-      amt: 550,
-      side: 'buy',
-      date: new Date(),
-    }, null, 2),
+    value: JSON.stringify(
+      {
+        ins: 'AAPL',
+        amt: 550,
+        side: 'buy',
+        date: new Date(),
+      },
+      null,
+      2
+    ),
   },
   {
     name: 'String',

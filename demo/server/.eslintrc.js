@@ -1,8 +1,8 @@
 module.exports = {
   env: {
-    node: true
+    node: true,
   },
   rules: {
-    'no-console': 'off'
-  }
+    'no-console': 'off',
+  },
 };
