@@ -1,10 +1,6 @@
 {
   "name": "@giantmachines/redux-websocket",
-<<<<<<< HEAD
-  "version": "1.2.0",
-=======
   "version": "1.2.1",
->>>>>>> 802323f... 1.2.1
   "description": "A redux middleware to handle websocket connections",
   "main": "dist",
   "files": [
