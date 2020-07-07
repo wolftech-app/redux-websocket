@@ -1,5 +1,4 @@
 import ReduxWebSocket from '../ReduxWebSocket';
-import { Action } from '../types';
 
 declare global {
   namespace NodeJS {
@@ -43,7 +42,7 @@ describe('ReduxWebSocket', () => {
   });
 
   describe('connect', () => {
-    const action = { type: SEND, payload: { url } };
+    const action = { type: CONNECT, payload: { url } };
 
     beforeEach(() => {
       reduxWebSocket.connect(store, action);
@@ -295,7 +294,7 @@ describe('ReduxWebSocket', () => {
     });
 
     it('should send a custom message', () => {
-      const action = { type: 'SEND', payload: { url } };
+      const action = { type: CONNECT, payload: { url } };
       const pld = { test: 'value', another: 'prop' };
       // Very basic test custom serializer; only works with objects.
       // Converts object to string: "key1.value1|key2.value2|...|keyN.valueN"
@@ -311,11 +310,8 @@ describe('ReduxWebSocket', () => {
         ...options,
         serializer: customSerializer,
       });
-      reduxWebSocket.connect(store, action as Action);
-      reduxWebSocket.send(
-        null as any,
-        { type: 'SEND', payload: pld } as Action
-      );
+      reduxWebSocket.connect(store, action);
+      reduxWebSocket.send(null as any, { type: SEND, payload: pld });
 
       expect(sendMock).toHaveBeenCalledTimes(1);
       expect(sendMock).toHaveBeenCalledWith(customSerializer(pld));
@@ -329,11 +325,11 @@ describe('ReduxWebSocket', () => {
 
     it('should throw an error if no serializer exists', () => {
       const optionsClone = { ...options };
-      const action = { type: 'SEND', payload: { url } };
+      const action = { type: CONNECT, payload: { url } };
 
       delete optionsClone.serializer;
       reduxWebSocket = new ReduxWebSocket(optionsClone);
-      reduxWebSocket.connect(store, action as Action);
+      reduxWebSocket.connect(store, action);
 
       expect(() =>
         reduxWebSocket.send(null as any, { payload: null } as any)
@@ -346,6 +342,8 @@ describe('ReduxWebSocket', () => {
 
     it('should reconnect on an interval', () => {
       const dispatch = jest.fn();
+      const action = { type: CONNECT, payload: { url } };
+      reduxWebSocket.connect(store, action);
 
       /* eslint-disable dot-notation */
       reduxWebSocket['handleBrokenConnection'](dispatch);

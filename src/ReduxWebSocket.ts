@@ -39,9 +39,12 @@ export default class ReduxWebSocket {
   // We'll create an interval to try and reconnect if the socket connection breaks.
   private reconnectionInterval: NodeJS.Timeout | null = null;
 
-  // Keep track of the last URL we connected to, so that when we automatically
-  // try to reconnect, we can connect to the correct URL.
-  private lastSocketUrl: string | null = null;
+  // Keep track of the last connect payload we used to connect, so that when we automatically
+  // try to reconnect, we can reuse the previous connect payload.
+  private lastConnectPayload: {
+    url: string;
+    protocols: string[] | undefined;
+  } | null = null;
 
   // Keep track of if the WebSocket connection has ever successfully opened.
   private hasOpened = false;
@@ -67,7 +70,7 @@ export default class ReduxWebSocket {
 
     const { prefix } = this.options;
 
-    this.lastSocketUrl = payload.url;
+    this.lastConnectPayload = payload;
     this.websocket = payload.protocols
       ? new WebSocket(payload.url, payload.protocols)
       : new WebSocket(payload.url);
@@ -249,7 +252,7 @@ export default class ReduxWebSocket {
     // that the arguments conform to the types we expect.
     this.connect(
       { dispatch } as MiddlewareAPI,
-      { payload: { url: this.lastSocketUrl } } as Action
+      { payload: this.lastConnectPayload } as Action
     );
 
     // Attempt reconnecting on an interval.
@@ -261,7 +264,7 @@ export default class ReduxWebSocket {
       // Call connect again, same way.
       this.connect(
         { dispatch } as MiddlewareAPI,
-        { payload: { url: this.lastSocketUrl } } as Action
+        { payload: this.lastConnectPayload } as Action
       );
     }, reconnectInterval);
   };
