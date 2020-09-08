@@ -20,12 +20,12 @@ type ActionType =
   | typeof WEBSOCKET_SEND;
 
 type Action =
-  | { type: typeof WEBSOCKET_CLOSED; payload: any }
-  | { type: typeof WEBSOCKET_CONNECT; payload: any }
-  | { type: typeof WEBSOCKET_DISCONNECT; payload: any }
-  | { type: typeof WEBSOCKET_MESSAGE; payload: any }
-  | { type: typeof WEBSOCKET_OPEN; payload: any }
-  | { type: typeof WEBSOCKET_SEND; payload: any };
+  | { type: typeof WEBSOCKET_CLOSED; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_CONNECT; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_DISCONNECT; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_MESSAGE; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_OPEN; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_SEND; payload: any; meta?: any };
 
 type Options = {
   prefix?: string;
