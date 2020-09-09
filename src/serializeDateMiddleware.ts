@@ -10,9 +10,17 @@ import { Action } from './types';
 export default (_store: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (
   action: Action
 ) => {
+  let updatedAction = action;
+  // todo: add isReduxWebsocket=true to meta to keep track of our actions
   if (action.meta && action.meta.timestamp && action.meta.isReduxWebsocket) {
-    action.meta.timestamp = JSON.stringify(action.meta.timestamp);
+    updatedAction = {
+      ...action,
+      meta: {
+        ...action.meta,
+        timestamp: JSON.stringify(action.meta.timestamp),
+      },
+    };
   }
 
-  return next(action);
+  return next(updatedAction);
 };
