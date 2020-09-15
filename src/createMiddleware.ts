@@ -10,9 +10,10 @@ import ReduxWebSocket from './ReduxWebSocket';
  * @private
  */
 const defaultOptions = {
+  dateSerializer: null,
+  prefix: actionTypes.DEFAULT_PREFIX,
   reconnectInterval: 2000,
   reconnectOnClose: false,
-  prefix: actionTypes.DEFAULT_PREFIX,
   serializer: JSON.stringify,
 };
 
@@ -25,7 +26,7 @@ const defaultOptions = {
  */
 export default (rawOptions?: Options): Middleware => {
   const options = { ...defaultOptions, ...rawOptions };
-  const { prefix } = options;
+  const { prefix, dateSerializer } = options;
   const actionPrefixExp = RegExp(`^${prefix}::`);
 
   // Create a new redux websocket instance.
@@ -47,6 +48,10 @@ export default (rawOptions?: Options): Middleware => {
     if (actionType && actionType.match(actionPrefixExp)) {
       const baseActionType = action.type.replace(actionPrefixExp, '');
       const handler = Reflect.get(handlers, baseActionType);
+
+      if (action.meta && action.meta.timestamp && dateSerializer) {
+        action.meta.timestamp = dateSerializer(action.meta.timestamp);
+      }
 
       if (handler) {
         try {

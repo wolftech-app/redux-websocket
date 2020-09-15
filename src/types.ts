@@ -28,10 +28,11 @@ type Action =
   | { type: typeof WEBSOCKET_SEND; payload: any; meta?: any };
 
 type Options = {
+  onOpen?: (s: WebSocket) => void;
   prefix?: string;
   reconnectInterval?: number;
   reconnectOnClose?: boolean;
-  onOpen?: (s: WebSocket) => void;
+  dateSerializer?: (date: Date) => string | number;
   serializer?: Serializer;
 };
 
