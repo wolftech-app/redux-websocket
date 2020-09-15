@@ -32,10 +32,7 @@ import reducer from './store/reducer';
 const reduxWebsocketMiddleware = reduxWebsocket();
 
 // Create the Redux store.
-const store = createStore(
-  reducer,
-  applyMiddleware(reduxWebsocketMiddleware)
-);
+const store = createStore(reducer, applyMiddleware(reduxWebsocketMiddleware));
 ```
 
 You may also pass options to the `reduxWebsocket` function.
@@ -47,18 +44,21 @@ interface Options {
   // Defaults to 'REDUX_WEBSOCKET'. Use this option to set a custom action type
   // prefix. This is useful when you're creating multiple instances of the
   // middleware, and need to handle actions dispatched by each middleware instance separately.
-  prefix?: string,
+  prefix?: string;
   // Defaults to 2000. Amount of time to wait between reconnection attempts.
-  reconnectInterval?: number,
+  reconnectInterval?: number;
   // Defaults to false. If set to true, will attempt to reconnect when conn is closed without error event
   // e.g. when server closes connection
-  reconnectOnClose?: boolean,
+  reconnectOnClose?: boolean;
   // Callback when the WebSocket connection is open. Useful for when you
   // need a reference to the WebSocket instance.
-  onOpen?: (socket: WebSocket) => void,
+  onOpen?: (socket: WebSocket) => void;
   // Custom function to serialize your payload before sending. Defaults to JSON.stringify
   // but you could use this function to send any format you like, including binary
-  serializer?: (payload: any) => string | ArrayBuffer | ArrayBufferView | Blob
+  serializer?: (payload: any) => string | ArrayBuffer | ArrayBufferView | Blob;
+  // Custom function to serialize the timestamp. The default behavior maintains the timestamp
+  // as a Date but you could use this function to store it as a string or number.
+  dateSerializer?: (date: Date) => string | number;
 }
 ```
 
@@ -92,15 +92,17 @@ store.dispatch(connect('wss://my-server.com'));
 store.dispatch(connect('wss://my-server.com', ['v1.stream.example.com']));
 
 // ...other ways to call this function:
-store.dispatch(connect('wss://my-server.com', ['v1.stream.example.com'], 'MY_PREFIX'));
+store.dispatch(
+  connect('wss://my-server.com', ['v1.stream.example.com'], 'MY_PREFIX')
+);
 store.dispatch(connect('wss://my-server.com', 'MY_PREFIX'));
 ```
 
 ###### Arguments:
 
-1. `url` *(`string`)*: WebSocket URL to connect to.
-2. \[`protocols`\] *(`string[]`)*: Optional sub-protocols.
-2. \[`prefix`\] *(`string`)*: Optional action type prefix.
+1. `url` _(`string`)_: WebSocket URL to connect to.
+2. \[`protocols`\] _(`string[]`)_: Optional sub-protocols.
+3. \[`prefix`\] _(`string`)_: Optional action type prefix.
 
 ---
 
@@ -116,7 +118,7 @@ store.dispatch(disconnect());
 
 ###### Arguments:
 
-1. \[`prefix`\] *(`string`)*: Optional action type prefix.
+1. \[`prefix`\] _(`string`)_: Optional action type prefix.
 
 ---
 
@@ -132,8 +134,8 @@ store.dispatch(send({ my: 'message' }));
 
 ###### Arguments:
 
-1. `message` *(`any`)*: Any JSON serializable value. This will be stringified and sent over the connection. If the value passed is not serializable, `JSON.stringify` will throw an error.
-2. \[`prefix`\] *(`string`)*: Optional action type prefix.
+1. `message` _(`any`)_: Any JSON serializable value. This will be stringified and sent over the connection. If the value passed is not serializable, `JSON.stringify` will throw an error.
+2. \[`prefix`\] _(`string`)_: Optional action type prefix.
 
 ---
 
