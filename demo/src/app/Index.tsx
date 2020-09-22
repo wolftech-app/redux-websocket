@@ -20,7 +20,7 @@ const websocketMiddleware = websocket({
     // @ts-ignore
     window.__socket = socket; // eslint-disable-line no-underscore-dangle
   },
-  dateSerializer: date => date.toISOString(),
+  dateSerializer: (date) => date.toISOString(),
 });
 
 /**
@@ -71,9 +71,9 @@ const store = createStore(
     applyMiddleware(
       disconnectSimulatorMiddleware,
       websocketMiddleware,
-      ...getDefaultMiddleware(),
+      ...getDefaultMiddleware()
     ),
-    instrument(),
+    instrument()
   )
 );
 
