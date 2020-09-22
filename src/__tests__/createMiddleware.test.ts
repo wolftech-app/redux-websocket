@@ -239,6 +239,6 @@ describe('middleware', () => {
       payload: {
         test: 'message',
       },
-    })
+    });
   });
 });
