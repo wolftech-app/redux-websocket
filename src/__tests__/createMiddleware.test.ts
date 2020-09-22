@@ -1,6 +1,7 @@
 import * as actions from '../actions';
 import middleware from '../createMiddleware';
 import ReduxWebSocket from '../ReduxWebSocket';
+import { Options } from '../types';
 
 jest.mock('../ReduxWebSocket');
 
@@ -8,11 +9,12 @@ const ReduxWebSocketMock = ReduxWebSocket as jest.Mock<ReduxWebSocket>;
 const connectMock = jest.fn();
 const disconnectMock = jest.fn();
 const sendMock = jest.fn();
+const nextMock = jest.fn();
 const dispatchMock = jest.fn((i) => i);
-const mockStore = () => {
+const mockStore = (options: Options = {}) => {
   const store = { getState: () => {}, dispatch: dispatchMock };
-  const wrapper = middleware()(store);
-  const dispatch = wrapper((i) => i);
+  const wrapper = middleware(options)(store);
+  const dispatch = wrapper(nextMock);
 
   return { store, wrapper, dispatch };
 };
@@ -49,6 +51,7 @@ describe('middleware', () => {
     connectMock.mockClear();
     disconnectMock.mockClear();
     sendMock.mockClear();
+    nextMock.mockClear();
   });
 
   it('creates a new ReduxWebSocket instance', () => {
@@ -65,6 +68,7 @@ describe('middleware', () => {
       reconnectInterval: 2000,
       reconnectOnClose: false,
       serializer: JSON.stringify,
+      dateSerializer: null,
     });
   });
 
@@ -76,6 +80,7 @@ describe('middleware', () => {
       reconnectInterval: 2000,
       reconnectOnClose: false,
       serializer: JSON.stringify,
+      dateSerializer: null,
     });
   });
 
@@ -89,12 +94,14 @@ describe('middleware', () => {
       reconnectInterval: 2000,
       reconnectOnClose: false,
       serializer: JSON.stringify,
+      dateSerializer: null,
     });
     expect(ReduxWebSocketMock).toHaveBeenCalledWith({
       prefix: 'TWO',
       reconnectInterval: 2000,
       reconnectOnClose: true,
       serializer: JSON.stringify,
+      dateSerializer: null,
     });
   });
 
@@ -108,9 +115,10 @@ describe('middleware', () => {
       },
     };
 
-    const val = dispatch(actions.connect('ws://example.com'));
+    dispatch(actions.connect('ws://example.com'));
 
-    expect(val).toEqual(dispatchedAction);
+    expect(nextMock).toHaveBeenCalledTimes(1);
+    expect(nextMock).toHaveBeenCalledWith(dispatchedAction);
     expect(connectMock).toHaveBeenCalledTimes(1);
     expect(connectMock).toHaveBeenCalledWith(store, dispatchedAction);
   });
@@ -122,9 +130,10 @@ describe('middleware', () => {
       meta: { timestamp: expect.any(Date) },
     };
 
-    const val = dispatch(actions.disconnect());
+    dispatch(actions.disconnect());
 
-    expect(val).toEqual(dispatchedAction);
+    expect(nextMock).toHaveBeenCalledTimes(1);
+    expect(nextMock).toHaveBeenCalledWith(dispatchedAction);
     expect(disconnectMock).toHaveBeenCalledTimes(1);
     expect(disconnectMock).toHaveBeenCalledWith(store, dispatchedAction);
   });
@@ -139,9 +148,10 @@ describe('middleware', () => {
       },
     };
 
-    const val = dispatch(actions.send({ test: 'message' }));
+    dispatch(actions.send({ test: 'message' }));
 
-    expect(val).toEqual(dispatchedAction);
+    expect(nextMock).toHaveBeenCalledTimes(1);
+    expect(nextMock).toHaveBeenCalledWith(dispatchedAction);
     expect(sendMock).toHaveBeenCalledTimes(1);
     expect(sendMock).toHaveBeenCalledWith(store, dispatchedAction);
   });
@@ -159,7 +169,7 @@ describe('middleware', () => {
     expect(sendMock).not.toHaveBeenCalled();
   });
 
-  it('shoud dispatch an error action if a handler throws an error', () => {
+  it('should dispatch an error action if a handler throws an error', () => {
     const err = new Error('whoops');
 
     sendMock.mockImplementation(() => {
@@ -167,7 +177,7 @@ describe('middleware', () => {
     });
 
     const { dispatch } = mockStore();
-    const result = dispatch(actions.send({ test: 'message' }));
+    dispatch(actions.send({ test: 'message' }));
     const expectedResult = {
       type: 'REDUX_WEBSOCKET::SEND',
       meta: {
@@ -178,7 +188,8 @@ describe('middleware', () => {
       },
     };
 
-    expect(result).toEqual(expectedResult);
+    expect(nextMock).toHaveBeenCalledTimes(1);
+    expect(nextMock).toHaveBeenCalledWith(expectedResult);
     expect(dispatchMock).toHaveBeenCalledTimes(1);
     expect(dispatchMock).toHaveBeenCalledWith({
       error: true,
@@ -191,5 +202,43 @@ describe('middleware', () => {
       },
       payload: err,
     });
+  });
+
+  it('should not serialize timestamp by default', () => {
+    const { dispatch } = mockStore();
+    const action = {
+      type: 'REDUX_WEBSOCKET::MESSAGE',
+      meta: { timestamp: new Date() },
+      payload: {
+        test: 'message',
+      },
+    };
+
+    dispatch(action);
+    expect(nextMock).toHaveBeenCalledTimes(1);
+    expect(nextMock).toHaveBeenCalledWith(action);
+  });
+
+  it('should serialize timestamp with config option', () => {
+    const dateSerializer = (date: Date) => date.toISOString();
+    const { dispatch } = mockStore({ dateSerializer });
+    const action = {
+      type: 'REDUX_WEBSOCKET::MESSAGE',
+      meta: { timestamp: new Date('2020-01-01') },
+      payload: {
+        test: 'message',
+      },
+    };
+
+    dispatch(action);
+
+    expect(nextMock).toHaveBeenCalledTimes(1);
+    expect(nextMock).toHaveBeenCalledWith({
+      type: 'REDUX_WEBSOCKET::MESSAGE',
+      meta: { timestamp: '2020-01-01T00:00:00.000Z' },
+      payload: {
+        test: 'message',
+      },
+    })
   });
 });

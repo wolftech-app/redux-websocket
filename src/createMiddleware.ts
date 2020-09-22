@@ -50,6 +50,7 @@ export default (rawOptions?: Options): Middleware => {
       const handler = Reflect.get(handlers, baseActionType);
 
       if (action.meta && action.meta.timestamp && dateSerializer) {
+        // eslint-disable-next-line no-param-reassign
         action.meta.timestamp = dateSerializer(action.meta.timestamp);
       }
 
