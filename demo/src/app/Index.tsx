@@ -59,13 +59,6 @@ const disconnectSimulatorMiddleware = () => {
 };
 
 const store = createStore(
-  // reducer,
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware().prepend(
-  //     disconnectSimulatorMiddleware,
-  //     websocketMiddleware,
-  //     instrument(),
-  //   )
   reducer,
   compose(
     applyMiddleware(

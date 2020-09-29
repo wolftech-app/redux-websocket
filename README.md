@@ -66,6 +66,8 @@ interface Options {
 
 `redux-websocket` will dispatch some actions automatically, based on what the internal WebSocket connection. Some actions will need to be dispatched by you.
 
+By default `redux-websocket` actions get dispatched with a timestamp as a `Date` object. This has caused some users to experience non serializable action warnings when using redux toolkit. If you encounter this problem you can either add a `dateSerializer` function to `redux-websocket` options or [setup redux toolkit](https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data) to ignore the actions.
+
 ### User dispatched actions
 
 These actions must be dispatched by you, however we do export action creator functions that can be used.
