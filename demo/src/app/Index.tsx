@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import websocket from '@giantmachines/redux-websocket';
+import { getDefaultMiddleware } from '@reduxjs/toolkit';
 
 import { instrument } from './components/DevTools';
 import { WEBSOCKET_PREFIX } from './constants';
@@ -19,6 +20,7 @@ const websocketMiddleware = websocket({
     // @ts-ignore
     window.__socket = socket; // eslint-disable-line no-underscore-dangle
   },
+  dateSerializer: (date) => date.toISOString(),
 });
 
 /**
@@ -27,7 +29,7 @@ const websocketMiddleware = websocket({
  * an arbitrary number of times.
  */
 const disconnectSimulatorMiddleware = () => {
-  const OldWebSocket = (window as any).WebSocket;
+  const OldWebSocket = window.WebSocket;
 
   return (next: any) => (action: any) => {
     const { type, payload } = action;
@@ -48,7 +50,7 @@ const disconnectSimulatorMiddleware = () => {
       const { count } = payload;
 
       if (count > 2) {
-        (window as any).WebSocket = OldWebSocket;
+        window.WebSocket = OldWebSocket;
       }
     }
 
@@ -59,7 +61,11 @@ const disconnectSimulatorMiddleware = () => {
 const store = createStore(
   reducer,
   compose(
-    applyMiddleware(disconnectSimulatorMiddleware, websocketMiddleware),
+    applyMiddleware(
+      disconnectSimulatorMiddleware,
+      websocketMiddleware,
+      ...getDefaultMiddleware()
+    ),
     instrument()
   )
 );
