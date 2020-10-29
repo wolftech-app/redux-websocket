@@ -10,7 +10,7 @@ import {
   reconnectAttempt,
   reconnected,
 } from './actions';
-import { Action, Serializer } from './types';
+import { Action, Serializer, Deserializer } from './types';
 
 interface ReduxWebSocketOptions {
   prefix: string;
@@ -18,6 +18,7 @@ interface ReduxWebSocketOptions {
   reconnectOnClose: boolean;
   onOpen?: (s: WebSocket) => void;
   serializer?: Serializer;
+  deserializer?: Deserializer;
 }
 
 /**
@@ -68,7 +69,7 @@ export default class ReduxWebSocket {
   connect = ({ dispatch }: MiddlewareAPI, { payload }: Action) => {
     this.close();
 
-    const { prefix } = this.options;
+    const { prefix, deserializer } = this.options;
 
     this.lastConnectPayload = payload;
     this.websocket = payload.protocols
@@ -85,7 +86,7 @@ export default class ReduxWebSocket {
       this.handleOpen(dispatch, prefix, this.options.onOpen, event);
     });
     this.websocket.addEventListener('message', (event) =>
-      this.handleMessage(dispatch, prefix, event)
+      this.handleMessage(dispatch, prefix, deserializer, event)
     );
   };
 
@@ -205,9 +206,10 @@ export default class ReduxWebSocket {
   private handleMessage = (
     dispatch: Dispatch,
     prefix: string,
+    deserializer: Deserializer | undefined,
     event: MessageEvent
   ) => {
-    dispatch(message(event, prefix));
+    dispatch(message(event, prefix, deserializer));
   };
 
   /**
@@ -215,7 +217,7 @@ export default class ReduxWebSocket {
    * @private
    *
    * @param {number} [code]
-   * @param {strin} [reason]
+   * @param {string} [reason]
    */
   private close = (code?: number, reason?: string) => {
     if (this.websocket) {

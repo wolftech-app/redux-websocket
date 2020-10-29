@@ -12,7 +12,7 @@ import {
   WEBSOCKET_OPEN,
   WEBSOCKET_SEND,
 } from './actionTypes';
-import { Action } from './types';
+import { Action, Deserializer } from './types';
 
 type WithProtocols = [string[]] | [string[], string];
 type WithPrefix = [string];
@@ -100,10 +100,10 @@ export const broken = (prefix: string) =>
   buildAction(`${prefix}::${WEBSOCKET_BROKEN}`);
 export const closed = (event: Event, prefix: string) =>
   buildAction(`${prefix}::${WEBSOCKET_CLOSED}`, event);
-export const message = (event: MessageEvent, prefix: string) =>
+export const message = (event: MessageEvent, prefix: string, deserializer?: Deserializer) =>
   buildAction(`${prefix}::${WEBSOCKET_MESSAGE}`, {
     event,
-    message: event.data,
+    message: deserializer ? deserializer(event.data) : event.data,
     origin: event.origin,
   });
 export const error = (
