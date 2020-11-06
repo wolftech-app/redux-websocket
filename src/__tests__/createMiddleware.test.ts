@@ -67,6 +67,7 @@ describe('middleware', () => {
       prefix: 'REDUX_WEBSOCKET',
       reconnectInterval: 2000,
       reconnectOnClose: false,
+      reconnectOnError: true,
       serializer: JSON.stringify,
       dateSerializer: null,
     });
@@ -79,6 +80,7 @@ describe('middleware', () => {
       prefix: 'CUSTOM',
       reconnectInterval: 2000,
       reconnectOnClose: false,
+      reconnectOnError: true,
       serializer: JSON.stringify,
       dateSerializer: null,
     });
@@ -93,6 +95,7 @@ describe('middleware', () => {
       prefix: 'ONE',
       reconnectInterval: 2000,
       reconnectOnClose: false,
+      reconnectOnError: true,
       serializer: JSON.stringify,
       dateSerializer: null,
     });
@@ -100,6 +103,7 @@ describe('middleware', () => {
       prefix: 'TWO',
       reconnectInterval: 2000,
       reconnectOnClose: true,
+      reconnectOnError: true,
       serializer: JSON.stringify,
       dateSerializer: null,
     });

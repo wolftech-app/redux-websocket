@@ -18,6 +18,7 @@ describe('ReduxWebSocket', () => {
     prefix: 'REDUX_WEBSOCKET',
     reconnectInterval: 2000,
     reconnectOnClose: false,
+    reconnectOnError: true,
     serializer: JSON.stringify,
   };
   const closeMock = jest.fn();

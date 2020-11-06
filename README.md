@@ -50,6 +50,8 @@ interface Options {
   // Defaults to false. If set to true, will attempt to reconnect when conn is closed without error event
   // e.g. when server closes connection
   reconnectOnClose?: boolean;
+  // Defaults to false. If set to true, will attempt to reconnect when conn is closed with error event
+  reconnectOnError?: boolean;
   // Callback when the WebSocket connection is open. Useful for when you
   // need a reference to the WebSocket instance.
   onOpen?: (socket: WebSocket) => void;
