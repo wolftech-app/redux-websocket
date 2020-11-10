@@ -100,7 +100,11 @@ export const broken = (prefix: string) =>
   buildAction(`${prefix}::${WEBSOCKET_BROKEN}`);
 export const closed = (event: Event, prefix: string) =>
   buildAction(`${prefix}::${WEBSOCKET_CLOSED}`, event);
-export const message = (event: MessageEvent, prefix: string, deserializer?: Deserializer) =>
+export const message = (
+  event: MessageEvent,
+  prefix: string,
+  deserializer?: Deserializer
+) =>
   buildAction(`${prefix}::${WEBSOCKET_MESSAGE}`, {
     event,
     message: deserializer ? deserializer(event.data) : event.data,

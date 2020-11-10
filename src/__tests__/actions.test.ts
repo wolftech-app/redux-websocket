@@ -171,7 +171,7 @@ describe('actions', () => {
     describe('message', () => {
       it('should return the correct action', () => {
         const testData = '{"a": "a"}';
-        const event = new MessageEvent('testEvent', {data: testData});
+        const event = new MessageEvent('testEvent', { data: testData });
         const act = actions.message(event, PREFIX);
 
         expect(isFSA(act)).toBe(true);
@@ -188,7 +188,7 @@ describe('actions', () => {
 
       it('should not deserialize message if no deserializer function provided', () => {
         const testData = '{"a": "a"}';
-        const event = new MessageEvent('testEvent', {data: testData});
+        const event = new MessageEvent('testEvent', { data: testData });
         const act = actions.message(event, PREFIX);
 
         expect(isFSA(act)).toBe(true);
@@ -201,11 +201,11 @@ describe('actions', () => {
             origin: event.origin,
           },
         });
-      })
+      });
 
       it('should deserialize the message with provided deserializer function', () => {
         const testData = '{"b": "b"}';
-        const event = new MessageEvent('testEvent', {data: testData});
+        const event = new MessageEvent('testEvent', { data: testData });
         const deserializer = JSON.parse;
         const act = actions.message(event, PREFIX, deserializer);
 
@@ -215,11 +215,11 @@ describe('actions', () => {
           meta: { timestamp: expect.any(Date) },
           payload: {
             event,
-            message: {b: 'b'},
+            message: { b: 'b' },
             origin: event.origin,
           },
         });
-      })
+      });
     });
 
     describe('open', () => {

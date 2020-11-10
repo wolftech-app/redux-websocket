@@ -68,8 +68,8 @@ const store = createStore(
       ...getDefaultMiddleware({
         serializableCheck: {
           ignoredActionPaths: ['payload.event'],
-          ignoredActions: ['REDUX_WEBSOCKET_DEMO::OPEN']
-        }
+          ignoredActions: ['REDUX_WEBSOCKET_DEMO::OPEN'],
+        },
       })
     ),
     instrument()
