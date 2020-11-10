@@ -137,13 +137,13 @@ export default class MessageLog extends React.Component<Props, State> {
 
       return (
         <Message
-          key={timestamp instanceof Date ? timestamp.getTime() : timestamp}
+          key={timestamp}
         >
           <MetaContainer type={type}>
             <MetaType>{type}</MetaType>
             <MetaData>{origin}</MetaData>
             <MetaData>
-              {timestamp instanceof Date ? timestamp.toISOString() : timestamp}
+              {timestamp}
             </MetaData>
           </MetaContainer>
 

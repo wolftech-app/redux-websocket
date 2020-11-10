@@ -36,6 +36,7 @@ type Options = {
   reconnectOnClose?: boolean;
   dateSerializer?: (date: Date) => string | number;
   serializer?: Serializer;
+  deserializer?: Deserializer;
 };
 
 // Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877
