@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.0] - 2020-11-17
+
+### Added
+
+- Added deserializer option as part of `Options` interface to enable deserializing of messages sent by the server. By default the message data gets passed through as is.
+
 ## [1.3.0] - 2020-09-29
 
 ### Added
