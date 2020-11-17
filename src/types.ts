@@ -11,6 +11,8 @@ type Serializer = (
   payload: any
 ) => string | ArrayBuffer | ArrayBufferView | Blob;
 
+type Deserializer = (message: any) => any;
+
 type ActionType =
   | typeof WEBSOCKET_CLOSED
   | typeof WEBSOCKET_CONNECT
@@ -34,9 +36,10 @@ type Options = {
   reconnectOnClose?: boolean;
   dateSerializer?: (date: Date) => string | number;
   serializer?: Serializer;
+  deserializer?: Deserializer;
 };
 
 // Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877
 /* eslint-disable no-undef */
-export { Action, ActionType, Options, Serializer };
+export { Action, ActionType, Options, Serializer, Deserializer };
 /* eslint-enable no-undef */

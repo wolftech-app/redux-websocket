@@ -21,6 +21,7 @@ const websocketMiddleware = websocket({
     window.__socket = socket; // eslint-disable-line no-underscore-dangle
   },
   dateSerializer: (date) => date.toISOString(),
+  deserializer: JSON.parse,
 });
 
 /**
@@ -64,7 +65,12 @@ const store = createStore(
     applyMiddleware(
       disconnectSimulatorMiddleware,
       websocketMiddleware,
-      ...getDefaultMiddleware()
+      ...getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActionPaths: ['payload.event'],
+          ignoredActions: ['REDUX_WEBSOCKET_DEMO::OPEN'],
+        },
+      })
     ),
     instrument()
   )

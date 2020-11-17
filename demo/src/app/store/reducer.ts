@@ -44,7 +44,7 @@ const reducer = (state = defaultState, action): State => {
         messages: [
           ...state.messages,
           {
-            data: JSON.parse(action.payload.message),
+            data: action.payload.message,
             origin: action.payload.origin,
             timestamp: action.meta.timestamp,
             type: 'INCOMING',
@@ -60,7 +60,7 @@ const reducer = (state = defaultState, action): State => {
           {
             data: action.payload,
             origin: window.location.origin,
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             type: 'OUTGOING',
           },
         ],

@@ -56,6 +56,9 @@ interface Options {
   // Custom function to serialize your payload before sending. Defaults to JSON.stringify
   // but you could use this function to send any format you like, including binary
   serializer?: (payload: any) => string | ArrayBuffer | ArrayBufferView | Blob;
+  // Custom function to deserialize the message data sent from the server. By default the
+  // message data gets passed through as is.
+  deserializer?: (message: any) => any;
   // Custom function to serialize the timestamp. The default behavior maintains the timestamp
   // as a Date but you could use this function to store it as a string or number.
   dateSerializer?: (date: Date) => string | number;
