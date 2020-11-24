@@ -1,4 +1,5 @@
 import { Dispatch, MiddlewareAPI } from 'redux';
+import retry from 'retry';
 
 import {
   beginReconnect,
@@ -50,6 +51,8 @@ export default class ReduxWebSocket {
   // Keep track of if the WebSocket connection has ever successfully opened.
   private hasOpened = false;
 
+  private retryOperation: retry.RetryOperation | null = null;
+
   /**
    * Constructor
    * @constructor
@@ -58,6 +61,10 @@ export default class ReduxWebSocket {
    */
   constructor(options: ReduxWebSocketOptions) {
     this.options = options;
+    this.retryOperation = retry.operation({
+      forever: true,
+      // minTimeout: 2000,
+    });
   }
 
   /**
@@ -66,7 +73,42 @@ export default class ReduxWebSocket {
    * @param {MiddlewareAPI} store
    * @param {Action} action
    */
-  connect = ({ dispatch }: MiddlewareAPI, { payload }: Action) => {
+  connect = (middlewareApi: MiddlewareAPI, action: Action) => {
+    // this.close();
+
+    // const { prefix, deserializer } = this.options;
+
+    // this.lastConnectPayload = payload;
+    // this.websocket = payload.protocols
+    //   ? new WebSocket(payload.url, payload.protocols)
+    //   : new WebSocket(payload.url);
+
+    // this.websocket.addEventListener('close', (event) =>
+    //   this.handleClose(dispatch, prefix, event)
+    // );
+    // this.websocket.addEventListener('error', () =>
+    //   this.handleError(dispatch, prefix)
+    // );
+    // this.websocket.addEventListener('open', (event) => {
+    //   this.handleOpen(dispatch, prefix, this.options.onOpen, event);
+    // });
+    // this.websocket.addEventListener('message', (event) =>
+    //   this.handleMessage(dispatch, prefix, deserializer, event)
+    // );
+    if (this.retryOperation) {
+      this.retryOperation.attempt((currentAttempt) => {
+        console.log('ATTEMPT', currentAttempt)
+        this.attempt(middlewareApi, action, () => {
+          console.log('IN CALLBACK')
+          if (this.retryOperation) {
+            this.retryOperation.retry()
+          }
+        })
+      })
+    }
+  };
+
+  attempt = async ({ dispatch }: MiddlewareAPI, { payload }: Action, callback: any) => {
     this.close();
 
     const { prefix, deserializer } = this.options;
@@ -76,19 +118,23 @@ export default class ReduxWebSocket {
       ? new WebSocket(payload.url, payload.protocols)
       : new WebSocket(payload.url);
 
-    this.websocket.addEventListener('close', (event) =>
+    this.websocket.addEventListener('close', (event) => {
+      console.log('CLOSE', event);
+      callback();
       this.handleClose(dispatch, prefix, event)
-    );
-    this.websocket.addEventListener('error', () =>
+    });
+    this.websocket.addEventListener('error', () => {
+      console.log('ERROR');
+      callback();
       this.handleError(dispatch, prefix)
-    );
+    });
     this.websocket.addEventListener('open', (event) => {
       this.handleOpen(dispatch, prefix, this.options.onOpen, event);
     });
     this.websocket.addEventListener('message', (event) =>
       this.handleMessage(dispatch, prefix, deserializer, event)
     );
-  };
+  }
 
   /**
    * WebSocket disconnect event handler.
@@ -138,10 +184,10 @@ export default class ReduxWebSocket {
     dispatch(closed(event, prefix));
 
     // Conditionally attempt reconnection if enabled and applicable
-    const { reconnectOnClose } = this.options;
-    if (reconnectOnClose && this.canAttemptReconnect()) {
-      this.handleBrokenConnection(dispatch);
-    }
+    // const { reconnectOnClose } = this.options;
+    // if (reconnectOnClose && this.canAttemptReconnect()) {
+    //   this.handleBrokenConnection(dispatch);
+    // }
   };
 
   /**
@@ -153,9 +199,9 @@ export default class ReduxWebSocket {
    */
   private handleError = (dispatch: Dispatch, prefix: string) => {
     dispatch(error(null, new Error('`redux-websocket` error'), prefix));
-    if (this.canAttemptReconnect()) {
-      this.handleBrokenConnection(dispatch);
-    }
+    // if (this.canAttemptReconnect()) {
+    //   this.handleBrokenConnection(dispatch);
+    // }
   };
 
   /**

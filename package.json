@@ -37,7 +37,8 @@
   "author": "Giant Machines <contact@giantmachines.com> (https://giantmachines.com)",
   "license": "MIT",
   "dependencies": {
-    "redux": "~4"
+    "redux": "~4",
+    "retry": "^0.12.0"
   },
   "devDependencies": {
     "@babel/cli": "7.2.0",
@@ -47,6 +48,7 @@
     "@babel/preset-env": "7.2.0",
     "@babel/preset-typescript": "7.1.0",
     "@types/jest": "24.0.1",
+    "@types/retry": "^0.12.0",
     "@types/ws": "6.0.1",
     "@typescript-eslint/eslint-plugin": "1.3.0",
     "babel-loader": "8.0.4",

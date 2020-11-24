@@ -10,7 +10,7 @@ const { NODE_ENV: env = 'development' } = process.env;
 
 module.exports = {
   entry: {
-    app: ['./src/app/Index.tsx'],
+    app: ['@babel/polyfill', './src/app/Index.tsx'],
     vendor: ['react', 'react-dom'],
   },
   output: {
