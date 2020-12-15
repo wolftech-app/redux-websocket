@@ -100,6 +100,7 @@ describe('ReduxWebSocket', () => {
       });
     });
 
+    // remove now that handleBrokenConnection is gone
     it('handles closed as broken if flag "reconnectOnClose" set', () => {
       const dispatch = jest.fn();
       const rws = new ReduxWebSocket({
@@ -165,6 +166,7 @@ describe('ReduxWebSocket', () => {
         });
       });
 
+      // remove now that handleBrokenConnection is gone
       it('calls handleBrokenConnection', () => {
         const dispatch = jest.fn();
 
@@ -223,6 +225,7 @@ describe('ReduxWebSocket', () => {
         /* eslint-enable dot-notation */
       });
 
+      // rework now that we are using 'retry'
       it('handles successful reconnection', () => {
         const event = addEventListenerMock.mock.calls.find(
           (call) => call[0] === 'open'
@@ -337,6 +340,7 @@ describe('ReduxWebSocket', () => {
     });
   });
 
+  // remove now that handleBrokenConnection is gone
   describe('handleBrokenConnection', () => {
     jest.useFakeTimers();
 
