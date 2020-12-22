@@ -47,7 +47,7 @@ export default class ReduxWebSocket {
     this.options = options;
     this.retryOperation = retry.operation({
       forever: true,
-      minTimeout: 2000,
+      minTimeout: options.reconnectInterval,
     });
   }
 
@@ -66,6 +66,7 @@ export default class ReduxWebSocket {
         console.log('ATTEMPT', currentAttempt);
 
         // Only dispatch beginReconnect once
+        // TODO: verify that this is zero in demo, update tests setup since attempts show as 1 in tests
         if (currentAttempt === 0) {
           dispatch(beginReconnect(prefix));
         }
@@ -111,9 +112,18 @@ export default class ReduxWebSocket {
     });
     this.websocket.addEventListener('open', (event) => {
       // Only dispatch after succesful re-connect
+      console.log({ currentAttempt });
+      // TODO: verify currentAttempt > 0 or currentAttempt > 1?
       if (currentAttempt > 0) {
+        console.log('calling reconnected line 115');
         dispatch(reconnected(prefix));
       }
+
+      // reset internal state of retry instance if open/reconnected
+      if (this.retryOperation) {
+        this.retryOperation.reset();
+      }
+
       this.handleOpen(dispatch, prefix, this.options.onOpen, event);
     });
     this.websocket.addEventListener('message', (event) =>
