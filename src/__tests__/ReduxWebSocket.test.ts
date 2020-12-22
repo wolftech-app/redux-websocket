@@ -100,7 +100,7 @@ describe('ReduxWebSocket', () => {
       });
     });
 
-    // remove now that handleBrokenConnection is gone
+    // TODO: update now that handleBrokenConnection is gone?
     it('handles closed as broken if flag "reconnectOnClose" set', () => {
       const dispatch = jest.fn();
       const rws = new ReduxWebSocket({
@@ -110,13 +110,8 @@ describe('ReduxWebSocket', () => {
       const event = new Event('');
 
       /* eslint-disable dot-notation */
-      rws['handleBrokenConnection'] = jest.fn();
       rws['handleClose'](dispatch, 'prefix', event);
-      expect(rws['handleBrokenConnection']).not.toHaveBeenCalled();
-      rws['hasOpened'] = true;
       rws['handleClose'](dispatch, 'prefix', event);
-      expect(rws['handleBrokenConnection']).toHaveBeenCalledTimes(1);
-      expect(rws['handleBrokenConnection']).toHaveBeenCalledWith(dispatch);
       /* eslint-enable dot-notation */
     });
 
@@ -165,46 +160,30 @@ describe('ReduxWebSocket', () => {
           error: true,
         });
       });
-
-      // remove now that handleBrokenConnection is gone
-      it('calls handleBrokenConnection', () => {
-        const dispatch = jest.fn();
-
-        /* eslint-disable dot-notation */
-        reduxWebSocket['handleBrokenConnection'] = jest.fn();
-        reduxWebSocket['handleError'](dispatch, 'prefix');
-        expect(reduxWebSocket['handleBrokenConnection']).not.toHaveBeenCalled();
-
-        reduxWebSocket['hasOpened'] = true;
-        reduxWebSocket['handleError'](dispatch, 'prefix');
-        expect(reduxWebSocket['handleBrokenConnection']).toHaveBeenCalledTimes(
-          1
-        );
-        expect(reduxWebSocket['handleBrokenConnection']).toHaveBeenCalledWith(
-          dispatch
-        );
-        /* eslint-enable dot-notation */
-      });
     });
 
     describe('open event', () => {
-      it('dispatches an open action and sets the hasOpened flag', () => {
+      it('dispatches an open action', () => {
         const event = addEventListenerMock.mock.calls.find(
           (call) => call[0] === 'open'
         );
 
         event[1]();
 
-        /* eslint-disable dot-notation */
+        // TODO: come back to, why is the conditional that dispatches the reconnect being called in a test?
         expect(store.dispatch).toHaveBeenCalledTimes(1);
+        // expect(store.dispatch).toHaveBeenCalledWith({
+        //   type: 'REDUX_WEBSOCKET::RECONNECTED',
+        //   meta: {
+        //     timestamp: expect.any(Date),
+        //   },
+        // });
         expect(store.dispatch).toHaveBeenCalledWith({
           type: 'REDUX_WEBSOCKET::OPEN',
           meta: {
             timestamp: expect.any(Date),
           },
         });
-        expect(reduxWebSocket['hasOpened']).toEqual(true);
-        /* eslint-enable dot-notation */
       });
 
       it('calls an onOpen function with a reference to the opened socket', () => {
@@ -232,15 +211,8 @@ describe('ReduxWebSocket', () => {
         );
 
         /* eslint-disable dot-notation */
-        reduxWebSocket['reconnectionInterval'] = 1000 as any;
-        reduxWebSocket['reconnectCount'] = 9999;
-
-        global.clearInterval = jest.fn();
 
         event[1]('test event');
-
-        expect(reduxWebSocket['reconnectionInterval']).toBeNull();
-        expect(reduxWebSocket['reconnectCount']).toEqual(0);
 
         // Once for the reconnected action, once for the open action.
         expect(store.dispatch).toHaveBeenCalledTimes(2);
@@ -337,68 +309,6 @@ describe('ReduxWebSocket', () => {
       expect(() =>
         reduxWebSocket.send(null as any, { payload: null } as any)
       ).toThrow('Serializer not provided');
-    });
-  });
-
-  // remove now that handleBrokenConnection is gone
-  describe('handleBrokenConnection', () => {
-    jest.useFakeTimers();
-
-    it('should reconnect on an interval', () => {
-      const dispatch = jest.fn();
-      const action = { type: CONNECT, payload: { url } };
-      reduxWebSocket.connect(store, action);
-
-      /* eslint-disable dot-notation */
-      reduxWebSocket['handleBrokenConnection'](dispatch);
-
-      jest.advanceTimersByTime(5000);
-
-      // Make sure we actually check all of the calls to `dispatch`.
-      expect.assertions(7);
-
-      expect(dispatch).toHaveBeenCalledTimes(5);
-      expect(reduxWebSocket['reconnectCount']).toEqual(3);
-      expect(dispatch).toHaveBeenNthCalledWith(1, {
-        type: 'REDUX_WEBSOCKET::BROKEN',
-        meta: {
-          timestamp: expect.any(Date),
-        },
-      });
-      expect(dispatch).toHaveBeenNthCalledWith(2, {
-        type: 'REDUX_WEBSOCKET::BEGIN_RECONNECT',
-        meta: {
-          timestamp: expect.any(Date),
-        },
-      });
-      expect(dispatch).toHaveBeenNthCalledWith(3, {
-        type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
-        meta: {
-          timestamp: expect.any(Date),
-        },
-        payload: {
-          count: 1,
-        },
-      });
-      expect(dispatch).toHaveBeenNthCalledWith(4, {
-        type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
-        meta: {
-          timestamp: expect.any(Date),
-        },
-        payload: {
-          count: 2,
-        },
-      });
-      expect(dispatch).toHaveBeenNthCalledWith(5, {
-        type: 'REDUX_WEBSOCKET::RECONNECT_ATTEMPT',
-        meta: {
-          timestamp: expect.any(Date),
-        },
-        payload: {
-          count: 3,
-        },
-      });
-      /* eslint-enable dot-notation */
     });
   });
 });
