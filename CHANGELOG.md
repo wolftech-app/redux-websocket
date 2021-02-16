@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.0] - 2021-02-16
+
+### Added
+
+- Added `reconnectOnError` option as part of `Options` interface to enable reconnection attempt when connection is closed via an error event.
+
 ## [1.4.0] - 2020-11-17
 
 ### Added
