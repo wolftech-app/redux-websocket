@@ -16,6 +16,7 @@ interface ReduxWebSocketOptions {
   prefix: string;
   reconnectInterval: number;
   reconnectOnClose: boolean;
+  reconnectOnError: boolean;
   onOpen?: (s: WebSocket) => void;
   serializer?: Serializer;
   deserializer?: Deserializer;
@@ -153,7 +154,10 @@ export default class ReduxWebSocket {
    */
   private handleError = (dispatch: Dispatch, prefix: string) => {
     dispatch(error(null, new Error('`redux-websocket` error'), prefix));
-    if (this.canAttemptReconnect()) {
+
+    // Conditionally attempt reconnection if enabled and applicable
+    const { reconnectOnError } = this.options;
+    if (reconnectOnError && this.canAttemptReconnect()) {
       this.handleBrokenConnection(dispatch);
     }
   };
