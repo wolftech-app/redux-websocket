@@ -34,6 +34,7 @@ type Options = {
   prefix?: string;
   reconnectInterval?: number;
   reconnectOnClose?: boolean;
+  reconnectOnError?: boolean;
   dateSerializer?: (date: Date) => string | number;
   serializer?: Serializer;
   deserializer?: Deserializer;
