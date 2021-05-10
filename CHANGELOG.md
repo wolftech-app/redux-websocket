@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Added maintenance note to README.
-- Bump minor dependency versions
+- Bump minor dependency versions.
 
 ## [1.5.0] - 2021-02-16
 
