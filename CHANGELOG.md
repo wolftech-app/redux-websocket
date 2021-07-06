@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.1] - 2021-05-10
+
+### Added
+
+- Added maintenance note to README.
+- Bump minor dependency versions.
+
 ## [1.5.0] - 2021-02-16
 
 ### Added
