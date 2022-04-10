@@ -1,6 +1,6 @@
 {
-  "name": "@giantmachines/redux-websocket",
-  "version": "1.5.1",
+  "name": "@wolftech.app/redux-websocket",
+  "version": "1.5.2",
   "description": "A redux middleware to handle websocket connections",
   "main": "dist",
   "files": [
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/giantmachines/redux-websocket.git"
+    "url": "git+https://github.com/wolftech-app/redux-websocket.git"
   },
   "keywords": [
     "redux",
