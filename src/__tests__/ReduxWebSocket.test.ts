@@ -10,11 +10,17 @@ declare global {
 
 const CONNECT = 'CONNECT' as 'CONNECT';
 const SEND = 'SEND' as 'SEND';
+type option = {
+  prefix: string,
+  reconnectInterval: number,
+  reconnectOnClose: boolean,
+  reconnectOnError: boolean,
+  serializer: any }
 
 describe('ReduxWebSocket', () => {
   const store = { dispatch: jest.fn((i: any) => i), getState: () => {} };
   const url = 'ws://fake.com';
-  const options = {
+  const options: option = {
     prefix: 'REDUX_WEBSOCKET',
     reconnectInterval: 2000,
     reconnectOnClose: false,
